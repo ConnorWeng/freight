@@ -8,6 +8,7 @@ class CommonAction extends Action {
         $this->assign(array(
             'basepath' => str_replace('index.php', 'Public', __APP__),
             'tree' => $tree,
+            'js_file' => './Tpl/'.MODULE_NAME.'/js/'.ACTION_NAME.'.html',
         ));
         $this->display();
     }
