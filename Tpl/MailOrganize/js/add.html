@@ -1,0 +1,59 @@
+<script type="text/javascript">
+	function save() {
+
+		if ($(":checkbox:checked").length == 0) {
+			alert("请至少选择一项");
+			$("#sender_check").focus();
+			return;
+		}
+
+		if (($("#sender_check").attr("checked") == "checked") && ($("#sender_key").val() == "")) {
+			alert("内容不能为空");
+			$("#sender_key").focus();
+			return;
+		}
+
+		if (($("#domain_check").attr("checked") == "checked") && ($("#domain_key").val() == "")) {
+			alert("内容不能为空");
+			$("#domain_key").focus();
+			return;
+		}
+
+		if (($("#recever_check").attr("checked") == "checked") && ($("#recever_key").val() == "")) {
+			alert("内容不能为空");
+			$("#recever_key").focus();
+			return;
+		}
+
+		if (($("#title_check").attr("checked") == "checked") && ($("#rtitle_key").val() == "")) {
+			alert("内容不能为空");
+			$("#title_key").focus();
+			return;
+		}
+		if ($("#to").val() == "") {
+			alert("请选择文件夹");
+			$("#to").focus();
+			return;
+		}
+		sendForm("form_data", "{:U('save')}");
+	}
+
+
+	$(document).ready(function() {
+		$("div.combo input").focus(function() {
+			$(this).parent().find("label").hide();
+		})
+
+		$("div.combo input").blur(function() {
+			if ($(this).val().length == 0) {
+				$(this).parent().find("label").show();
+			}
+		})
+		set_val("to", "{$vo.to}");
+		$("div.combo input").each(function() {
+			if ($(this).val().length > 1) {
+				$(this).parent().find("label").hide();
+			}
+		})
+	}); 
+</script>

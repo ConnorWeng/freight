@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>freight</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<import type="js" file="Js.jquery" basepath="{$basepath}"/>
+<import type="css" file="Css.login" basepath="{$basepath}"/>
+<style>
+.headerNav a {
+  margin-left: 0;
+}
+.headerLogo {
+  top: 0;
+}
+.headerIntro {
+  background: none;
+  top: 33px;
+  left: 300px;
+}
+.headerIntro h1 {
+  font-size: 18pt;
+}
+.headerIntro img {
+  height: 80px;
+}
+.loginForm {
+  height: 230px;
+}
+#loginBlock {
+  height: 300px;
+}
+section#mainBg.main {
+  background-image: url({$basepath}/Images/main_bg.png);
+  background-position: center;
+}
+.footerLogo img {
+  width: 120px;
+  height: 32px;
+}
+</style>
+</head>
+<body>
+<header class="header">
+        <h1 class="headerLogo"><a href="http://mail.163.com/html/mail_intro/" target="_blank" title="走近网易免费邮"><img src="{$basepath}/Images/logo.png" alt="" /></a></h1>
+        <a class="headerIntro" href="http://mail.163.com/html/mail_intro/" target="_blank" title="走近网易免费邮"><h1>物流金融平台</h1></a>
+        <nav class="headerNav">
+                <!--a href="http://email.163.com" target="_blank">免费邮</a><a href="http://qiye.163.com/" target="_blank">企业邮箱</a><a href="http://vip.126.com/?b09abh1" target="_blank">VIP邮箱</a><a href="http://hw.mail.163.com/#126" target="_blank">国外用户登录</a><a href="http://help.163.com/special/00753VB9/126mail_adv_index.html?b09abh1" target="_blank">帮助</a>&nbsp;|&nbsp;<a class="last" href="http://help.163.com/special/00753VB9/126mail_adv_ans.html?maildl" target="_blank">在线答疑</a-->
+                <a href="http://help.163.com/special/00753VB9/126mail_adv_index.html?b09abh1" target="_blank">使用帮助</a>
+                &nbsp;|&nbsp;
+                <a href="http://help.163.com/special/00753VB9/126mail_adv_index.html?b09abh1" target="_blank">常见问题</a>
+                &nbsp;|&nbsp;
+                <a href="http://help.163.com/special/00753VB9/126mail_adv_ans.html?maildl" target="_blank">联系我们</a>
+        </nav>
+</header>
+
+<section class="main" id="mainBg">
+        <div class="main-inner" id="mainCnt">
+                <div id="theme">
+                        <noscript><p class="noscriptTitle">浏览器不支持或禁止了网页脚本，<br/>导致您无法正常登录。</p><br/><a class="noscriptLink" href="http://help.163.com/09/1216/16/5QLUL0H500753VB8.html" target="_blank">如何解除脚本限制</a></noscript>
+                </div>
+                <!--div class="themeCtrl">
+                        <a id="scoreIndex" href="javascript:void(0);" onclick="oScoreIdx.open();" title="首页评分">
+                                为首页评分
+                        </a>
+                        <a id="musicLink" href="javascript:void(0);" target="_blank" title="听一首歌"></a>
+                        <a id="prevTheme" href="javascript:void(0);" onclick="fPrevTheme()" title="上一张"></a>
+                        <a id="nextTheme" href="javascript:void(0);" onclick="fNextTheme()" title="下一张"></a>
+                </div-->
+        </div>
+        <!--错误提示浮层-->
+        <div id="errorMask" style="display:none"></div>
+        <div id="errorAlert">
+                <div class="error-hd"></div>
+                <div class="error-mid">
+                        <div class="error-tt">
+                                <p id="errorTitle"></p>
+                        </div>
+                        <div id="errorDetail" class="error-detail" style="display:none">
+                                <p>提示：</p>
+                                <p id="errorInfo" class="error-info"></p>
+                        </div>
+                </div>
+                <div class="error-ft"></div>
+                <div id="errorArr" class="error-arrow"></div>
+        </div>
+        <!--登录框-->
+        <div id="loginBlock" class="login tab-1">
+                <div class="loginFunc">
+                        <div id="lbNormal" class="loginFuncNormal">
+                                物流公司登录
+                        </div>
+                        <div id="lbMob" class="loginFuncMobile">
+                                经销商登录
+                        </div>
+                </div>
+                <div class="loginForm">
+                        <form id="login126" name="login126" method="POST" action="{:U('Index/login')}">
+                                <!--input type="hidden" id="username" name="username" value="0" /-->
+                                <input type="hidden" id="savelogin" name="savelogin" value="0" />
+                                <input type="hidden" id="url2" name="url2" value="http://mail.126.com/errorpage/error126.htm" />
+                                <div id="idInputLine" class="loginFormIpt showPlaceholder">
+                                        <b class="ico ico-uid"></b>
+                                        <input class="loginFormTdIpt" tabindex="1" title="请输入帐号" id="idInput" name="username" type="text" maxlength="50" value="" />
+                                        <!--span id="showdomain" class="domain">@126.com</span-->
+                                        <div id="mobtips" style="display:;"></div>
+                                        <label for="idInput" class="placeholder" id="idPlaceholder">帐号或手机号</label>
+                                        <div id="idInputTest"></div>
+                                </div>
+                                <div id="pwdInputLine" class="loginFormIpt showPlaceholder">
+                                        <b class="ico ico-pwd"></b>
+                                        <input class="loginFormTdIpt" tabindex="2" title="请输入密码" id="pwdInput" name="password" type="password"/>
+                                        <label for="pwdInput" class="placeholder" id="pwdPlaceholder">密码</label>
+                                </div>
+                                <div class="loginFormCheck">
+                                        <!--div id="lfAutoLogin" class="loginFormCheckInner">
+                                                <b class="ico ico-checkbox"></b>
+                                                <label id="remAutoLoginTxt" for="remAutoLogin">
+                                                        <input tabindex="3" title="十天内免登录" class="loginFormCbx" type="checkbox" id="remAutoLogin" />
+                                                十天内免登录</label>
+                                                <div id="whatAutologinTip">为了您的信息安全，请不要在网吧或公用电脑上使用此功能！
+                                                </div>
+                                                <a class="whatAutologin" href="http://help.163.com/09/1214/11/5QG7HFPJ00753VB9.html?b09abI1" tabindex="4" target="_blank" title="什么是自动登录">什么是自动登录</a>
+                                        </div-->
+                                        <div class="forgetPwdLine">
+                                                <a class="forgetPwd" href="http://reg.163.com/getpasswd/RetakePassword.jsp?from=mail126" target="_blank" title="找回密码">忘记密码了?</a>
+                                        </div>
+                                </div>
+                                <div class="loginFormBtn">
+                                        <button id="loginBtn" class="btn btn-login" tabindex="6" type="submit">登&nbsp;&nbsp;录</button>
+                                        <a id="lfBtnReg" class="btn btn-reg" href="http://reg.email.163.com/mailregAll/reg0.jsp?from=126mail" target="_blank" tabindex="7">注&nbsp;&nbsp;册</a>
+                                        <a id="lfBtnReg2" class="btn btn-reg" href="http://e.mail.163.com/mobilemail/home.do?from=163mail" target="_blank" tabindex="7">注&nbsp;&nbsp;册</a>
+                                </div>
+                                <!--div class="loginFormConf">
+                                        <div class="loginFormVer">
+                                                版本: <a id="styleConf" href="javascript:void(0);">默认版本 <b class="ico ico-arr ico-arr-d"></b></a>
+                                        </div>
+                                        <div class="loginFormService" id="loginSSL">正使用SSL登录</div>
+                                        <div class="loginFormService" id="AllSSL" style="display:none">
+                                                <input title="全程SSL" class="loginFormCbx" type="checkbox" id="AllSSLCkb" />&nbsp;<label for="AllSSLCkb">全程SSL</label>
+                                        </div>
+                                        <div class="loginFormCheckInner" style="display:none">
+                                                <input class="loginFormCbx loginFormSslCbx" type="checkbox" tabindex="5" title="SSL安全登录" id="SslLogin" checked="checked" /><label class="loginFormSslText" for="SslLogin">&nbsp;<span style="font-family:verdana;">SSL</span>安全登录</label>
+                                        </div>
+                                        <div class="loginFormService" style="display:none">
+                                                <a id="selectLocationTips" href="javascript:void(0);" onclick="fSelectLoaction('show');return false;">登录速度太慢? <b class="ico ico-arr ico-arr-d"></b></a>
+                                                <span id="selectLocationTipsDone">
+                                                        <a href="javascript:void(0);" onclick="fSelectLoaction('show');return false;">
+                                                                <span>服务器: <span id="selectLocation">电信</span></span><b class="ico ico-arr ico-arr-d"></b>
+                                                        </a>
+                                                </span>
+                                        </div>
+                                        <div id="styleConfBlock" class="loginFormVerList unishadow">
+                                                <ul>
+                                                        <li><a id="styleconf-1" class="verSelected" href="javascript:void(0);" onclick="fSetStyle(-1)">默认版本</a></li>
+                                                        <li><a id="styleconf5" href="javascript:void(0);" onclick="fSetStyle(5)">网易邮箱<span class="fontWeight">5.0</span>版</a></li>
+                                                        <li><a id="styleconf3" href="javascript:void(0);" onclick="fSetStyle(3)">网易邮箱<span class="fontWeight">5.0</span>简约版</a></li>
+                                                </ul>
+                                        </div>
+                                        <div id="locationTest" class="unishadow">
+                                                <div class="locationTestTitle">
+                                                        <h4>测试并选择最佳服务器</h4>
+                                                        <a class="locationTestTitleClose" href="javascript:void(0);" onclick="fSelectLoaction();return false;">>关闭</a>
+                                                </div>
+                                                <div class="locationTestList">
+                                                        <ul>
+                                                                <li>
+                                                                        <a id="locationHref0" href="javascript:void(0);" onclick="fLocationChoose('t');return false;">
+                                                                        电&nbsp;&nbsp;&nbsp;信
+                                                                        <br/><span class="locationTestEach" id="locationTest0"></span>
+                                                                        </a>
+                                                                </li>
+                                                                <li style="border-left:1px solid #d5dbe2;border-right:1px solid #d5dbe2;">
+                                                                        <a id="locationHref1" href="javascript:void(0);" onclick="fLocationChoose('c');return false;">
+                                                                        联&nbsp;&nbsp;&nbsp;通
+                                                                        <br/><span class="locationTestEach" id="locationTest1"></span>
+                                                                        </a>
+                                                                </li>
+                                                                <li>
+                                                                        <a id="locationHref2" href="javascript:void(0);" onclick="fLocationChoose('e');return false;">
+                                                                        教育网
+                                                                        <br/><span class="locationTestEach" id="locationTest2"></span>
+                                                                        </a>
+                                                                </li>
+                                                        </ul>
+                                                </div>
+                                        </div>
+                                </div-->
+                        </form>
+                        <!--div class="ext" id="loginExt">
+                                <div id="extVerSelect"><a href="http://ipad.mail.163.com/index.htm?dv=ipad">适配iPad版本</a>&nbsp;|&nbsp;<a href="http://smart.mail.163.com/index.htm?dv=smart">手机智能版</a>&nbsp;|&nbsp;电脑版</div>
+                                <ul id="extText">
+                                        <li><a id="gadext1" href="#" target="_blank">&nbsp;</a></li>
+                                        <li><a id="gadext2" href="#" target="_blank">&nbsp;</a></li>
+                                </ul>
+                                <div id="extMobLogin">
+                                        <h3><a class="ext-tt" href="http://yixin.im/?from=126mailtab" target="_blank">有手机号码邮箱，就可以直接登录易信</a></h3>
+                                        <p>
+                                                <a href="http://yixin.im/?from=126mailtab" target="_blank">
+                                                        <span>无需注册</span><var>|</var>邮件到达免费提醒<var>|</var>送2G网盘
+                                                </a>
+                                        </p>
+                                </div>
+                                <div id="extMobLogin2">
+                                        <button class="btn btn-moblogin2" id="extBtnMoblogin" type="button">还没设置手机号登录？</button>
+                                        <div class="setMobLoginInfo">设置后，可用手机号直接登录邮箱（完全免费）</div>
+                                </div>
+                        </div-->
+                </div>
+        </div>
+</section>
+
+<footer id="footer" class="footer">
+        <div class="footer-inner" id="footerInner">
+                <a class="footerLogo" href="http://www.163.com/" target="_blank"><img src="{$basepath}/Images/logo.png" alt="网易NetEase"/></a>
+                <a id="KX_IMG" style="position:absolute;right:50PX;top:24px;" href="https://ss.cnnic.cn/verifyseal.dll?sn=e12052344010022026301459&ct=df&pa" target="_blank">
+                        <img src="http://mimg.127.net/logo/knet.png" alt="可信网站，身份验证" />
+                </a>
+                <nav class="footerNav">
+                        <!--a href="http://corp.163.com/index_gb.html" target="_blank">关于网易</a><a href="http://mail.163.com/html/mail_intro" target="_blank">关于网易免费邮</a><a href="http://mail.blog.163.com/" target="_blank">邮箱官方博客</a--><a href="http://help.163.com" target="_blank">客户服务</a><a style="margin-right:22px" href="http://corp.163.com/gb/legal/legal.html" target="_blank">隐私政策</a>|<span class="copyright">宁波通商银行版权所有 &copy; 1997-2013</span>
+                </nav>
+        </div>
+</footer>
+<!--遮罩-->
+<div id="mask" class="mask" style="display:none;"></div>
+<!--手机号码注册弹框-->
+<div id="phoneRegDiv" class="dialogbox" style="display:none;">
+        <div class="hd">
+                <h3>设置手机号登录</h3>
+                <a id="phoneRegDivClose" href="javascript:;" class="btn btn-close" title="关闭">关闭</a>
+                <span class="rc rc-l"></span>
+                <span class="rc rc-r"></span>
+        </div>
+        <div class="bd">
+                <iframe id="phoneRegFrame" src="about:blank" style="border:0">设置手机号登录iframe</iframe>
+        </div>
+</div>
+<!--登录提示弹框-->
+<div class="enhttp" style="display:none" id="enhttpblock">
+        <div class="enhttpbox">
+                <div class="topborder"></div>
+                <div class="ct">
+                        <div class="inner">
+                                <p class="txt-tips">登录过程有点慢哦，可能是由于网络问题造成的。</p>
+                                <p id="enhttpTips" class="txt-normal"><span id="backwards">3</span>&nbsp;秒后自动尝试普通加密方式登录</p>
+                                <p class="txt-normal"><a id="idLoginBtn" class="httplogin" href="javascript:void(0)">确&nbsp;&nbsp;定</a></p>
+                                <p class="txt-line"></p>
+                                <p class="txt-advice">无法登录邮箱？<a class="txt-advicelink" href="http://zhidao.mail.163.com/zhidao/lfeedback.jsp" target="_blank">意见反馈&gt;&gt;</a></p>
+                        </div>
+                </div>
+                <div class="bottomborder"></div>
+        </div>
+        <iframe class="httploginframe" src="about:blank" id="frameforlogin" name="frameforlogin" style="overflow:hidden;border:0">登录iframe</iframe>
+</div>
+<!--首页评分弹框-->
+<div id="scoreIndexPop">
+        <iframe id="scoreIndexPopIfm" src="about:blank" frameborder="0" scrolling="no" allowTransparency="allowtransparency"></iframe>
+</div>
+<script>
+$('.loginFormTdIpt').on('keyup', function (e) {
+    var $input = $(e.target);
+    if ($input.val() !== '') {
+        $input.siblings('.placeholder').css('display', 'none');
+    } else {
+        $input.siblings('.placeholder').css('display', 'block');
+    }
+});
+
+$('')
+</script>
+</body>
+</html>

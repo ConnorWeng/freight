@@ -1,0 +1,18 @@
+<script type="text/javascript">
+	$(function() {
+		show_content();
+	});
+	function del() {
+		if (confirm('确定要删除吗?')) {
+			sendAjax("{:U('mark?action=del')}", 'id=' + $("#id").val(), function(data) {
+				if (data.status){
+					alert(data.info);
+					go_return_url();
+				}
+			});
+		}
+	}
+	function edit() {
+		window.open(fix_url("{:U('edit')}?id=" + $("#id").val()), "_self");
+	}
+</script>

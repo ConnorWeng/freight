@@ -1,0 +1,22 @@
+<script src="__PUBLIC__/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript">
+	function login() {
+		if (check_form("form_login")) {
+			$("#form_login").attr("action", "{:U('login/check_login')}");
+			$("#form_login").submit();
+		}
+	}
+
+
+	$(document).ready(function() {
+		$("#password").keydown(function(event) {
+			if (event.keyCode == 13) {
+				if (check_form("form_login")) {
+					sendForm("form_login", "{:U('login/check_login')}");
+					return false;
+				}
+			}
+		})
+	})
+</script>

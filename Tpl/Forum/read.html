@@ -1,0 +1,187 @@
+<layout name='Layout/ace_layout' />
+<input type="hidden" name="id" id="id" value="{$vo.id}">
+{:W('PageHeader',array('name'=>$vo['name'],'search'=>'N'))}
+
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-left">
+			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+			<if condition="$auth['admin']">
+				<a onclick="del();"  class="btn btn-sm btn-danger">删除</a>
+			</if>
+		</div>
+		<div class="pull-right">
+			<if condition="$auth['write']">
+				<a onclick="add();" class="btn btn-sm btn-primary">发帖</a>
+			</if>
+		</div>
+	</div>
+</div>
+<table class="table table-bordered">
+	<tr>
+		<td style="width:145px">
+		<div class="pull-left">
+			{$vo.user_name}
+		</div></td>
+		<td style="width:100%">
+		<div  class="pull-left">
+			发表于 {$vo.create_time|toDate='Y年m月d日 H:i'}
+			<if condition="($auth['write']) and ($vo.user_id eq $user_id)">
+				<a href="" onclick="edit();return false;" class="btn btn-link">编辑</a>
+			</if>
+		</div>
+		<div class="pull-right">
+			<a href="#reply" class="btn btn-sm btn-primary">回复</a>
+		</div></td>
+	</tr>
+
+	<tr>
+		<td class="post_left">
+		<div class="read_info">
+			<div class="wrap">
+				<div class="face pull-left">
+					<img src="/Data/files/{$vo.user.pic}" width="120" height="120" border="0" >
+				</div>
+				<table class="table table-bordered">
+					<tr>
+						<td  style="width:90px;">姓名</td>
+						<td style="width:150px;">{$vo.user_name}</td>
+					</tr>
+					<tr>
+						<td>部门</td>
+						<td>{$vo.user.dept_name}</td>
+					</tr>
+					<tr>
+						<td>职位/职级</td>
+						<td>{$vo.user.position_name}/{$vo.user.rank_name}</td>
+					</tr>
+					<tr>
+						<td>邮件地址</td>
+						<td>{$vo.user.email}</td>
+					</tr>
+					<tr>
+						<td>办公电话/手机</td>
+						<td>{$vo.user.tel_office}/{$vo.user.tel_mobile}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="face">
+			<img src="__APP__/Data/files/{$vo.user.pic}" width="120" height="120" border="0" >
+		</div></td>
+		<td class="post_right">
+		<div class="post_content">
+			{$vo.content}
+		</div>
+		<gt name="vo.add_file|strlen" value="2">
+			<div class="add_file">
+				附件：{$vo.add_file|showFile}
+			</div>
+		</gt></td>
+	</tr>
+	<foreach name="list" item="vo">
+		<tr>
+			<td style="width:145px">
+			<div class="pull-left">
+				{$vo.user_name}
+			</div></td>
+			<td style="width:100%">
+			<div  class="pull-left">
+				发表于 {$vo.create_time|toDate='Y年m月d日 H:i'}
+				<if condition="($auth['write']) and ($vo.user_id eq $user_id)">
+					<a onclick="edit_post({$vo.id});return false;" class="btn btn-link">编辑</a>
+				</if>
+				<if condition="($auth['write']) and ($vo.user_id eq $user_id)">
+					<a onclick="del_post({$vo.id});return false;" class="btn btn-link">删除</a>
+				</if>
+			</div>
+			<div class="pull-right">
+				<a href="#reply" class="btn btn-sm btn-primary">回复</a>
+			</div></td>
+		</tr>
+		<td style="width:145px;text-align:center;vertical-align:top;padding:0;margin:0;">
+		<div class="read_info">
+			<div class="wrap">
+				<div class="face pull-left">
+					<img src="/Data/files/{$vo.user.pic}" width="120" height="120" border="0" >
+				</div>
+				<table class="table table-bordered">
+					<tr>
+						<td  style="width:90px;">姓名</td>
+						<td style="width:150px;">{$vo.user_name}</td>
+					</tr>
+					<tr>
+						<td>部门</td>
+						<td>{$vo.user.dept_name}</td>
+					</tr>
+					<tr>
+						<td>职位/职级</td>
+						<td>{$vo.user.position_name}/{$vo.user.rank_name}</td>
+					</tr>
+					<tr>
+						<td>邮件地址</td>
+						<td>{$vo.user.email}</td>
+					</tr>
+					<tr>
+						<td>办公电话/手机</td>
+						<td>{$vo.user.tel_office}/{$vo.user.tel_mobile}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="face">
+			<img src="/Data/files/{$vo.user.pic}" width="120" height="120" border="0" >
+		</div></td>
+		<td style="width:100%;vertical-align:top;">
+		<div class="post">
+			{$vo.content}
+		</div>
+		<gt name="vo.add_file|strlen" value="2">
+			<div class="add_file">
+				附件：{$vo.add_file|showFile}
+			</div>
+		</gt></td>
+		</tr>
+	</foreach>
+</table>
+<div class="pagination">
+	{$page}
+</div>
+<if condition="$auth['write']">
+	{:W('PageHeader',array('name'=>'回复','search'=>'N'))}
+	<div class="operate panel panel-default">
+		<div class="panel-body">
+			<div class="pull-left">
+				<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+			</div>
+			<div class="pull-right">
+				<a onclick="reply();"  class="btn btn-sm btn-primary">提交</a>
+			</div>
+		</div>
+	</div>
+	<form method="post" action="" id="form_data" name="form_data">
+		<input type="hidden" id="ajax" name="ajax" value="0">
+		<input type="hidden" id="tid" name="tid" value="{$tid}">
+		<input type="hidden" id="add_file" name="add_file" value="">
+		<input type="hidden" id="opmode" name="opmode" value="add">
+		<table class="table table-bordered">
+			<tr>
+				<td>附件：</td>
+				<td>
+				<include file="Widget:uploader" />
+				</td>
+			</tr>
+			<td style="width:145px;text-align:center;vertical-align:top;">
+			<div class="face">
+				<img src="/Data/files/{$user.user.pic}" width="120" height="120" border="0" >
+			</div></td>
+			<td style="width:100%;vertical-align:top;">
+			<div >
+				<textarea name="content" id="content" style="width:100%;height:220px;"></textarea>
+			</div></td>
+			</tr>
+		</table>
+		<td colspan="2">
+	</form>
+</if>
+</div>

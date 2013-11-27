@@ -1,0 +1,37 @@
+<script type="text/javascript">
+	function popup_actor() {
+		winopen("{:U('popup/actor')}", 730, 574);
+	}
+
+	function save() {
+		editor.sync();
+		$("#actor").val("");
+		$("#actor_wrap div.address_list span").each(function() {
+			$("#actor").val($("#actor").val() + $(this).text().replace(';', '') + '|' + $(this).attr("title") + ";")
+		})
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save')}");
+		}
+	}
+
+
+	$(document).ready(function() {
+		fill_time("start_time");
+		fill_time("end_time");
+
+		$("#priority").val(3);
+		$("#slider-range-priority").slider({
+			range : "min",
+			min : 1,
+			max : 5,
+			value : 3,
+			slide : function(event, ui) {
+				$("#priority").val(ui.value);
+				$("div.slider_box div.ui-slider").css("background-color", schedule_bg(ui.value));
+				$("div.slider_box div.ui-widget-header").css("background-color", schedule_bg(ui.value));
+			}
+		});
+		$("div.slider_box div.ui-slider").css("background-color", schedule_bg(3));
+		$("div.slider_box div.ui-widget-header").css("background-color", schedule_bg(3));
+	}); 
+</script>

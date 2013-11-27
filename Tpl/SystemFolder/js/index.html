@@ -1,0 +1,110 @@
+<script type="text/javascript">
+	function add() {
+		$("#form_data :input[type='hidden']").val("");
+		$("#form_data :text").val("");
+		$("#form_data select ").each(function() {
+			$(this).find('option:first').attr('selected', 'selected');
+		});
+		$("div.sub_left_menu a.active").removeClass("active");
+		$("#opmode").val("add");
+	};
+
+	function del() {
+		var vars = $("#form_data").serialize();
+		if (confirm('确定要删除吗?')) {
+			sendAjax("{:U('del')}", vars, function(data) {
+				if (data.status) {
+					alert(data.info);
+					location.href = location.href;
+				}
+			});
+		}
+	}
+
+	function save() {
+		if ($("#opmode").val() == "") {
+			alert("请选择文件夹或新增");
+		} else {
+			$("#admin").val("");
+			$("#admin_list span.address_list span").each(function() {
+				$("#admin").val($("#admin").val() + $(this).text().replace(';', '') + '|' + $(this).attr("data") + ";")
+			})
+
+			$("#write").val("");
+			$("#write_list span.address_list span").each(function() {
+				$("#write").val($("#write").val() + $(this).text().replace(';', '') + '|' + $(this).attr("data") + ";")
+			})
+
+			$("#read").val("");
+			$("#read_list span.address_list span").each(function() {
+				$("#read").val($("#read").val() + $(this).text().replace(';', '') + '|' + $(this).attr("data") + ";")
+			})
+			if (check_form("form_data")) {
+				sendForm("form_data", "{:U('save')}", "__SELF__");
+			}
+		}
+	};
+
+	function showdata(result) {
+		for (var s in result.data) {
+			set_val(s, result.data[s]);
+		}
+		$("#admin_list span.address_list").html(contact_conv($("#admin").val()));
+		$("#write_list span.address_list").html(contact_conv($("#write").val()));
+		$("#read_list span.address_list").html(contact_conv($("#read").val()));
+		$("#folder_name").val($("#folder_list option[value='" + $("#pid").val() + "']").text());
+		$("#opmode").val("edit");
+	}
+
+	function popup_auth() {
+		winopen("{:U('popup/auth')}", 730, 574);
+	}
+
+	function select_auth() {
+		if ($("div.sub_left_menu a.active").length > 0) {
+			popup_auth();
+		} else if ($("div.sub_left_menu a").length == 0) {
+			popup_auth();
+		} else if ($("#opmode").val() == "add") {
+			popup_auth();
+		} else {
+			alert("请选择文件夹");
+		}
+		;
+	}
+
+	function select_pid() {
+		if ($("div.sub_left_menu a.active").length > 0) {
+			winopen("{:U('winpop')}", 730, 400);
+		} else if ($("div.sub_left_menu a").length == 0) {
+			winopen("{:U('winpop')}", 730, 400);
+		} else if ($("#opmode").val() == "add") {
+			winopen("{:U('winpop')}", 730, 400);
+		} else {
+			alert("请选择文件夹");
+		}
+		;
+	}
+
+
+	$(document).ready(function() {
+		set_return_url();
+
+		$(document).on("click", ".inputbox .address_list a.del", function() {
+			$(this).parent().parent().remove();
+		});
+
+		$(".sub_left_menu .tree_menu  a").click(function() {
+			$(".sub_left_menu .tree_menu  a").attr("class", "");
+			$(this).attr("class", "active");
+			sendAjax("{:U('read')}", "id=" + $(this).attr("node"), function(data) {
+				showdata(data);
+			});
+			return false;
+		})
+		// 双击添加到收件人 因后添加的数据 所以需要用live函数
+		$(".address_list span").on("dblclick", function() {
+			$(this).remove();
+		});
+	}); 
+</script>

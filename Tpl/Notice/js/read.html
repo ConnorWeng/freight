@@ -1,0 +1,28 @@
+<script type="text/javascript">
+	$(function() {
+		show_content();
+	});
+
+	function del() {
+		if (confirm('确定要删除吗?')) {
+			sendAjax("{:U('mark?action=del')}", 'id=' + $("#id").val(), function(data) {
+				if (data.status) {
+					alert(data.info);
+					go_return_url();
+				}
+			});
+		}
+	}
+
+	function attach_down(obj) {
+		winopen("{:U('down')}?attach_id=" + $(obj).attr("file_id") + "&id/" + $("#id").val(), 730, 300);
+	}
+
+	function edit() {
+		window.open(fix_url("{:U('edit')}?id=" + $("#id").val()), "_self");
+	}
+
+	function myprint() {
+
+	}
+</script>
