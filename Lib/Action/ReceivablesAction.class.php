@@ -6,6 +6,10 @@ class ReceivablesAction extends CommonAction {
         $this->defaultDisplay();
     }
 
+    public function receivables() {
+        $this->defaultDisplay();
+    }
+
 }
 
 ?>

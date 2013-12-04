@@ -2,19 +2,28 @@
 $(document).ready(function () {
 
   var data = [
-    ["", "Maserati", "Mazda", "Mercedes", "Mini", "Mitsubishi"],
-    ["2009", 0, 2941, 4303, 354, 5814],
-    ["2010", 5, 2905, 2867, 412, 5284],
-    ["2011", 4, 2517, 4822, 552, 6127],
-    ["2012", 2, 2422, 5399, 776, 4151]
+    {seq: "2009", freightName: 0, a: 2941, b: 4303, c: 354, d: 5814, e: 7, f: 8, g: 9, h: 10, i: 11, j: 12},
+    {seq: "2010", freightName: 5, a: 2905, b: 2867, c: 412, d: 5284, e: 7, f: 8, g: 9, h: 10, i: 11, j: 12},
+    {seq: "2011", freightName: 4, a: 2517, b: 4822, c: 552, d: 6127, e: 7, f: 8, g: 9, h: 10, i: 11, j: 12},
+    {seq: "2012", freightName: 2, a: 2422, b: 5399, c: 776, d: 4151, e: 7, f: 8, g: 9, h: 10, i: 11, j: 12}
   ];
 
-  $('#pooltable').handsontable({
+  $('.handsontable').handsontable({
     data: data,
-    minSpareRows: 1,
-    colHeaders: true,
+    columnSorting: true,
+    colHeaders: ['序号','物流金融服务商','受让金额(未销账)','逾期金额','有效净额',
+                '折后可抵敞口值','已用敞口','可用敞口','当前抵押率','逾期比例',
+                '逾期三个月以上比例','操作'],
+    columns: [{data: 'seq'}, {data: 'freightName'}, {data: 'a'}, {data: 'b'},
+              {data: 'c'}, {data: 'd'}, {data: 'e'}, {data: 'f'}, {data: 'g'},
+              {data: 'h'}, {data: 'i'}, {data: 'j', renderer: linkRenderer}],
     contextMenu: true
   });
+
+  function linkRenderer(instance, td, row, col, prop, value, cellProperties) {
+      Handsontable.TextCell.renderer.apply(this, arguments);
+      $(td).html('<a href="#">查看应收账款明细</a>');
+  }
 
 
   function bindDumpButton() {
@@ -25,6 +34,18 @@ $(document).ready(function () {
       });
     }
   bindDumpButton();
+
+  $('#featurepooltable').handsontable({
+    data: data,
+    columnSorting: true,
+    colHeaders: ['授信客户','逾期比例','5天后预期比例','10天后逾期比例','逾期三个月以上比例',
+                '抵押率','5天后抵押率','10天后抵押率'],
+    columns: [{data: 'seq'}, {data: 'freightName'}, {data: 'a'}, {data: 'b'},
+              {data: 'c'}, {data: 'd'}, {data: 'e'}],
+    colWidths: [60,80,80,80,80,
+                70,80,70],
+    contextMenu: true
+  });
 
 });
 </script>

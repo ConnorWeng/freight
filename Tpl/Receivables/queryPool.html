@@ -1,11 +1,71 @@
 <layout name='Layout/ace_layout' />
+<style>
+.freight-name-col {
+  width: 155px;
+}
+.freight-name {
+  padding: 0px;
+  margin: 0px;
+  line-height: 45px;
+}
+.search-input {
+  margin-top: 5px;
+  height: 40px;
+  width: 100%;
+}
+.col-xs-5 .btn-primary {
+  margin-top: 5px;
+}
+</style>
 <div class="row">
   <div class="col-xs-12">
     <!-- PAGE CONTENT BEGINS -->
+
     <div class="row">
       <div class="col-xs-12">
-        <div id="pooltable" class="handsontable"></div>
+        <h1>查询条件:<h1>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-xs-1 freight-name-col">
+        <h2 class="freight-name">物流金融服务商名称:</h2>
+      </div>
+      <div class="col-xs-5">
+        <input class="search-input" type="text"/>
+      </div>
+      <div class="col-xs-5">
+        <button class="btn btn-primary">查询</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">查询未来池状态</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>查询结果:</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="pooltable" class="handsontable"/>
+      </div>
+    </div>
+
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">未来池状态</h4>
+      </div>
+      <div class="modal-body">
+        <div id="featurepooltable" class="handsontable"/>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

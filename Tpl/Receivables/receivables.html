@@ -1,0 +1,100 @@
+<layout name='Layout/ace_layout' />
+<style>
+.form-horizontal .control-label {
+  text-align: center;
+}
+</style>
+<div class="row">
+  <div class="col-xs-12">
+    <!-- PAGE CONTENT BEGINS -->
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>查询条件:<h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="" class="col-sm-2 control-label">物流金融服务商名称:</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="物流金融服务商名称"/>
+            </div>
+            <label for="" class="col-sm-2 control-label">买方名称:</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="买方名称"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-2 control-label">应收账款编号:</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="应收账款编号"/>
+            </div>
+            <label for="" class="col-sm-2 control-label">币种:</label>
+            <div class="col-sm-4">
+              <select class="form-control">
+                <option>美币</option>
+                <option>人民币</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-2 control-label">是否逾期:</label>
+            <div class="col-sm-4">
+              <select class="form-control">
+                <option>是</option>
+                <option>否</option>
+              </select>
+            </div>
+            <label for="" class="col-sm-2 control-label">是否销账:</label>
+            <div class="col-sm-4">
+              <select class="form-control">
+                <option>是</option>
+                <option>否</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-2 control-label">受让操作日期:</label>
+            <div class="col-sm-4">
+              <input id="sr_date" type="date" class="form-control" placeholder="受让操作日期"/>
+            </div>
+            <label for="" class="col-sm-2 control-label">销账操作日期:</label>
+            <div class="col-sm-4">
+              <input id="xz_date" type="date" class="form-control" placeholder="销账操作日期"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-primary">搜索</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>查询结果:</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="receivablestable" class="handsontable"></div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 30px;">
+      <div class="col-xs-6" style="text-align: right;">
+        <button class="btn btn-primary">受让清单导入</button>
+      </div>
+      <div class="col-xs-6" style="text-align: left;">
+        <button class="btn btn-primary">销账清单导入</button>
+      </div>
+    </div>
+
+  </div>
+</div>
