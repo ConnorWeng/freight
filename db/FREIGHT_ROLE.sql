@@ -1,8 +1,8 @@
 -- Create table
-create table FREIGHT_ROLE_USER
+create table FREIGHT_ROLE
 (
-  role_id NUMBER not null,
-  user_id NUMBER not null
+  id   NUMBER not null,
+  name VARCHAR2(50)
 )
 tablespace USERS
   pctfree 10
@@ -16,8 +16,8 @@ tablespace USERS
     maxextents unlimited
   );
 -- Create/Recreate primary, unique and foreign key constraints 
-alter table FREIGHT_ROLE_USER
-  add constraint FREIGHT_ROLE_USER_PK primary key (ROLE_ID, USER_ID)
+alter table FREIGHT_ROLE
+  add constraint FREIGHT_ROLE_PK primary key (ID)
   using index 
   tablespace SYSTEM
   pctfree 10

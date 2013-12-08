@@ -15,10 +15,10 @@ tablespace USERS
     minextents 1
     maxextents unlimited
   );
--- Create/Recreate primary, unique and foreign key constraints
+-- Create/Recreate primary, unique and foreign key constraints 
 alter table FREIGHT_ROLE_MENU
   add constraint FREIGHT_ROLE_MENU_PK primary key (ROLE_ID, MENU_ID)
-  using index
+  using index 
   tablespace SYSTEM
   pctfree 10
   initrans 2

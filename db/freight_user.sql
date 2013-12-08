@@ -27,10 +27,10 @@ tablespace USERS
     minextents 1
     maxextents unlimited
   );
--- Create/Recreate primary, unique and foreign key constraints
+-- Create/Recreate primary, unique and foreign key constraints 
 alter table FREIGHT_USER
   add constraint FREIGHT_USER_PK primary key (ID)
-  using index
+  using index 
   tablespace SYSTEM
   pctfree 10
   initrans 2
