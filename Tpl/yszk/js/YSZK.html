@@ -1,0 +1,59 @@
+<script type="text/javascript" src="__PUBLIC__/datepicker/js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/datepicker/css/datepicker.css" type="text/css" media="screen" />
+<script>
+$(document).ready(function () {
+
+  /* handsontable */
+  $('.handsontable').handsontable({
+    columnSorting: true,
+    colHeaders: ['物流金融服务商','买方名称','应收账款编号','开票日','金额',
+                '币种','金额(折人民币)','受让金额','核销金额','余额',
+                '买方比例','受让操作日期','债项到期日','是否已到期','是否销账',
+                '销账日期','销账操作日期'],
+    columns: [{data: 'seq'}, {data: 'BUYER_NAME'}, {data: 'YS_NO'}, {data: 'KP_DATE'}, {data: ''},
+              {data: 'CURRENCY'}, {data: 'RMB_AMOUNT'}, {data: 'SR_AMOUNT'}, {data: 'HX_AMOUNT'}, {data: ''},
+              {data: ''}, {data: 'SR_DATE'}, {data: 'ZX_END_DATE'}, {data: ''}, {data: 'XZ_FLAG'},
+              {data: 'XZ_DATE'}, {data: 'XZ_DATE'}],
+    contextMenu: true
+  });
+
+  function bindDumpButton() {
+      $('body').on('click', 'button[name=dump]', function () {
+        var dump = $(this).data('dump');
+        var $container = $(dump);
+        console.log('data of ' + dump, $container.handsontable('getData'));
+      });
+    }
+  bindDumpButton();
+  /* end handsontable */
+
+  /* datepicker */
+  $('#sr_date').datepicker();
+  $('#xz_date').datepicker();
+  /* end datepicker */
+
+  /* query */
+  $('.search-btn').on('click', function (event) {
+      event.preventDefault();
+      $.ajax({
+          url: '{:U('YSZK/searchYSZK')}',
+          data: {
+              'l_f_supplier': $('.l_f_supplier').val(),
+              'buyer_name': $('.buyer_name').val(),
+              'ys_no': $('.ys_no').val(),
+              'currency': $('.currency').val() == '人民币' ? 'RMB' : 'DOLLAR',
+              'exp_flag': $('.exp_flag').val() == '是' ? 1 : 0,
+              'xz_flag': $('.xz_flag').val() == '是' ? 1: 0,
+              'sr_date': $('.sr_date').val(),
+              'xz_date': $('.xz_date').val()
+          },
+          success: function (data) {
+              var table = $('.handsontable').data('handsontable');
+              table.loadData(data);
+          }
+      });
+  });
+  /* end query */
+
+});
+</script>
