@@ -7,7 +7,7 @@ class HomeAction extends CommonAction {
     );
 
     public function index() {
-        $this->defaultDisplay();
+        $this->display();
     }
 
 }

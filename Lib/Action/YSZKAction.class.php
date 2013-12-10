@@ -7,11 +7,11 @@ class YSZKAction extends CommonAction {
     );
 
     public function queryPool() {
-        $this->defaultDisplay();
+        $this->display();
     }
 
     public function yszk() {
-        $this->defaultDisplay();
+        $this->display();
     }
 
     public function searchYSZK() {
@@ -92,11 +92,30 @@ class YSZKAction extends CommonAction {
             }
 
             if ($hasError) {
+                // TODO: delete already import data
                 $this->error('入库时出错: Excel第'.($rowIndex + 1).'行格式错误，无法导入。');
             } else {
+                $todoModel = D('Todo');
+                $todoModel->addTodo(C('TODO_SR_NAME'), str_replace('{$url}', U('YSZK/srConfirm', array('batchId' => $batchId)), C('TODO_SR_CONTENT')), C('BANK_USER_ID'), null, null, 0, null);
                 $this->success('上传成功');
             }
         }
+    }
+
+    public function srConfirm() {
+        $batchId = I('batchId');
+        $srTempModel = D('SrTemp');
+        $where['batch_id'] = $batchId;
+        $rs = $srTempModel->where($where)->select();
+        if ($rs) {
+            $data = json_encode($rs);
+        } else {
+            $data = '[]';
+        }
+        $this->assign(array(
+            'data' => $data,
+        ));
+        $this->display();
     }
 
 }
