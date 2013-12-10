@@ -89,12 +89,47 @@
 
     <div class="row" style="margin-top: 30px;">
       <div class="col-xs-6" style="text-align: right;">
-        <button class="btn btn-primary">受让清单导入</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#srModal">受让清单导入</button>
       </div>
       <div class="col-xs-6" style="text-align: left;">
-        <button class="btn btn-primary">销账清单导入</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#xzModal">销账清单导入</button>
       </div>
     </div>
 
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="srModal" tabindex="-1" role="dialog" aria-labelledby="srModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="srModalLabel">受让清单导入</h4>
+      </div>
+      <div class="modal-body">
+        <form action="{:U('YSZK/importSrExcel')}" method="POST" enctype="multipart/form-data">
+          <input type="file" name="excel"/>
+          <input type="submit" value="提交"/>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="xzModal" tabindex="-1" role="dialog" aria-labelledby="xzModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="xzModalLabel">销账清单导入</h4>
+      </div>
+      <div class="modal-body">
+        <form action="" method="POST" enctype="multipart/form-data">
+          <input type="file" name="excel"/>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,7 +1,7 @@
 <?php
 
 function getUserId() {
-    return session('?user_id') ? session('user_id') : null;
+    return session('?user') ? session('user')['ID'] : null;
 }
 
 function list_to_tree($list, $root = 0, $pk = 'ID', $pid = 'PID', $child = '_CHILD') {
@@ -30,6 +30,88 @@ function list_to_tree($list, $root = 0, $pk = 'ID', $pid = 'PID', $child = '_CHI
         }
     }
     return $tree;
+}
+
+/**
+   +----------------------------------------------------------
+   * Export Excel | 2013.08.23
+   * Author:HongPing <hongping626@qq.com>
+   +----------------------------------------------------------
+   * @param $expTitle     string File name
+   +----------------------------------------------------------
+   * @param $expCellName  array  Column name
+   +----------------------------------------------------------
+   * @param $expTableData array  Table data
+   +----------------------------------------------------------
+*/
+function exportExcel($expTitle,$expCellName,$expTableData){
+    $xlsTitle = iconv('utf-8', 'gb2312', $expTitle);//文件名称
+    $fileName = $_SESSION['loginAccount'].date('_YmdHis');//or $xlsTitle 文件名称可根据自己情况设定
+    $cellNum = count($expCellName);
+    $dataNum = count($expTableData);
+    vendor("PHPExcel.PHPExcel");
+    $objPHPExcel = new PHPExcel();
+    $cellName = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ');
+
+    $objPHPExcel->getActiveSheet(0)->mergeCells('A1:'.$cellName[$cellNum-1].'1');//合并单元格
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $expTitle.'  Export time:'.date('Y-m-d H:i:s'));
+    for($i=0;$i<$cellNum;$i++){
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i].'2', $expCellName[$i][1]);
+    }
+    // Miscellaneous glyphs, UTF-8
+    for($i=0;$i<$dataNum;$i++){
+        for($j=0;$j<$cellNum;$j++){
+            $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j].($i+3), $expTableData[$i][$expCellName[$j][0]]);
+        }
+    }
+
+    header('pragma:public');
+    header('Content-type:application/vnd.ms-excel;charset=utf-8;name="'.$xlsTitle.'.xls"');
+    header("Content-Disposition:attachment;filename=$fileName.xls");//attachment新窗口打印inline本窗口打印
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+    $objWriter->save('php://output');
+    exit;
+}
+
+function getDataFromExcel($excelFile) {
+    vendor('PHPExcel.PHPExcel');
+    $data = array();
+
+    try {
+        $excelType = PHPExcel_IOFactory::identify($excelFile);
+        $excelReader = PHPExcel_IOFactory::createReader($excelType);
+        $objPHPExcel = $excelReader->load($excelFile);
+        $sheetIterator = $objPHPExcel->getWorksheetIterator();
+        $sheetIndex = 0;
+        while ($sheetIterator->valid()) {
+            $sheet = $sheetIterator->current();
+            array_push($data, array());
+            $rowIterator = $sheet->getRowIterator();
+            $rowIndex = 0;
+            while ($rowIterator->valid()) {
+                $row = $rowIterator->current();
+                array_push($data[$sheetIndex], array());
+                $cellIterator = $row->getCellIterator();
+                $cellIndex = 0;
+                while ($cellIterator->valid()) {
+                    $cell = $cellIterator->current();
+                    array_push($data[$sheetIndex][$rowIndex], array());
+                    $data[$sheetIndex][$rowIndex][$cellIndex] = $cell->getFormattedValue();
+                    $cellIndex += 1;
+                    $cellIterator->next();
+                }
+                $rowIndex += 1;
+                $rowIterator->next();
+            }
+            $sheetIndex += 1;
+            $sheetIterator->next();
+        }
+    } catch (PHPExcel_Reader_Exception $e) {
+        $this->error('Error loading file: '.$e->getMessage());
+    }
+
+    unlink($excelFile);
+    return $data;
 }
 
 ?>

@@ -2,7 +2,11 @@
 
 class HomeAction extends CommonAction {
 
-    public function index(){
+    protected $config = array(
+        'need_login' => true,
+    );
+
+    public function index() {
         $this->defaultDisplay();
     }
 
