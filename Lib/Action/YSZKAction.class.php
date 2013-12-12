@@ -96,7 +96,7 @@ class YSZKAction extends CommonAction {
                 $this->error('入库时出错: Excel第'.($rowIndex + 1).'行格式错误，无法导入。');
             } else {
                 $todoModel = D('Todo');
-                $todoModel->addTodo(C('TODO_SR_NAME'), str_replace('{$url}', U('YSZK/srConfirm', array('batchId' => $batchId)), C('TODO_SR_CONTENT')), C('BANK_USER_ID'), null, null, 0, null);
+                $todoModel->addTodo(C('TODO_SR_NAME'), U('YSZK/srConfirm', array('batchId' => $batchId)), C('BANK_USER_ID'), null, null, 0, null);
                 $this->success('上传成功');
             }
         }

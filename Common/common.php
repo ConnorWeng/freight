@@ -114,4 +114,12 @@ function getDataFromExcel($excelFile) {
     return $data;
 }
 
+function todo_status($status) {
+    switch ($status) {
+        case '0': return '未阅';
+        case '1': return '已阅';
+        case '2': return '已完成';
+    }
+}
+
 ?>
