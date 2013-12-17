@@ -139,8 +139,29 @@ class YSZKAction extends CommonAction {
     }
 
     public function srImport() {
-        // TODO: import to yszk
-        // TODO: delete by batch_id
+        $importData = $_REQUEST['import-data'];
+        $dataArray = json_decode($importData);
+        if (count($dataArray) > 0) {
+            $batchId = $dataArray[0]->BATCH_ID;
+            $yszkModel = D('YSZK');
+            for ($index = 0; $index < count($dataArray); $index++) {
+                $obj = $dataArray[$index];
+
+                $data['batch_id'] = $obj->BATCH_ID;
+                $data['l_f_supplier'] = $obj->L_F_SUPPLIER;
+                $data['buyer_name'] = $obj->BUYER_NAME;
+                $data['ys_no'] = $obj->YS_NO;
+                $data['kp_date'] = $obj->KP_DATE;
+                $data['ys_end_date'] = $obj->YS_END_DATE;
+                $data['amount'] = $obj->ORI_AMOUNT;
+                $data['currency'] = $obj->CURRENCY;
+
+                $yszkModel->import($data);
+            }
+
+            $srTempModel = D('SrTemp');
+            $srTempModel->deleteBatch($batchId);
+        }
     }
 
 }

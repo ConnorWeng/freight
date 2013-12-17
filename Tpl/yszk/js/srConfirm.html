@@ -31,6 +31,9 @@
             }
 
             // TODO: sumbit filtered
+            var filteredData = JSON.stringify(filtered, null, 2);
+            $('#import-data-input').val(filteredData);
+            $('#dataform').submit();
         });
 
     });

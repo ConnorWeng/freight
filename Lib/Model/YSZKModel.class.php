@@ -16,6 +16,10 @@ class YSZKModel extends Model {
         }
     }
 
+    public function import($data) {
+        return $this->add($data);
+    }
+
 }
 
 ?>

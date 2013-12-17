@@ -28,8 +28,12 @@ $(document).ready(function () {
   /* end handsontable */
 
   /* datepicker */
-  $('#sr_op_date').datepicker();
-  $('#xz_op_date').datepicker();
+  $('#sr_op_date').datepicker({
+      format: 'mm-dd-yy'
+  });
+  $('#xz_op_date').datepicker({
+      format: 'mm-dd-yy'
+  });
   /* end datepicker */
 
   /* query */

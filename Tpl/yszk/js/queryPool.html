@@ -11,9 +11,9 @@ $(document).ready(function () {
   $('.handsontable').handsontable({
     data: data,
     columnSorting: true,
-    colHeaders: ['序号','物流金融服务商','受让金额(未销账)','逾期金额','有效净额',
-                '折后可抵敞口值','已用敞口','可用敞口','当前抵押率','逾期比例',
-                '逾期三个月以上比例','操作'],
+    colHeaders: ['序号','物流金融服务商','受让金额(未销账)','逾期金额','有效净额(逾期金额－受让金额)',
+                '折后可抵敞口值(有效＊核定融资抵押率)','已用敞口(出账表里查询)','可用敞口(折后-已用)','当前抵押率(已用敞口／有效净额)','逾期比例(逾期金额／总未销账受让金额)',
+                '逾期三个月以上比例(逾期三个月的逾期金额／总的未销账受让金额)','操作'],
     columns: [{data: 'seq'}, {data: 'freightName'}, {data: 'a'}, {data: 'b'},
               {data: 'c'}, {data: 'd'}, {data: 'e'}, {data: 'f'}, {data: 'g'},
               {data: 'h'}, {data: 'i'}, {data: 'j', renderer: linkRenderer}],
