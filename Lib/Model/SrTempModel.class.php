@@ -17,6 +17,11 @@ class SrTempModel extends Model {
         return $this->add($where);
     }
 
+    public function deleteBatch($batchId) {
+        $where['batch_id'] = $batchId;
+        return $this->where($where)->delete();
+    }
+
 }
 
 ?>

@@ -10,10 +10,10 @@ $(document).ready(function () {
                 '币种','金额(折人民币)','受让金额','核销金额','余额',
                 '买方比例','受让操作日期','债项到期日','是否已到期','是否销账',
                 '销账日期','销账操作日期'],
-    columns: [{data: 'seq'}, {data: 'BUYER_NAME'}, {data: 'YS_NO'}, {data: 'KP_DATE'}, {data: ''},
+    columns: [{data: 'seq'}, {data: 'BUYER_NAME'}, {data: 'YS_NO'}, {data: 'KP_DATE'}, {data: 'AMOUNT'},
               {data: 'CURRENCY'}, {data: 'RMB_AMOUNT'}, {data: 'SR_AMOUNT'}, {data: 'HX_AMOUNT'}, {data: ''},
-              {data: ''}, {data: 'SR_DATE'}, {data: 'ZX_END_DATE'}, {data: ''}, {data: 'XZ_FLAG'},
-              {data: 'XZ_DATE'}, {data: 'XZ_DATE'}],
+              {data: 'BUYER_RATE'}, {data: 'SR_OP_DATE'}, {data: 'ZX_END_DATE'}, {data: 'EXP_FLAG'}, {data: 'XZ_FLAG'},
+              {data: 'XZ_DATE'}, {data: 'XZ_OP_DATE'}],
     contextMenu: true
   });
 
@@ -28,8 +28,8 @@ $(document).ready(function () {
   /* end handsontable */
 
   /* datepicker */
-  $('#sr_date').datepicker();
-  $('#xz_date').datepicker();
+  $('#sr_op_date').datepicker();
+  $('#xz_op_date').datepicker();
   /* end datepicker */
 
   /* query */
@@ -44,8 +44,8 @@ $(document).ready(function () {
               'currency': $('.currency').val() == '人民币' ? 'RMB' : 'DOLLAR',
               'exp_flag': $('.exp_flag').val() == '是' ? 1 : 0,
               'xz_flag': $('.xz_flag').val() == '是' ? 1: 0,
-              'sr_date': $('.sr_date').val(),
-              'xz_date': $('.xz_date').val()
+              'sr_date': $('.sr_op_date').val(),
+              'xz_date': $('.xz_op_date').val()
           },
           success: function (data) {
               var table = $('.handsontable').data('handsontable');

@@ -67,8 +67,10 @@ class YSZKAction extends CommonAction {
             $sheetsData = getDataFromExcel($savePath.$saveName);
 
             $srTempModel = D('SrTemp');
+            $supplierLimitModel = D('SupplierLimit');
+            $yszkModel = D('YSZK');
             $batchId = uniqid();
-            $hasError = false;
+            $errorCode = 0;
             $srSheetRows = $sheetsData[0];
             $srSheetRowCount = count($srSheetRows);
             for ($rowIndex = 0; $rowIndex < $srSheetRowCount; $rowIndex++) {
@@ -83,21 +85,39 @@ class YSZKAction extends CommonAction {
                     $oriAmount = $row[5];
                     $currency = $row[6];
 
+                    if ($yszkModel->checkDuplicate($ysNo)) {
+                        $errorCode = 1;
+                        break;
+                    }
+
+                    if ($supplierLimitModel->isExpire($lfSupplier, $kpDate)) {
+                        $errorCode = 2;
+                        break;
+                    }
+
                     $result = $srTempModel->importData($batchId, $lfSupplier, $buyerName, $ysNo, $kpDate, $ysEndDate, $oriAmount, $currency);
                     if (!$result) {
-                        $hasError = true;
+                        $errorCode = 3;
                         break;
                     }
                 }
             }
 
-            if ($hasError) {
-                // TODO: delete already import data
-                $this->error('入库时出错: Excel第'.($rowIndex + 1).'行格式错误，无法导入。');
-            } else {
+            if ($errorCode == 0) {
                 $todoModel = D('Todo');
                 $todoModel->addTodo(C('TODO_SR_NAME'), U('YSZK/srConfirm', array('batchId' => $batchId)), C('BANK_USER_ID'), null, null, 0, null);
                 $this->success('上传成功');
+            } else {
+                $srTempModel->deleteBatch($batchId);
+
+                $errorMessage = 'Excel第'.($rowIndex + 1).'行: ';
+                if ($errorCode == 1) {
+                    $this->error($errorMessage.'导入的应收账款已存在，请不要重复导入');
+                } else if ($errorCode == 2) {
+                    $this->error($errorMessage.'已逾期，无法导入');
+                } else if ($errorCode == 3) {
+                    $this->error($errorMessage.'格式错误，无法导入。');
+                }
             }
         }
     }
@@ -116,6 +136,11 @@ class YSZKAction extends CommonAction {
             'data' => $data,
         ));
         $this->display();
+    }
+
+    public function srImport() {
+        // TODO: import to yszk
+        // TODO: delete by batch_id
     }
 
 }
