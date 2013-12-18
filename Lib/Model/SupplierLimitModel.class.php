@@ -5,7 +5,7 @@ class SupplierLimitModel extends Model {
     protected $fields = array('supplier_id', 'sx_limit', 'ck_limit', 'zx_mgt_days');
 
     public function isExpire($lfSupplier, $kpDate) {
-        $sql  = " select floor(sysdate - to_date('".$kpDate."', 'mm-dd-yy')) -";
+        $sql  = " select floor(sysdate - to_date('".$kpDate."', 'mm/dd/yyyy')) -";
         $sql .= "   nvl((select l.zx_mgt_days";
         $sql .= "     from ".C('DB_PREFIX')."supplier_limit l, ".C('DB_PREFIX')."user u";
         $sql .= "   where l.supplier_id = u.id";

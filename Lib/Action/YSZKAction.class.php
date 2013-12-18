@@ -80,8 +80,8 @@ class YSZKAction extends CommonAction {
                     $lfSupplier = $row[0];
                     $buyerName = $row[1];
                     $ysNo = $row[2];
-                    $kpDate = $row[3];
-                    $ysEndDate = $row[4];
+                    $kpDate = $this->formatDateString($row[3]);
+                    $ysEndDate = $this->formatDateString($row[4]);
                     $oriAmount = $row[5];
                     $currency = $row[6];
 
@@ -187,6 +187,12 @@ class YSZKAction extends CommonAction {
             $rate = $rmbUsdModel->getRate($currency);
             return $amount * $rate;
         }
+    }
+
+    private function formatDateString($dateString) {
+        $dateString = str_replace('-', '/', $dateString);
+        $strArray = explode('/', $dateString);
+        return $strArray[0].'/'.$strArray[1].'/20'.$strArray[2];
     }
 
 }
