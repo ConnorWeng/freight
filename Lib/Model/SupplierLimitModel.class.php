@@ -11,8 +11,6 @@ class SupplierLimitModel extends Model {
         $sql .= "   where l.supplier_id = u.id";
         $sql .= "     and u.enterprise_name = '".$lfSupplier."'),0) delta from dual";
 
-        dump($sql);
-
         $rs = $this->db->query($sql);
         if (count($rs) > 0) {
             if (intval($rs[0]['DELTA']) > 0) {

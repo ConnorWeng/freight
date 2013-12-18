@@ -25,6 +25,7 @@ class TodoAction extends CommonAction {
 
     public function detail() {
         $id = I('id');
+        $this->todoModel->readTodo($id);
         $rs = $this->todoModel->queryTodoViaId($id);
         if (count($rs) > 0) {
             $vo = $rs[0];

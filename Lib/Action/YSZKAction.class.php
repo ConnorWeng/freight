@@ -124,6 +124,7 @@ class YSZKAction extends CommonAction {
 
     public function srConfirm() {
         $batchId = I('batchId');
+        $todoId = I('todoId');
         $srTempModel = D('SrTemp');
         $where['batch_id'] = $batchId;
         $rs = $srTempModel->where($where)->select();
@@ -134,12 +135,14 @@ class YSZKAction extends CommonAction {
         }
         $this->assign(array(
             'data' => $data,
+            'todoId' => $todoId,
         ));
         $this->display();
     }
 
     public function srImport() {
         $importData = $_REQUEST['import-data'];
+        $todoId = I('todoId');
         $dataArray = json_decode($importData);
         if (count($dataArray) > 0) {
             $batchId = $dataArray[0]->BATCH_ID;
@@ -147,20 +150,42 @@ class YSZKAction extends CommonAction {
             for ($index = 0; $index < count($dataArray); $index++) {
                 $obj = $dataArray[$index];
 
-                $data['batch_id'] = $obj->BATCH_ID;
+                $data['ys_no'] = $obj->YS_NO;
                 $data['l_f_supplier'] = $obj->L_F_SUPPLIER;
                 $data['buyer_name'] = $obj->BUYER_NAME;
-                $data['ys_no'] = $obj->YS_NO;
                 $data['kp_date'] = $obj->KP_DATE;
-                $data['ys_end_date'] = $obj->YS_END_DATE;
                 $data['amount'] = $obj->ORI_AMOUNT;
                 $data['currency'] = $obj->CURRENCY;
+                $data['rmb_amount'] = $this->computeRmbAmount($obj->CURRENCY, $obj->ORI_AMOUNT);
+                $data['sr_amount'] = $data['rmb_amount'];
+                // hx_amount default to 0
+                // buyer_rate
+                // zx_end_date
+                // xz_flag
+                // xz_date
+                // $data['sr_op_date'] = today
+                // xz_op_date
 
                 $yszkModel->import($data);
             }
 
             $srTempModel = D('SrTemp');
             $srTempModel->deleteBatch($batchId);
+            $todoModel = D('Todo');
+            $todoModel->completeTodo($todoId);
+            $this->success('确认成功', U('Todo/index'));
+        } else {
+            $this->error('没有数据');
+        }
+    }
+
+    private function computeRmbAmount($currency, $amount) {
+        if ($currency == 'RMB') {
+            return $amount;
+        } else {
+            $rmbUsdModel = D('RmbUsd');
+            $rate = $rmbUsdModel->getRate($currency);
+            return $amount * $rate;
         }
     }
 

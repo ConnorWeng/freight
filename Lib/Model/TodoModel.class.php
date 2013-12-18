@@ -22,19 +22,30 @@ class TodoModel extends Model {
 
     public function queryUncompletedTodo($userId) {
         $where['user_id'] = $userId;
-        $where['status'] = array('in', '0,1,2');
+        $where['status'] = array('in', '0,1');
         return $this->where($where)->select();
     }
 
     public function queryCompletedTodo($userId) {
         $where['user_id'] = $userId;
-        $where['status'] = 3;
+        $where['status'] = 2;
         return $this->where($where)->select();
     }
 
     public function queryTodoViaId($id) {
         $where['id'] = $id;
         return $this->where($where)->select();
+    }
+
+    public function readTodo($id) {
+        $where['id'] = $id;
+        $where['status'] = 0;
+        return $this->where($where)->setField('status', 1);
+    }
+
+    public function completeTodo($id) {
+        $where['id'] = $id;
+        return $this->where($where)->setField('status', 2);
     }
 
 }
