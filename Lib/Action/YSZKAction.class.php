@@ -224,6 +224,10 @@ class YSZKAction extends CommonAction {
         $todoId = I('todoId');
         $dataArray = json_decode($importData);
         if (count($dataArray) > 0) {
+            $supplierLimitModel = D('SupplierLimit');
+            $zxMgtDays = intval($supplierLimitModel->getZxMgtDays($dataArray[0]->L_F_SUPPLIER));
+            dump($zxMgtDays);
+
             $batchId = $dataArray[0]->BATCH_ID;
             $yszkModel = D('YSZK');
             for ($index = 0; $index < count($dataArray); $index++) {
@@ -237,13 +241,16 @@ class YSZKAction extends CommonAction {
                 $data['currency'] = $obj->CURRENCY;
                 $data['rmb_amount'] = $this->computeRmbAmount($obj->CURRENCY, $obj->ORI_AMOUNT);
                 $data['sr_amount'] = $data['rmb_amount'];
-                // hx_amount default to 0
-                // buyer_rate
-                // zx_end_date
+
+                $kpDateObj = new DateTime($data['kp_date']);
+                $kpDateObj->add(new DateInterval('P'.$zxMgtDays.'D'));
+                $data['zx_end_date'] = $kpDateObj->format('m/d/Y');
+
                 $data['sr_op_date'] = date('m/d/Y');
 
                 $yszkModel->import($data);
             }
+            $yszkModel->calBuyerRate($dataArray[0]->L_F_SUPPLIER);
 
             $srTempModel = D('SrTemp');
             $srTempModel->deleteBatch($batchId);
@@ -272,7 +279,8 @@ class YSZKAction extends CommonAction {
 
                 $yszkModel->hx($ysNo, $xzAmount, $xzDate, $xzOpDate);
             }
-            $yszkModel->updateStatus();
+            $yszkModel->updateXzFlag();
+            $yszkModel->calBuyerRate($dataArray[0]->L_F_SUPPLIER);
 
             $hxTempModel = D('HxTemp');
             $hxTempModel->deleteBatch($batchId);

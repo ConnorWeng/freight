@@ -23,6 +23,16 @@ class SupplierLimitModel extends Model {
         }
     }
 
+    public function getZxMgtDays($supplier) {
+        $sql = "select * from freight_supplier_limit l, freight_user u where l.supplier_id = u.id and u.enterprise_name = '$supplier'";
+        $rs = $this->db->query($sql);
+        if (count($rs) > 0) {
+            return $rs[0]['ZX_MGT_DAYS'];
+        } else {
+            return $rs;
+        }
+    }
+
 }
 
 ?>
