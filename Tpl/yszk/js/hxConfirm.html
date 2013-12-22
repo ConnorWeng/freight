@@ -1,0 +1,39 @@
+<script>
+    $(document).ready(function () {
+
+        var data = {$data};
+
+        var checkboxRenderer = function (instance, td) {
+            $(td).html('<input type="checkbox" name="selectBox"/>');
+            return td;
+        }
+
+        $('.handsontable').handsontable({
+            data: data,
+            columnSorting: true,
+            colHeaders: ['选择', '物流金融服务商', '买方名称', '应收账款编号', '金额',
+                         '销账金额', '销账日期'],
+            columns: [{renderer: checkboxRenderer}, {data: 'L_F_SUPPLIER'}, {data: 'BUYER_NAME'}, {data: 'YS_NO'}, {data: 'AMOUNT'}, {data: 'XZ_AMOUNT'}, {data: 'XZ_DATE'}],
+            contextMenu: false
+        });
+
+        $('.passbtn').on('click', function () {
+            var ht = $('.handsontable').data('handsontable'),
+                rowCount = ht.countRows(),
+                filtered = [];
+
+            for (var i=0; i < rowCount; i++) {
+                var td = $(ht.getCell(i, 0)).find('input')[0];
+                if (td.checked) {
+                    filtered.push(ht.getDataAtRow(i));
+                }
+            }
+
+            // TODO: sumbit filtered
+            var filteredData = JSON.stringify(filtered, null, 2);
+            $('#import-data-input').val(filteredData);
+            $('#dataform').submit();
+        });
+
+    });
+</script>

@@ -20,6 +20,18 @@ class YSZKModel extends Model {
         return $this->add($data);
     }
 
+    public function hx($ysNo, $xzAmount, $xzDate, $xzOpDate) {
+        $where['ys_no'] = $ysNo;
+        $this->where($where)->setField('xz_date', $xzDate);
+        $this->where($where)->setField('xz_op_date', $xzOpDate);
+        $this->where($where)->setInc('hx_amount', floatval($xzAmount));
+    }
+
+    public function updateStatus() {
+        $sql = 'update freight_yszk set xz_flag = 1 where amount - hx_amount <= 0';
+        $rs = $this->db->execute($sql);
+        return $rs;
+    }
 }
 
 ?>

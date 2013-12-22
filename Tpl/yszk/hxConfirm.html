@@ -1,0 +1,27 @@
+<layout name='Layout/ace_layout' />
+<style>
+.passbtn {
+    margin-top: 10px;
+    margin-left: 12px;
+}
+</style>
+<div class="row">
+  <div class="col-xs-12">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="confirmtable" class="handsontable"/>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-3">
+        <button class="passbtn btn btn-primary">审核通过</button>
+      </div>
+    </div>
+  </div>
+</div>
+<form id="dataform" action="{:U('YSZK/hxImport')}" method="POST">
+  <input type="hidden" name="import-data" id="import-data-input"/>
+  <input type="hidden" name="todoId" value="{$todoId}"/>
+</form>

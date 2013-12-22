@@ -122,12 +122,91 @@ class YSZKAction extends CommonAction {
         }
     }
 
+    public function importHxExcel() {
+        import('ORG.Net.UploadFile');
+        $upload = new UploadFile();
+        $upload->allowExts = array('xlsm', 'xls', 'xlsx');
+        $upload->savePath = APP_PATH.'Upload/';
+        if (!$upload->upload()) {
+            $this->error($upload->getErrorMsg());
+        } else {
+            $info = $upload->getUploadFileInfo();
+            $savePath = $info[0]['savepath'];
+            $saveName = $info[0]['savename'];
+            $sheetsData = getDataFromExcel($savePath.$saveName);
+
+            $hxTempModel = D('HxTemp');
+            $supplierLimitModel = D('SupplierLimit');
+            $yszkModel = D('YSZK');
+            $batchId = uniqid();
+            $errorCode = 0;
+            $hxSheetRows = $sheetsData[0];
+            $hxSheetRowCount = count($hxSheetRows);
+            for ($rowIndex = 0; $rowIndex < $hxSheetRowCount; $rowIndex++) {
+                if ($rowIndex != 0 && $rowIndex != $hxSheetRowCount - 1) {
+                    $row = $hxSheetRows[$rowIndex];
+
+                    $lfSupplier = $row[0];
+                    $buyerName = $row[1];
+                    $ysNo = $row[2];
+                    $amount = $row[3];
+                    $xzAmount = $row[4];
+                    $xzDate = $row[5];
+
+                    if (!$yszkModel->checkDuplicate($ysNo)) {
+                        $errorCode = 1;
+                        break;
+                    }
+
+                    $result = $hxTempModel->importData($batchId, $lfSupplier, $buyerName, $ysNo, $amount, $xzAmount, $xzDate);
+                    if (!$result) {
+                        $errorCode = 2;
+                        break;
+                    }
+                }
+            }
+
+            if ($errorCode == 0) {
+                $todoModel = D('Todo');
+                $todoModel->addTodo(C('TODO_HX_NAME'), U('YSZK/hxConfirm', array('batchId' => $batchId)), C('BANK_USER_ID'), null, null, 0, null);
+                $this->success('上传成功');
+            } else {
+                $hxTempModel->deleteBatch($batchId);
+
+                $errorMessage = 'Excel第'.($rowIndex + 1).'行: ';
+                if ($errorCode == 1) {
+                    $this->error($errorMessage.'应收账款不存在，请检查');
+                } else if ($errorCode == 2) {
+                    $this->error($errorMessage.'格式错误，无法导入。');
+                }
+            }
+        }
+    }
+
     public function srConfirm() {
         $batchId = I('batchId');
         $todoId = I('todoId');
         $srTempModel = D('SrTemp');
         $where['batch_id'] = $batchId;
         $rs = $srTempModel->where($where)->select();
+        if ($rs) {
+            $data = json_encode($rs);
+        } else {
+            $data = '[]';
+        }
+        $this->assign(array(
+            'data' => $data,
+            'todoId' => $todoId,
+        ));
+        $this->display();
+    }
+
+    public function hxConfirm() {
+        $batchId = I('batchId');
+        $todoId = I('todoId');
+        $hxTempModel = D('HxTemp');
+        $where['batch_id'] = $batchId;
+        $rs = $hxTempModel->where($where)->select();
         if ($rs) {
             $data = json_encode($rs);
         } else {
@@ -161,16 +240,42 @@ class YSZKAction extends CommonAction {
                 // hx_amount default to 0
                 // buyer_rate
                 // zx_end_date
-                // xz_flag
-                // xz_date
-                // $data['sr_op_date'] = today
-                // xz_op_date
+                $data['sr_op_date'] = date('m/d/Y');
 
                 $yszkModel->import($data);
             }
 
             $srTempModel = D('SrTemp');
             $srTempModel->deleteBatch($batchId);
+            $todoModel = D('Todo');
+            $todoModel->completeTodo($todoId);
+            $this->success('确认成功', U('Todo/index'));
+        } else {
+            $this->error('没有数据');
+        }
+    }
+
+    public function hxImport() {
+        $importData = $_REQUEST['import-data'];
+        $todoId = I('todoId');
+        $dataArray = json_decode($importData);
+        if (count($dataArray) > 0) {
+            $batchId = $dataArray[0]->BATCH_ID;
+            $yszkModel = D('YSZK');
+            for ($index = 0; $index < count($dataArray); $index++) {
+                $obj = $dataArray[$index];
+
+                $ysNo = $obj->YS_NO;
+                $xzAmount = $obj->XZ_AMOUNT;
+                $xzDate = $obj->XZ_DATE;
+                $xzOpDate = date('m/d/Y');
+
+                $yszkModel->hx($ysNo, $xzAmount, $xzDate, $xzOpDate);
+            }
+            $yszkModel->updateStatus();
+
+            $hxTempModel = D('HxTemp');
+            $hxTempModel->deleteBatch($batchId);
             $todoModel = D('Todo');
             $todoModel->completeTodo($todoId);
             $this->success('确认成功', U('Todo/index'));
