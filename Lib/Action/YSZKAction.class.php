@@ -107,7 +107,7 @@ class YSZKAction extends CommonAction {
                         break;
                     }
 
-                    $result = $srTempModel->importData($batchId, $lfSupplier, $buyerName, $ysNo, $kpDate, $ysEndDate, $oriAmount, $currency);
+                    $result = $srTempModel->importData($batchId, $lfSupplier, $buyerName, $ysNo, $kpDate, $ysEndDate, $oriAmount, $currency, $saveName);
                     if (!$result) {
                         $errorCode = 3;
                         break;
@@ -209,6 +209,7 @@ class YSZKAction extends CommonAction {
         $this->assign(array(
             'data' => $data,
             'todoId' => $todoId,
+            'excel' => $rs[0]['EXCEL']
         ));
         $this->display();
     }

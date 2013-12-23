@@ -2,9 +2,9 @@
 
 class SrTempModel extends Model {
 
-    protected $fields = array('batch_id', 'l_f_supplier', 'buyer_name', 'ys_no', 'kp_date', 'ys_end_date', 'ori_amount', 'currency');
+    protected $fields = array('batch_id', 'l_f_supplier', 'buyer_name', 'ys_no', 'kp_date', 'ys_end_date', 'ori_amount', 'currency', 'excel');
 
-    public function importData($batchId, $lfSupplier, $buyerName, $ysNo, $kpDate, $ysEndDate, $oriAmount, $currency) {
+    public function importData($batchId, $lfSupplier, $buyerName, $ysNo, $kpDate, $ysEndDate, $oriAmount, $currency, $excel) {
         $where['batch_id'] = $batchId;
         $where['l_f_supplier'] = $lfSupplier;
         $where['buyer_name'] = $buyerName;
@@ -13,6 +13,7 @@ class SrTempModel extends Model {
         $where['ys_end_date'] = $ysEndDate;
         $where['ori_amount'] = $oriAmount;
         $where['currency'] = $currency;
+        $where['excel'] = $excel;
 
         return $this->add($where);
     }
