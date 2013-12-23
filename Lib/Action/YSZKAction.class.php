@@ -10,6 +10,18 @@ class YSZKAction extends CommonAction {
         $this->display();
     }
 
+    public function queryPoolBySupplier() {
+        $supplier = I('supplier');
+        $YSZKModel = D('YSZK');
+        $this->ajaxReturn($YSZKModel->queryPool($supplier), 'JSON');
+    }
+
+    public function queryFuturePool() {
+        $supplier = I('supplier');
+        $YSZKModel = D('YSZK');
+        $this->ajaxReturn($YSZKModel->queryFuturePool($supplier), 'JSON');
+    }
+
     public function yszk() {
         $this->display();
     }
