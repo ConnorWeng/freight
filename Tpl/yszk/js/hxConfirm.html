@@ -11,9 +11,26 @@
         $('.handsontable').handsontable({
             data: data,
             columnSorting: true,
-            colHeaders: ['选择', '物流金融服务商', '买方名称', '应收账款编号', '金额',
-                         '销账金额', '销账日期'],
             columns: [{renderer: checkboxRenderer}, {data: 'L_F_SUPPLIER'}, {data: 'BUYER_NAME'}, {data: 'YS_NO'}, {data: 'AMOUNT'}, {data: 'XZ_AMOUNT'}, {data: 'XZ_DATE'}],
+            colHeaders: function (col) {
+                switch (col) {
+                    case 0:
+                    return '选择 全选' + '<input type="checkbox" onchange="javascript:$(\'input[type=checkbox]\').attr(\'checked\', \'true\')"/>';
+                    case 1:
+                    return '物流金融服务商';
+                    case 2:
+                    return '买方名称';
+                    case 3:
+                    return '应收账款编号';
+                    case 4:
+                    return '金额';
+                    case 5:
+                    return '销账金额';
+                    case 6:
+                    return '销账日期';
+                }
+
+            },
             contextMenu: false
         });
 

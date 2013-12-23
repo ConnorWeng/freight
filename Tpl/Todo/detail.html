@@ -47,12 +47,13 @@
         </div>
         <div class="form-group">
                 <div class="col-xs-12">
+                        <a href="{$vo['CONTENT']}&todoId={$vo['ID']}">处理该事务</a>
                         <textarea id="content" name="content" readonly="readonly" style="width:100%;height:300px;">{$vo['CONTENT']}&todoId={$vo['ID']}</textarea>
                 </div>
         </div>
 
         <div class="action">
                 <input class="btn btn-sm btn-primary" type="button" value="保存" onclick="save();">
-                <input  class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
+                <input class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
         </div>
 </form>
