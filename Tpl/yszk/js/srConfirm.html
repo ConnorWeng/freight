@@ -15,6 +15,11 @@
                          '应收账款到期日', '金额', '币种'],
             columns: [{renderer: checkboxRenderer}, {data: 'L_F_SUPPLIER'}, {data: 'BUYER_NAME'}, {data: 'YS_NO'}, {data: 'KP_DATE'},
                       {data: 'YS_END_DATE'}, {data: 'ORI_AMOUNT'}, {data: 'CURRENCY'}],
+            colHeaders: function (col) {
+                if (col == 0) {
+                    return '选择 全选' + '<input type="checkbox" onchange="javascript:$(\'input[type=checkbox]\').attr(\'checked\', \'true\')"/>';
+                }
+            },
             contextMenu: true
         });
 
