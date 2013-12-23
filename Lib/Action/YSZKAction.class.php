@@ -170,7 +170,7 @@ class YSZKAction extends CommonAction {
                         break;
                     }
 
-                    $result = $hxTempModel->importData($batchId, $lfSupplier, $buyerName, $ysNo, $amount, $xzAmount, $xzDate);
+                    $result = $hxTempModel->importData($batchId, $lfSupplier, $buyerName, $ysNo, $amount, $xzAmount, $xzDate, $saveName);
                     if (!$result) {
                         $errorCode = 2;
                         break;
@@ -228,6 +228,7 @@ class YSZKAction extends CommonAction {
         $this->assign(array(
             'data' => $data,
             'todoId' => $todoId,
+            'excel' => $rs[0]['EXCEL'],
         ));
         $this->display();
     }
