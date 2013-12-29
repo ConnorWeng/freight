@@ -11,8 +11,8 @@ $(document).ready(function () {
                 '币种','金额(折人民币)','受让金额','核销金额','余额',
                 '买方比例','受让操作日期','债项到期日','是否已到期','是否销账',
                 '销账日期','销账操作日期'],
-    columns: [{data: 'L_F_SUPPLIER'}, {data: 'BUYER_NAME'}, {data: 'YS_NO'}, {data: 'KP_DATE'}, {data: 'AMOUNT'},
-              {data: 'CURRENCY'}, {data: 'RMB_AMOUNT'}, {data: 'SR_AMOUNT'}, {data: 'HX_AMOUNT'}, {data: '', renderer: calRenderer},
+    columns: [{data: 'SUPPLIER'}, {data: 'BUYER_NAME'}, {data: 'YS_NO'}, {data: 'KP_DATE'}, {data: 'AMOUNT'},
+              {data: 'CURRENCY', renderer: currencyRenderer}, {data: 'RMB_AMOUNT'}, {data: 'SR_AMOUNT'}, {data: 'HX_AMOUNT'}, {data: '', renderer: calRenderer},
               {data: 'BUYER_RATE', renderer: percentRenderer}, {data: 'SR_OP_DATE'}, {data: 'ZX_END_DATE'}, {data: 'EXP_FLAG', renderer: flagRenderer}, {data: 'XZ_FLAG', renderer: flagRenderer},
               {data: 'XZ_DATE'}, {data: 'XZ_OP_DATE'}],
     contextMenu: true
@@ -48,14 +48,14 @@ $(document).ready(function () {
       $.ajax({
           url: '{:U('YSZK/searchYSZK')}',
           data: {
-              'l_f_supplier': $('.l_f_supplier').val(),
+              'supplier': $('.supplier').val(),
               'buyer_name': $('.buyer_name').val(),
               'ys_no': $('.ys_no').val(),
-              'currency': $('.currency').val() == '人民币' ? 'RMB' : 'DOLLAR',
+              'currency': $('.currency').val() == '人民币' ? '0' : '1',
               'exp_flag': $('.exp_flag').val() == '是' ? 1 : 0,
               'xz_flag': $('.xz_flag').val() == '是' ? 1: 0,
-              'sr_date': $('.sr_op_date').val(),
-              'xz_date': $('.xz_op_date').val()
+              'sr_op_date': $('#sr_op_date').val(),
+              'xz_op_date': $('#xz_op_date').val()
           },
           success: function (data) {
               var table = $('.handsontable').data('handsontable');

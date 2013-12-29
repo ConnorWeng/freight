@@ -122,4 +122,20 @@ function todo_status($status) {
     }
 }
 
+function currency($currency) {
+    if ($currency == '0') {
+        return 'RMB';
+    } else {
+        return 'USD';
+    }
+}
+
+function currency_val($currency) {
+    if ($currency == 'RMB') {
+        return '0';
+    } else {
+        return '1';
+    }
+}
+
 ?>

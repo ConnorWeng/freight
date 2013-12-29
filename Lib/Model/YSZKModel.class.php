@@ -4,7 +4,40 @@ class YSZKModel extends Model {
 
     protected $tableName = 'YSZK';
 
-    protected $fields = array('ys_no', 'ys_type', 'l_f_supplier', 'buyer_name', 'kp_date', 'amount', 'currency', 'rmb_amount', 'sr_amount', 'hx_amount', 'buyer_rate', 'zx_end_date', 'xz_flag', 'xz_date', 'sr_op_date', 'xz_op_date', 'exp_flag');
+    protected $fields = array('ys_no', 'ys_type', 'supplier_id', 'buyer_name', 'kp_date', 'amount', 'currency', 'rmb_amount', 'sr_amount', 'hx_amount', 'buyer_rate', 'zx_end_date', 'xz_flag', 'xz_date', 'sr_op_date', 'xz_op_date', 'exp_flag');
+
+    public function queryYSZK($supplier, $buyerName, $ysNo, $currency, $expFlag, $xzFlag, $srOpDate, $xzOpDate) {
+        $sql  = "select u.enterprise_name supplier, y.* " .
+                "  from freight_yszk y, freight_user u " .
+                " where y.supplier_id = u.id ";
+
+        if ($supplier != '') {
+            $sql .= "  and u.enterprise_name = '$supplier' ";
+        }
+        if ($buyerName != '') {
+            $sql .= "  and y.buyer_name = '$buyerName' ";
+        }
+        if ($ysNo != '') {
+            $sql .= "  and y.ys_no = '$ysNo' ";
+        }
+        if ($currency != '') {
+            $sql .= "  and y.currency = '$currency' ";
+        }
+        if ($expFlag != '') {
+            $sql .= "  and y.exp_flag = '$expFlag' ";
+        }
+        if ($xzFlag != '') {
+            $sql .= "  and y.xz_flag = '$xzFlag' ";
+        }
+        if ($srOpDate != '') {
+            $sql .= "  and y.sr_op_date = '$srOpDate' ";
+        }
+        if ($xzOpDate != '') {
+            $sql .= "  and y.xz_op_date = '$xzOpDate' ";
+        }
+
+        return $this->db->query($sql);
+    }
 
     public function checkDuplicate($ysNo) {
         $where['ys_no'] = $ysNo;
@@ -33,51 +66,25 @@ class YSZKModel extends Model {
         return $rs;
     }
 
-    public function calBuyerRate($supplier) {
+    public function calBuyerRate($supplierId) {
         $sql  = "update freight_yszk y";
         $sql .= "   set buyer_rate =";
         $sql .= "       (select trunc((sum(s.sr_amount) - sum(s.hx_amount)) /";
         $sql .= "               (select sum(sr_amount) - sum(hx_amount)";
         $sql .= "                  from freight_yszk";
-        $sql .= "                 where l_f_supplier = '$supplier'";
+        $sql .= "                 where supplier_id = '$supplierId'";
         $sql .= "                   and xz_flag = 0), 4)";
         $sql .= "          from freight_yszk s";
-        $sql .= "         group by s.l_f_supplier, s.buyer_name, s.xz_flag";
-        $sql .= "        having s.l_f_supplier = '$supplier' and s.xz_flag = 0 and s.buyer_name = y.buyer_name)";
-        $sql .= " where l_f_supplier = '$supplier'";
+        $sql .= "         group by s.supplier_id, s.buyer_name, s.xz_flag";
+        $sql .= "        having s.supplier_id = '$supplierId' and s.xz_flag = 0 and s.buyer_name = y.buyer_name)";
+        $sql .= " where supplier_id = '$supplierId'";
 
         $rs = $this->db->execute($sql);
         return $rs;
     }
 
     public function queryPool($supplier) {
-        $sql =  "select tmp3.*, " .
-                "       tmp3.zhkdck - used_ck unused_ck, " .
-                "       tmp3.used_ck / tmp3.effect_amount current_dy_rate, " .
-                "       tmp3.exp_amount / tmp3.whx_sr_amount exp_rate, " .
-                "       (select sum(sr_amount) - sum(hx_amount) " .
-                "                                  from (select * from freight_yszk where (sysdate - to_date(kp_date, 'mm/dd/yyyy')) < 90) " .
-                "                                 group by l_f_Supplier, xz_flag, exp_flag " .
-                "                                having xz_flag = 0 and exp_flag = 1) / tmp3.whx_sr_amount month_exp_whx_rate " .
-                "  from (select tmp2.*, " .
-                "               effect_amount * " .
-                "               (select hdrz_rate " .
-                "                  from freight_supplier_limit " .
-                "                 where supplier_id = tmp2.supplier) zhkdck, " .
-                "               (select sum(cz_amount) - sum(init_secure_amount) " .
-                "                  from freight_cz_record " .
-                "                 group by supplier_id) used_ck " .
-                "          from (select tmp1.*, whx_sr_amount - exp_amount effect_amount " .
-                "                  from (select l_f_supplier supplier, " .
-                "                               sum(sr_amount) - sum(hx_amount) whx_sr_amount, " .
-                "                               (select sum(sr_amount) - sum(hx_amount) " .
-                "                                  from freight_yszk s " .
-                "                                 group by s.l_f_Supplier, s.xz_flag, s.exp_flag " .
-                "                                having xz_flag = 0 and s.exp_flag = 1) exp_amount " .
-                "                          from freight_yszk y " .
-                "                         group by l_f_supplier, xz_flag, exp_flag " .
-                "                        having xz_flag = 0) tmp1) tmp2) tmp3 where supplier like '%{$supplier}%'";
-
+        $sql = '';
         return $this->db->query($sql);
     }
 
@@ -85,6 +92,7 @@ class YSZKModel extends Model {
         $sql = '';
         return $this->db->query($sql);
     }
+
 }
 
 ?>

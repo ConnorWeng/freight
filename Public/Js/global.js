@@ -15,6 +15,17 @@ function percentRenderer(instance, td, row, col, prop, value, cellProperties) {
     $(td).text(makePrecise(num, 2) + '%');
 }
 
+function currencyRenderer(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.TextCell.renderer.apply(this, arguments);
+    var text = $(td).text(),
+        $td = $(td);
+    if (text == '0') {
+        $td.text('RMB');
+    } else {
+        $td.text('USD');
+    }
+}
+
 function makePrecise(num, precise) {
     var text = num + '',
         dotIndex = text.indexOf('.');

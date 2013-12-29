@@ -27,41 +27,17 @@ class YSZKAction extends CommonAction {
     }
 
     public function searchYSZK() {
-        $lfSupplier = I('l_f_supplier');
+        $supplier = I('supplier');
         $buyerName = I('buyer_name');
         $ysNo = I('ys_no');
         $currency = I('currency');
         $expFlag = I('exp_flag');
         $xzFlag = I('xz_flag');
-        $srDate = I('sr_date');
-        $xzDate = I('xz_date');
+        $srOpDate = I('sr_op_date');
+        $xzOpDate = I('xz_op_date');
 
-        if ($lfSupplier != '') {
-            $where['l_f_supplier'] = $lfSupplier;
-        }
-        if ($buyerName != '') {
-            $where['buyer_name'] = $buyerName;
-        }
-        if ($ysNo != '') {
-            $where['ys_no'] = $ysNo;
-        }
-        if ($currency != '') {
-            $where['currency'] = $currency;
-        }
-        if ($expFlag != '') {
-            //$where['exp_flag'] = $expFlag;
-        }
-        if ($xzFlag != '') {
-            $where['xz_flag'] = $xzFlag;
-        }
-        if ($srDate != '') {
-            $where['sr_date'] = $srDate;
-        }
-        if ($xzDate != '') {
-            $where['xz_date'] = $xzDate;
-        }
-        $yszx = D('YSZK');
-        $rs = $yszx->where($where)->select();
+        $yszkModel = D('YSZK');
+        $rs = $yszkModel->queryYSZK($supplier, $buyerName, $ysNo, $currency, $expFlag, $xzFlag, $srOpDate, $xzOpDate);
         $this->ajaxReturn($rs, 'JSON');
     }
 
@@ -89,25 +65,25 @@ class YSZKAction extends CommonAction {
                 if ($rowIndex != 0 && $rowIndex != $srSheetRowCount - 1) {
                     $row = $srSheetRows[$rowIndex];
 
-                    $lfSupplier = $row[0];
+                    $supplierId = session('user')['ID'];
                     $buyerName = $row[1];
                     $ysNo = $row[2];
                     $kpDate = $this->formatDateString($row[3]);
                     $ysEndDate = $this->formatDateString($row[4]);
                     $oriAmount = $row[5];
-                    $currency = $row[6];
+                    $currency = currency_val($row[6]);
 
                     if ($yszkModel->checkDuplicate($ysNo)) {
                         $errorCode = 1;
                         break;
                     }
 
-                    if ($supplierLimitModel->isExpire($lfSupplier, $kpDate)) {
+                    if ($supplierLimitModel->isExpire($supplierId, $kpDate)) {
                         $errorCode = 2;
                         break;
                     }
 
-                    $result = $srTempModel->importData($batchId, $lfSupplier, $buyerName, $ysNo, $kpDate, $ysEndDate, $oriAmount, $currency, $saveName);
+                    $result = $srTempModel->importData($batchId, $supplierId, $buyerName, $ysNo, $kpDate, $ysEndDate, $oriAmount, $currency, $saveName);
                     if (!$result) {
                         $errorCode = 3;
                         break;
@@ -158,7 +134,7 @@ class YSZKAction extends CommonAction {
                 if ($rowIndex != 0 && $rowIndex != $hxSheetRowCount - 1) {
                     $row = $hxSheetRows[$rowIndex];
 
-                    $lfSupplier = $row[0];
+                    $supplierId = session('user')['ID'];
                     $buyerName = $row[1];
                     $ysNo = $row[2];
                     $amount = $row[3];
@@ -170,7 +146,7 @@ class YSZKAction extends CommonAction {
                         break;
                     }
 
-                    $result = $hxTempModel->importData($batchId, $lfSupplier, $buyerName, $ysNo, $amount, $xzAmount, $xzDate, $saveName);
+                    $result = $hxTempModel->importData($batchId, $supplierId, $buyerName, $ysNo, $amount, $xzAmount, $xzDate, $saveName);
                     if (!$result) {
                         $errorCode = 2;
                         break;
@@ -199,8 +175,7 @@ class YSZKAction extends CommonAction {
         $batchId = I('batchId');
         $todoId = I('todoId');
         $srTempModel = D('SrTemp');
-        $where['batch_id'] = $batchId;
-        $rs = $srTempModel->where($where)->select();
+        $rs = $srTempModel->queryByBatchId($batchId);
         if ($rs) {
             $data = json_encode($rs);
         } else {
@@ -218,8 +193,7 @@ class YSZKAction extends CommonAction {
         $batchId = I('batchId');
         $todoId = I('todoId');
         $hxTempModel = D('HxTemp');
-        $where['batch_id'] = $batchId;
-        $rs = $hxTempModel->where($where)->select();
+        $rs = $hxTempModel->queryByBatchId($batchId);
         if ($rs) {
             $data = json_encode($rs);
         } else {
@@ -239,8 +213,7 @@ class YSZKAction extends CommonAction {
         $dataArray = json_decode($importData);
         if (count($dataArray) > 0) {
             $supplierLimitModel = D('SupplierLimit');
-            $zxMgtDays = intval($supplierLimitModel->getZxMgtDays($dataArray[0]->L_F_SUPPLIER));
-            dump($zxMgtDays);
+            $zxTime = intval($supplierLimitModel->getZxTime($dataArray[0]->SUPPLIER_ID));
 
             $batchId = $dataArray[0]->BATCH_ID;
             $yszkModel = D('YSZK');
@@ -248,23 +221,23 @@ class YSZKAction extends CommonAction {
                 $obj = $dataArray[$index];
 
                 $data['ys_no'] = $obj->YS_NO;
-                $data['l_f_supplier'] = $obj->L_F_SUPPLIER;
+                $data['supplier_id'] = $obj->SUPPLIER_ID;
                 $data['buyer_name'] = $obj->BUYER_NAME;
                 $data['kp_date'] = $obj->KP_DATE;
-                $data['amount'] = $obj->ORI_AMOUNT;
+                $data['amount'] = $obj->AMOUNT;
                 $data['currency'] = $obj->CURRENCY;
-                $data['rmb_amount'] = $this->computeRmbAmount($obj->CURRENCY, $obj->ORI_AMOUNT);
-                $data['sr_amount'] = $data['rmb_amount'];
+                $data['rmb_amount'] = $this->computeRmbAmount($obj->CURRENCY, $obj->AMOUNT);
+                $data['sr_amount'] = $data['amount'];
 
                 $kpDateObj = new DateTime($data['kp_date']);
-                $kpDateObj->add(new DateInterval('P'.$zxMgtDays.'D'));
+                $kpDateObj->add(new DateInterval('P'.$zxTime.'D'));
                 $data['zx_end_date'] = $kpDateObj->format('m/d/Y');
 
                 $data['sr_op_date'] = date('m/d/Y');
 
                 $yszkModel->import($data);
             }
-            $yszkModel->calBuyerRate($dataArray[0]->L_F_SUPPLIER);
+            $yszkModel->calBuyerRate($dataArray[0]->SUPPLIER_ID);
 
             $srTempModel = D('SrTemp');
             $srTempModel->deleteBatch($batchId);
@@ -294,7 +267,7 @@ class YSZKAction extends CommonAction {
                 $yszkModel->hx($ysNo, $xzAmount, $xzDate, $xzOpDate);
             }
             $yszkModel->updateXzFlag();
-            $yszkModel->calBuyerRate($dataArray[0]->L_F_SUPPLIER);
+            $yszkModel->calBuyerRate($dataArray[0]->SUPPLIER_ID);
 
             $hxTempModel = D('HxTemp');
             $hxTempModel->deleteBatch($batchId);
@@ -307,7 +280,7 @@ class YSZKAction extends CommonAction {
     }
 
     private function computeRmbAmount($currency, $amount) {
-        if ($currency == 'RMB') {
+        if ($currency == '0') {
             return $amount;
         } else {
             $rmbUsdModel = D('RmbUsd');

@@ -4,7 +4,7 @@ class UserModel extends Model {
 
     protected $fields = array('id', 'username', 'password', 'usertype', 'create_date', 'enterprise_name', 'organization_code', 'contact_name', 'contact_tel', 'industry', 'business_nature', 'enterprise_create_date', 'enterprise_address', 'annual_turnover');
 
-    function validate($username, $password) {
+    public function validate($username, $password) {
         $where['username'] = $username;
         $where['password'] = $password;
         $rs = $this->where($where)->select();
@@ -13,6 +13,11 @@ class UserModel extends Model {
         } else {
             return null;
         }
+    }
+
+    public function queryIdByName($name) {
+        $where['enterprise_name'] = $name;
+        return $this->where($where)->find();
     }
 
 }

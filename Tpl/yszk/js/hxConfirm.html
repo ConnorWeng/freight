@@ -11,7 +11,7 @@
         $('.handsontable').handsontable({
             data: data,
             columnSorting: true,
-            columns: [{renderer: checkboxRenderer}, {data: 'L_F_SUPPLIER'}, {data: 'BUYER_NAME'}, {data: 'YS_NO'}, {data: 'AMOUNT'}, {data: 'XZ_AMOUNT'}, {data: 'XZ_DATE'}],
+            columns: [{renderer: checkboxRenderer}, {data: 'SUPPLIER'}, {data: 'BUYER_NAME'}, {data: 'YS_NO'}, {data: 'AMOUNT'}, {data: 'XZ_AMOUNT'}, {data: 'XZ_DATE'}],
             colHeaders: function (col) {
                 switch (col) {
                     case 0:
