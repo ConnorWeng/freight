@@ -10,9 +10,14 @@ function flagRenderer(instance, td, row, col, prop, value, cellProperties) {
 
 function percentRenderer(instance, td, row, col, prop, value, cellProperties) {
     Handsontable.TextCell.renderer.apply(this, arguments);
-    var text = $(td).text(),
+    var $td = $(td),
+        text = $td.text(),
         num = parseFloat(text) * 100;
-    $(td).text(makePrecise(num, 2) + '%');
+    if (!isNaN(num)) {
+        $td.text(makePrecise(num, 2) + '%');
+    } else {
+        $td.text('0%');
+    }
 }
 
 function currencyRenderer(instance, td, row, col, prop, value, cellProperties) {
