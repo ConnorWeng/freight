@@ -31,6 +31,17 @@ function currencyRenderer(instance, td, row, col, prop, value, cellProperties) {
     }
 }
 
+function loanTypeRenderer(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.TextCell.renderer.apply(this, arguments);
+    var text = $(td).text(),
+        $td = $(td);
+    if (text == '0') {
+        $td.text('贷款');
+    } else {
+        $td.text('银承');
+    }
+}
+
 function makePrecise(num, precise) {
     var text = num + '',
         dotIndex = text.indexOf('.');

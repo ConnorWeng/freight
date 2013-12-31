@@ -1,0 +1,76 @@
+<script type="text/javascript" src="__PUBLIC__/datepicker/js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/datepicker/css/datepicker.css" type="text/css" media="screen" />
+<script>
+$(document).ready(function () {
+
+  $('.handsontable').handsontable({
+    startRows: 0,
+    columnSorting: true,
+    colHeaders: ['业务编号','物流金融服务商','出账金额',
+                 '出账方式','初始保证金','出账日期',
+                 '到期日','币种','结清标识'],
+    columns: [{data: 'LOAN_NO'}, {data: 'SUPPLIER'}, {data: 'LOAN_AMOUNT'},
+              {data: 'LOAN_TYPE', renderer: loanTypeRenderer}, {data: 'INIT_SECURITY_AMOUNT'}, {data: 'LOAN_DATE'},
+              {data: 'LOAN_END_DATE'}, {data: 'CURRENCY', renderer: currencyRenderer}, {data: 'END_FLAG', renderer: flagRenderer}],
+    contextMenu: false
+  });
+
+  $('.loan_date').datepicker({
+      format: 'mm/dd/yyyy'
+  });
+
+  $('.loan_end_date').datepicker({
+      format: 'mm/dd/yyyy'
+  });
+
+  $('.loan_date_input').datepicker({
+      format: 'mm/dd/yyyy'
+  });
+
+  $('.loan_end_date_input').datepicker({
+      format: 'mm/dd/yyyy'
+  });
+
+  $('.search-btn').on('click', function (event) {
+      event.preventDefault();
+      $.ajax({
+          url: '{:U('CZXX/searchCZXX')}',
+          data: {
+              'supplier': $('.supplier').val(),
+              'loan_type': $('.loan_type').val(),
+              'loan_date': $('.loan_date').val(),
+              'loan_end_date': $('.loan_end_date').val(),
+              'currency': $('.currency').val(),
+              'end_flag': $('.end_flag').val()
+          },
+          success: function (data) {
+              console.log(data);
+              var table = $('.handsontable').data('handsontable');
+              table.loadData(data);
+          }
+      });
+  });
+
+  $('.addbtn').on('click', function (event) {
+      event.preventDefault();
+      $.ajax({
+          url: '{:U('CZXX/addCZXX')}',
+          data: {
+              'loan_no': $('.loan_no_input').val(),
+              'supplier': $('.supplier_input').val(),
+              'loan_amount': $('.loan_amount_input').val(),
+              'loan_type': $('.loan_type_input').val(),
+              'init_security_amount': $('.init_security_amount_input').val(),
+              'loan_date': $('.loan_date_input').val(),
+              'loan_end_date': $('.loan_end_date_input').val(),
+              'currency': $('.currency_input').val(),
+              'end_flag': $('.end_flag_input').val()
+          },
+          success: function (data) {
+              console.log(data);
+          }
+      });
+  });
+
+});
+</script>

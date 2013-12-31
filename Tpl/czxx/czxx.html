@@ -1,0 +1,176 @@
+<layout name='Layout/ace_layout' />
+<style>
+.form-horizontal .control-label {
+  text-align: center;
+}
+.dropdown-menu {
+  z-index: 9999;
+}
+</style>
+<div class="row">
+  <div class="col-xs-12">
+    <!-- PAGE CONTENT BEGINS -->
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>查询条件:<h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="" class="col-sm-2 control-label">物流金融服务商名称:</label>
+            <div class="col-sm-4">
+              <input name="supplier" type="text" class="form-control supplier" placeholder="物流金融服务商名称"/>
+            </div>
+            <label for="" class="col-sm-2 control-label">出账方式:</label>
+            <div class="col-sm-4">
+              <select name="loan_type" class="form-control loan_type">
+                <option value="0">贷款</option>
+                <option value="1">银承</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-2 control-label">出账日期:</label>
+            <div class="col-sm-4">
+              <input name="loan_date" type="text" class="form-control loan_date" placeholder="出账日期"/>
+            </div>
+            <label for="" class="col-sm-2 control-label">到期日:</label>
+            <div class="col-sm-4">
+              <input name="loan_end_date" type="text" class="form-control loan_end_date"placeholder="到期日"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-2 control-label">币种:</label>
+            <div class="col-sm-4">
+              <select name="currency" class="form-control currency">
+                <option value="0">人民币</option>
+                <option value="1">美元</option>
+              </select>
+            </div>
+            <label for="" class="col-sm-2 control-label">是否结清:</label>
+            <div class="col-sm-4">
+              <select name="end_flag" class="form-control end_flag">
+                <option value="0">否</option>
+                <option value="1">是</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button class="btn btn-primary search-btn">搜索</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>查询结果:</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="czxxtable" class="handsontable"></div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 30px;">
+      <div class="col-xs-4" style="text-align: right;">
+      </div>
+      <div class="col-xs-4" style="text-align: center;">
+        <button class="btn btn-primary addbtn" data-toggle="modal" data-target="#addModal">新增</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="addModalLabel">新增</h4>
+      </div>
+      <div class="modal-body">
+        <form action="{:U('YSZK/importSrExcel')}" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">业务编号:</label>
+            <div class="col-sm-8">
+              <input name="loan_no_input" type="text" class="form-control loan_no_input" placeholder="业务编号"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">物流金融服务商:</label>
+            <div class="col-sm-8">
+              <input name="supplier_input" type="text" class="form-control supplier_input" placeholder="物流金融服务商"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">出账金额:</label>
+            <div class="col-sm-8">
+              <input name="loan_amount_input" type="text" class="form-control loan_amount_input" placeholder="出账金额"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">出账类型:</label>
+            <div class="col-sm-8">
+              <select name="loan_type_input" class="form-control loan_type_input">
+                <option value="0">贷款</option>
+                <option value="1">银承</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">初始保证金:</label>
+            <div class="col-sm-8">
+              <input name="init_security_amount_input" type="text" class="form-control init_security_amount_input" placeholder="初始保证金"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">出账日期:</label>
+            <div class="col-sm-8">
+              <input name="loan_date_input" type="text" class="form-control loan_date_input" placeholder="出账日期"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">到期日:</label>
+            <div class="col-sm-8">
+              <input name="loan_end_date_input" type="text" class="form-control loan_end_date_input" placeholder="到期日"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">币种:</label>
+            <div class="col-sm-8">
+              <select name="currency_input" class="form-control currency_input">
+                <option value="0">人民币</option>
+                <option value="1">美元</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">结清:</label>
+            <div class="col-sm-8">
+              <select name="end_flag_input" class="form-control end_flag_input">
+                <option value="0">否</option>
+                <option value="1">是</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+              <button class="btn btn-primary addbtn" style="width: 100%" type="submit">提交</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -138,4 +138,9 @@ function currency_val($currency) {
     }
 }
 
+function supplierToId($supplier) {
+    $userModel = D('User');
+    return $userModel->queryIdByName($supplier)['ID'];
+}
+
 ?>
