@@ -20,7 +20,7 @@ $(document).ready(function () {
 
   function calRenderer(instance, td, row, col, prop, value, cellProperties) {
       var rowData = instance.getDataAtRow(row);
-      $(td).text(parseFloat(rowData['SR_AMOUNT']) - parseFloat(rowData['HX_AMOUNT']));
+      $(td).text((parseFloat(rowData['SR_AMOUNT']) - parseFloat(rowData['HX_AMOUNT'])).toFixed(2));
   }
 
   function bindDumpButton() {
