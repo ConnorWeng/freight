@@ -67,7 +67,11 @@ $(document).ready(function () {
               'end_flag': $('.end_flag_input').val()
           },
           success: function (data) {
-              console.log(data);
+              if (data == '1') {
+                  alert('新增成功');
+              } else {
+                  alert('新增失败');
+              }
           }
       });
   });
