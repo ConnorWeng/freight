@@ -6,6 +6,13 @@ class CZXXAction extends CommonAction {
         'need_login' => true,
     );
 
+    protected $czxxModel;
+
+    function __construct() {
+        parent::__construct();
+        $this->czxxModel = D('CzRecord');
+    }
+
     public function czxx() {
         $this->display();
     }
@@ -18,8 +25,7 @@ class CZXXAction extends CommonAction {
         $currency = I('currency');
         $endFlag = I('end_flag');
 
-        $czxxModel = D('CzRecord');
-        $rs = $czxxModel->queryCZXX($supplier, $loanType, $loanDate, $loanEndDate, $currency, $endFlag);
+        $rs = $this->czxxModel->queryCZXX($supplier, $loanType, $loanDate, $loanEndDate, $currency, $endFlag);
         $this->ajaxReturn($rs, 'JSON');
     }
 
@@ -36,8 +42,7 @@ class CZXXAction extends CommonAction {
         $operUserId = session('user')['ID'];
         $lastModifyDate = date('m/d/Y');
 
-        $czxxModel = D('CzRecord');
-        $rs = $czxxModel->addCZXX($loanNo, $supplierId, $loanAmount, $loanType, $initSecurityAmount, $loanDate, $loanEndDate, $currency, $endFlag, $operUserId, $lastModifyDate);
+        $rs = $this->czxxModel->addCZXX($loanNo, $supplierId, $loanAmount, $loanType, $initSecurityAmount, $loanDate, $loanEndDate, $currency, $endFlag, $operUserId, $lastModifyDate);
         $this->ajaxReturn($rs, 'JSON');
     }
 
@@ -54,8 +59,13 @@ class CZXXAction extends CommonAction {
         $operUserId = session('user')['ID'];
         $lastModifyDate = date('m/d/Y');
 
-        $czxxModel = D('CzRecord');
-        $rs = $czxxModel->editCZXX($loanNo, $supplierId, $loanAmount, $loanType, $initSecurityAmount, $loanDate, $loanEndDate, $currency, $endFlag, $operUserId, $lastModifyDate);
+        $rs = $this->czxxModel->editCZXX($loanNo, $supplierId, $loanAmount, $loanType, $initSecurityAmount, $loanDate, $loanEndDate, $currency, $endFlag, $operUserId, $lastModifyDate);
+        $this->ajaxReturn($rs, 'JSON');
+    }
+
+    public function delCZXX() {
+        $loanNo = I('loan_no');
+        $rs = $this->czxxModel->delCZXX($loanNo);
         $this->ajaxReturn($rs, 'JSON');
     }
 }

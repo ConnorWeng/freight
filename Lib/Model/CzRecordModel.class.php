@@ -64,6 +64,11 @@ class CzRecordModel extends Model {
         return $this->where($where)->save($data);
     }
 
+    public function delCZXX($loanNo) {
+        $where['loan_no'] = $loanNo;
+        return $this->where($where)->delete();
+    }
+
 }
 
 ?>
