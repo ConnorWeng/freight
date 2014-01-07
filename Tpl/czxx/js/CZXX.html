@@ -2,14 +2,36 @@
 <link rel="stylesheet" href="__PUBLIC__/datepicker/css/datepicker.css" type="text/css" media="screen" />
 <script>
 $(document).ready(function () {
+  var actionFlag = 0;
 
   $('.handsontable').handsontable({
     startRows: 0,
     columnSorting: true,
-    colHeaders: ['业务编号','物流金融服务商','出账金额',
-                 '出账方式','初始保证金','出账日期',
-                 '到期日','币种','结清标识'],
-    columns: [{data: 'LOAN_NO'}, {data: 'SUPPLIER'}, {data: 'LOAN_AMOUNT'},
+    colHeaders: function (col) {
+        switch (col) {
+        case 0:
+            return '选择';
+        case 1:
+            return '业务编号';
+        case 2:
+            return '物流金融服务商';
+        case 3:
+            return '出账金额';
+        case 4:
+            return '出账方式';
+        case 5:
+            return '初始保证金';
+        case 6:
+            return '出账日期';
+        case 7:
+            return '到期日';
+        case 8:
+            return '币种';
+        case 9:
+            return '结清标识';
+        }
+    },
+    columns: [{renderer: radioRenderer}, {data: 'LOAN_NO'}, {data: 'SUPPLIER'}, {data: 'LOAN_AMOUNT'},
               {data: 'LOAN_TYPE', renderer: loanTypeRenderer}, {data: 'INIT_SECURITY_AMOUNT'}, {data: 'LOAN_DATE'},
               {data: 'LOAN_END_DATE'}, {data: 'CURRENCY', renderer: currencyRenderer}, {data: 'END_FLAG', renderer: flagRenderer}],
     contextMenu: false
@@ -51,8 +73,46 @@ $(document).ready(function () {
       });
   });
 
+  $('.add').on('click', function (event) {
+      event.preventDefault();
+      actionFlag = 0;
+  });
+
+  $('.edit').on('click', function (event) {
+      event.preventDefault();
+      actionFlag = 1;
+      var $radio = $('input[name=czxx-radio]:checked');
+      if ($radio.length > 0) {
+          var ht = $('#czxxtable').data('handsontable'),
+              row = $radio.attr('row'),
+              rowData = ht.getDataAtRow(row);
+          $('.loan_no_input').val(rowData['LOAN_NO']);
+          $('.supplier_input').val(rowData['SUPPLIER']);
+          $('.loan_amount_input').val(rowData['LOAN_AMOUNT']);
+          $('.loan_type_input').val(rowData['LOAN_TYPE']);
+          $('.init_security_amount_input').val(rowData['INIT_SECURITY_AMOUNT']);
+          $('.loan_date_input').val(rowData['LOAN_DATE']);
+          $('.loan_end_date_input').val(rowData['LOAN_END_DATE']);
+          $('.currency_input').val(rowData['CURRENCY']);
+          $('.end_flag_input').val(rowData['END_FLAG']);
+      } else {
+          alert('未选择');
+      }
+  });
+
   $('.addbtn').on('click', function (event) {
       event.preventDefault();
+      switch (actionFlag) {
+      case 0:
+          addCZXX();
+          break;
+      case 1:
+          editCZXX();
+          break;
+      }
+  });
+
+  function addCZXX() {
       $.ajax({
           url: '{:U('CZXX/addCZXX')}',
           data: {
@@ -69,12 +129,38 @@ $(document).ready(function () {
           success: function (data) {
               if (data == '1') {
                   alert('新增成功');
+                  $('.search-btn').click();
               } else {
                   alert('新增失败');
               }
           }
       });
-  });
+  }
+
+  function editCZXX() {
+      $.ajax({
+          url: '{:U('CZXX/editCZXX')}',
+          data: {
+              'loan_no': $('.loan_no_input').val(),
+              'supplier': $('.supplier_input').val(),
+              'loan_amount': $('.loan_amount_input').val(),
+              'loan_type': $('.loan_type_input').val(),
+              'init_security_amount': $('.init_security_amount_input').val(),
+              'loan_date': $('.loan_date_input').val(),
+              'loan_end_date': $('.loan_end_date_input').val(),
+              'currency': $('.currency_input').val(),
+              'end_flag': $('.end_flag_input').val()
+          },
+          success: function (data) {
+              if (data == '1') {
+                  alert('修改成功');
+                  $('.search-btn').click();
+              } else {
+                  alert('修改失败');
+              }
+          }
+      });
+  }
 
 });
 </script>

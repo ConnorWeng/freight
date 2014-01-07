@@ -42,6 +42,12 @@ function loanTypeRenderer(instance, td, row, col, prop, value, cellProperties) {
     }
 }
 
+function radioRenderer(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.TextCell.renderer.apply(this, arguments);
+    $(td).html('<input type="radio" name="czxx-radio" row="' + row + '" col="' + col + '" />');
+    return td;
+}
+
 function makePrecise(num, precise) {
     var text = num + '',
         dotIndex = text.indexOf('.');

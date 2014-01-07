@@ -47,6 +47,23 @@ class CzRecordModel extends Model {
         return $this->add($data);
     }
 
+    public function editCZXX($loanNo, $supplierId, $loanAmount, $loanType, $initSecurityAmount, $loanDate, $loanEndDate, $currency, $endFlag, $operUserId, $lastModifyDate) {
+        $where['loan_no'] = $loanNo;
+
+        $data['supplier_id'] = $supplierId;
+        $data['loan_amount'] = $loanAmount;
+        $data['loan_type'] = $loanType;
+        $data['init_security_amount'] = $initSecurityAmount;
+        $data['loan_date'] = $loanDate;
+        $data['loan_end_date'] = $loanEndDate;
+        $data['currency'] = $currency;
+        $data['end_flag'] = $endFlag;
+        $data['oper_user_id'] = $operUserId;
+        $data['last_modify_date'] = $lastModifyDate;
+
+        return $this->where($where)->save($data);
+    }
+
 }
 
 ?>
