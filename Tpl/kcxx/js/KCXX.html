@@ -41,7 +41,7 @@ $(document).ready(function () {
         format: 'mm/dd/yyyy'
     });
 
-    $('.out_date').datepicker({
+    $('.out_date_input').datepicker({
         format: 'mm/dd/yyyy'
     });
 
@@ -119,6 +119,32 @@ $(document).ready(function () {
             data: {
                 'in_date': $('.in_date_input').val(),
                 'in_amount': $('.in_amount_input').val(),
+                'order_no': $('.order_no_input').val()
+            },
+            success: function (data) {
+                if (data == '1') {
+                    alert('新增成功');
+                    $('.search-btn').click();
+                } else {
+                    alert('新增失败');
+                }
+            }
+        });
+    }
+
+    $('.addOutBtn').on('click', function (event) {
+        event.preventDefault();
+        addOut();
+    });
+
+    function addOut() {
+        $.ajax({
+            url: '{:U('KCXX/addOut')}',
+            data: {
+                'out_date': $('.out_date_input').val(),
+                'out_amount': $('.out_amount_input').val(),
+                'receive_amount': $('.receive_amount_input').val(),
+                'receive_type': $('.receive_type_input').val(),
                 'order_no': $('.order_no_input').val()
             },
             success: function (data) {
