@@ -48,6 +48,16 @@ function radioRenderer(instance, td, row, col, prop, value, cellProperties) {
     return td;
 }
 
+function inOutTypeRenderer(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.TextCell.renderer.apply(this, arguments);
+    var rowData = instance.getDataAtRow(row);
+    if (rowData['IN_AMOUNT'] == '' || rowData['IN_AMOUNT'] == null) {
+        $(td).text('出库');
+    } else {
+        $(td).text('入库');
+    }
+}
+
 function makePrecise(num, precise) {
     var text = num + '',
         dotIndex = text.indexOf('.');

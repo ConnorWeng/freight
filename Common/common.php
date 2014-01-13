@@ -143,4 +143,26 @@ function supplierToId($supplier) {
     return $userModel->queryIdByName($supplier)['ID'];
 }
 
+function fillKCArrayFields($kcArray) {
+    $fields = array(
+        'SERIOUS_NO' => '',
+        'OUT_DATE' => '',
+        'OUT_AMOUNT' => '',
+        'RECEIVE_AMOUNT' => '',
+        'RECEIVE_TYPE' => '',
+        'RATE' => '',
+        'ORDER_NO' => '',
+        'IN_DATE' => '',
+        'IN_AMOUNT' => '',
+        'BUILD_DATE' => '',
+        'OPER_USER_ID' => '',
+    );
+    $result = array();
+    foreach ($kcArray as $row) {
+        $newArray = $row + $fields;
+        array_push($result, $newArray);
+    }
+    return $result;
+}
+
 ?>

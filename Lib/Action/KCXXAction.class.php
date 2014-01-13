@@ -19,6 +19,23 @@ class KCXXAction extends CommonAction {
         $this->display();
     }
 
+    public function query() {
+        $inOutType = I('in_out_type');
+        $orderNo = I('order_no');
+        $inList = array();
+        $outList = array();
+        if ($inOutType == 'in') {
+            $inList = $this->inModel->query($orderNo);
+        } else if ($inOutType == 'out') {
+            $outList = $this->outModel->query($orderNo);
+        } else if ($inOutType == 'all') {
+            $inList = $this->inModel->query($orderNo);
+            $outList = $this->outModel->query($orderNo);
+        }
+        $rs = array_merge($inList, $outList);
+        $this->ajaxReturn($rs, 'JSON');
+    }
+
     public function addIn() {
         $inDate = I('in_date');
         $inAmount = I('in_amount');

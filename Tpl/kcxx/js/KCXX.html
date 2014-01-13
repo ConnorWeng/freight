@@ -31,9 +31,9 @@ $(document).ready(function () {
                 return '经销商';
             }
         },
-        columns: [{renderer: radioRenderer}, {data: 'LOAN_NO'}, {data: 'SUPPLIER'}, {data: 'LOAN_AMOUNT'},
-                  {data: 'LOAN_TYPE', renderer: loanTypeRenderer}, {data: 'INIT_SECURITY_AMOUNT'}, {data: 'LOAN_DATE'},
-                  {data: 'LOAN_END_DATE'}, {data: 'CURRENCY', renderer: currencyRenderer}, {data: 'END_FLAG', renderer: flagRenderer}],
+        columns: [{renderer: radioRenderer}, {data: 'BUILD_DATE'}, {renderer: inOutTypeRenderer}, {data: 'IN_AMOUNT'},
+                  {data: 'OUT_AMOUNT'}, {data: 'RECEIVE_AMOUNT'}, {data: ''},
+                  {data: ''}, {data: 'ORDER_NO'}, {data: ''}],
         contextMenu: false
     });
 
@@ -43,26 +43,6 @@ $(document).ready(function () {
 
     $('.out_date_input').datepicker({
         format: 'mm/dd/yyyy'
-    });
-
-    $('.search-btn').on('click', function (event) {
-        event.preventDefault();
-        $.ajax({
-            url: '{:U('CZXX/searchCZXX')}',
-            data: {
-                'supplier': $('.supplier').val(),
-                'loan_type': $('.loan_type').val(),
-                'loan_date': $('.loan_date').val(),
-                'loan_end_date': $('.loan_end_date').val(),
-                'currency': $('.currency').val(),
-                'end_flag': $('.end_flag').val()
-            },
-            success: function (data) {
-                console.log(data);
-                var table = $('.handsontable').data('handsontable');
-                table.loadData(data);
-            }
-        });
     });
 
     $('.add').on('click', function (event) {
@@ -107,6 +87,25 @@ $(document).ready(function () {
             alert('未选择');
         }
     });
+
+    $('.search-btn').on('click', function (event) {
+        event.preventDefault();
+        query();
+    });
+
+    function query() {
+        $.ajax({
+            url: '{:U('KCXX/query')}',
+            data: {
+                'in_out_type': $('.in_out_type').val(),
+                'order_no': $('order_no').val()
+            },
+            success: function (data) {
+                var table = $('.handsontable').data('handsontable');
+                table.loadData(data);
+            }
+        });
+    }
 
     $('.addInBtn').on('click', function (event) {
         event.preventDefault();
