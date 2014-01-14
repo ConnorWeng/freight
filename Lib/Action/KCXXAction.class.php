@@ -65,6 +65,18 @@ class KCXXAction extends CommonAction {
         $this->ajaxReturn($rs, 'JSON');
     }
 
+    public function editOut() {
+        $seriousNo = I('serious_no');
+        $outDate = I('out_date');
+        $outAmount = I('out_amount');
+        $receiveAmount = I('receive_amount');
+        $receiveType = I('receive_type');
+        $orderNo = I('order_no');
+        $operUserId = session('user')['ID'];
+        $rs = $this->outModel->editOut($seriousNo, $outDate, $outAmount, $receiveAmount, $receiveType, $orderNo, $operUserId);
+        $this->ajaxReturn($rs, 'JSON');
+    }
+
 }
 
 ?>

@@ -66,13 +66,15 @@ $(document).ready(function () {
                 $('.out_amount_input').val(rowData['OUT_AMOUNT']);
                 $('.receive_amount_input').val(rowData['RECEIVE_AMOUNT']);
                 $('.receive_type_input').val(rowData['RECEIVE_TYPE']);
-                $('.order_no_input').val(rowData['ORDER_NO']);
+                $('.out_order_no_input').val(rowData['ORDER_NO']);
                 $('.out_serious_no_input').val(rowData['SERIOUS_NO']);
+                $('#addOutModal').modal();
             } else {
                 $('.in_date_input').val(rowData['IN_DATE']);
                 $('.in_amount_input').val(rowData['IN_AMOUNT']);
-                $('.order_no_input').val(rowData['ORDER_NO']);
+                $('.in_order_no_input').val(rowData['ORDER_NO']);
                 $('.in_serious_no_input').val(rowData['SERIOUS_NO']);
+                $('#addModal').modal();
             }
         } else {
             alert('未选择');
@@ -129,7 +131,7 @@ $(document).ready(function () {
             data: {
                 'in_date': $('.in_date_input').val(),
                 'in_amount': $('.in_amount_input').val(),
-                'order_no': $('.order_no_input').val()
+                'order_no': $('.in_order_no_input').val()
             },
             success: function (data) {
                 if (data == '1') {
@@ -149,7 +151,7 @@ $(document).ready(function () {
                 'serious_no': $('.in_serious_no_input').val(),
                 'in_date': $('.in_date_input').val(),
                 'in_amount': $('.in_amount_input').val(),
-                'order_no': $('.order_no_input').val()
+                'order_no': $('.in_order_no_input').val()
             },
             success: function (data) {
                 if (data == '1') {
@@ -164,7 +166,11 @@ $(document).ready(function () {
 
     $('.addOutBtn').on('click', function (event) {
         event.preventDefault();
-        addOut();
+        if (actionFlag == 0) {
+            addOut();
+        } else {
+            editOut();
+        }
     });
 
     function addOut() {
@@ -175,7 +181,7 @@ $(document).ready(function () {
                 'out_amount': $('.out_amount_input').val(),
                 'receive_amount': $('.receive_amount_input').val(),
                 'receive_type': $('.receive_type_input').val(),
-                'order_no': $('.order_no_input').val()
+                'order_no': $('.out_order_no_input').val()
             },
             success: function (data) {
                 if (data == '1') {
@@ -188,19 +194,16 @@ $(document).ready(function () {
         });
     }
 
-    function editCZXX() {
+    function editOut() {
         $.ajax({
-            url: '{:U('CZXX/editCZXX')}',
+            url: '{:U('KCXX/editOut')}',
             data: {
-                'loan_no': $('.loan_no_input').val(),
-                'supplier': $('.supplier_input').val(),
-                'loan_amount': $('.loan_amount_input').val(),
-                'loan_type': $('.loan_type_input').val(),
-                'init_security_amount': $('.init_security_amount_input').val(),
-                'loan_date': $('.loan_date_input').val(),
-                'loan_end_date': $('.loan_end_date_input').val(),
-                'currency': $('.currency_input').val(),
-                'end_flag': $('.end_flag_input').val()
+                'serious_no': $('.out_serious_no_input').val(),
+                'out_date': $('.out_date_input').val(),
+                'out_amount': $('.out_amount_input').val(),
+                'receive_amount': $('.receive_amount_input').val(),
+                'receive_type': $('.receive_type_input').val(),
+                'order_no': $('.out_order_no_input').val()
             },
             success: function (data) {
                 if (data == '1') {

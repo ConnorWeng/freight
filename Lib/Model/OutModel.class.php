@@ -24,6 +24,18 @@ class OutModel extends Model {
         return $this->add($data);
     }
 
+    public function editOut($seriousNo, $outDate, $outAmount, $receiveAmount, $receiveType, $orderNo, $operUserId) {
+        $where['serious_no'] = $seriousNo;
+        $data['out_date'] = $outDate;
+        $data['out_amount'] = $outAmount;
+        $data['receive_amount'] = $receiveAmount;
+        $data['receive_type'] = $receiveType;
+        $data['order_no'] = $orderNo;
+        $data['build_date'] = date('m/d/Y');
+        $data['oper_user_id'] = $operUserId;
+        return $this->where($where)->save($data);
+    }
+
 }
 
 ?>
