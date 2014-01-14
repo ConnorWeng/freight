@@ -61,7 +61,13 @@ $(document).ready(function () {
             var ht = $('#kcxxtable').data('handsontable'),
                 row = $radio.attr('row'),
                 rowData = ht.getDataAtRow(row);
-            if (rowData['IN_AMOUNT'] == '' || rowData['IN_AMOUNT'] == null) {
+            if (isIn(rowDataffff)) {
+                $('.in_date_input').val(rowData['IN_DATE']);
+                $('.in_amount_input').val(rowData['IN_AMOUNT']);
+                $('.in_order_no_input').val(rowData['ORDER_NO']);
+                $('.in_serious_no_input').val(rowData['SERIOUS_NO']);
+                $('#addModal').modal();
+            } else {
                 $('.out_date_input').val(rowData['OUT_DATE']);
                 $('.out_amount_input').val(rowData['OUT_AMOUNT']);
                 $('.receive_amount_input').val(rowData['RECEIVE_AMOUNT']);
@@ -69,31 +75,10 @@ $(document).ready(function () {
                 $('.out_order_no_input').val(rowData['ORDER_NO']);
                 $('.out_serious_no_input').val(rowData['SERIOUS_NO']);
                 $('#addOutModal').modal();
-            } else {
-                $('.in_date_input').val(rowData['IN_DATE']);
-                $('.in_amount_input').val(rowData['IN_AMOUNT']);
-                $('.in_order_no_input').val(rowData['ORDER_NO']);
-                $('.in_serious_no_input').val(rowData['SERIOUS_NO']);
-                $('#addModal').modal();
             }
         } else {
             alert('未选择');
             return false;
-        }
-    });
-
-    $('.del').on('click', function (event) {
-        event.preventDefault();
-        var $radio = $('input[name=czxx-radio]:checked');
-        if ($radio.length > 0) {
-            var ht = $('#czxxtable').data('handsontable'),
-            row = $radio.attr('row'),
-            rowData = ht.getDataAtRow(row);
-            if (confirm('确认删除？')) {
-                delCZXX(rowData['LOAN_NO']);
-            }
-        } else {
-            alert('未选择');
         }
     });
 
@@ -216,11 +201,30 @@ $(document).ready(function () {
         });
     }
 
-    function delCZXX(loanNo) {
+    $('.del').on('click', function (event) {
+        event.preventDefault();
+        var $radio = $('input[name=czxx-radio]:checked');
+        if ($radio.length > 0) {
+            var ht = $('#kcxxtable').data('handsontable'),
+            row = $radio.attr('row'),
+            rowData = ht.getDataAtRow(row);
+            if (confirm('确认删除？')) {
+                if (isIn(rowData)) {
+                    delIn(rowData['SERIOUS_NO']);
+                } else {
+                    delOut(rowData['SERIOUS_NO']);
+                }
+            }
+        } else {
+            alert('未选择');
+        }
+    });
+
+    function delIn(seriousNo) {
         $.ajax({
-            url: '{:U('CZXX/delCZXX')}',
+            url: '{:U('KCXX/delIn')}',
             data: {
-                'loan_no': loanNo
+                'serious_no': seriousNo
             },
             success: function (data) {
                 if (data == '1') {
@@ -231,6 +235,31 @@ $(document).ready(function () {
                 }
             }
         });
+    }
+
+    function delOut(seriousNo) {
+        $.ajax({
+            url: '{:U('KCXX/delOut')}',
+            data: {
+                'serious_no': seriousNo
+            },
+            success: function (data) {
+                if (data == '1') {
+                    alert('删除成功');
+                    $('.search-btn').click();
+                } else {
+                    alert('删除失败');
+                }
+            }
+        });
+    }
+
+    function isIn(rowData) {
+        if (rowData['IN_AMOUNT'] == '' || rowData['IN_AMOUNT'] == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 });

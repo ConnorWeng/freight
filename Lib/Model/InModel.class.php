@@ -32,6 +32,11 @@ class InModel extends Model {
         return $this->where($where)->save($data);
     }
 
+    public function delIn($seriousNo) {
+        $where['serious_no'] = $seriousNo;
+        return $this->where($where)->delete();
+    }
+
 }
 
 ?>
