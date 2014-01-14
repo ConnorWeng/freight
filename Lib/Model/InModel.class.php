@@ -22,6 +22,16 @@ class InModel extends Model {
         return $this->add($data);
     }
 
+    public function editIn($seriousNo, $inDate, $inAmount, $orderNo, $operUserId) {
+        $where['serious_no'] = $seriousNo;
+        $data['in_date'] = $inDate;
+        $data['in_amount'] = $inAmount;
+        $data['order_no'] = $orderNo;
+        $data['build_date'] = date('m/d/Y');
+        $data['oper_user_id'] = $operUserId;
+        return $this->where($where)->save($data);
+    }
+
 }
 
 ?>
