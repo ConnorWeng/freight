@@ -1,0 +1,197 @@
+<script type="text/javascript" src="__PUBLIC__/datepicker/js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/datepicker/css/datepicker.css" type="text/css" media="screen" />
+<script>
+$(document).ready(function () {
+    var actionFlag = 0;
+
+    $('.handsontable').handsontable({
+        startRows: 0,
+        columnSorting: true,
+        colHeaders: function (col) {
+            switch (col) {
+            case 0:
+                return '选择';
+            case 1:
+                return '经销商';
+            case 2:
+                return '核心厂商';
+            case 3:
+                return '订单编号';
+            case 4:
+                return '下单日期';
+            case 5:
+                return '订单金额';
+            case 6:
+                return '订单描述';
+            case 7:
+                return '初始保证金';
+            case 8:
+                return '融资标识';
+            case 9:
+                return '融资日期';
+            case 10:
+                return '融资金额';
+            case 11:
+                return '融资到期日';
+            case 12:
+                return '赎货到期日';
+            case 13:
+                return '订单状态';
+            }
+        },
+        columns: [{renderer: radioRenderer}, {data: 'BUYER_ID'}, {data: 'SELLER_NAME'},
+                  {data: 'ORDER_NO'}, {data: 'ORDER_DATE'}, {data: 'ORDER_AMOUNT'},
+                  {data: 'ORDER_DESC'}, {data: 'INIT_SECURITY_AMOUNT'}, {data: 'LOAN_FLAG'},
+                  {data: ''}, {data: ''}, {data: ''},
+                  {data: ''}, {data: 'STATUS'}],
+        contextMenu: false
+    });
+
+    $('.order_date_input').datepicker({
+        format: 'mm/dd/yyyy'
+    });
+
+    $('.search-btn').on('click', function (event) {
+        event.preventDefault();
+        $.ajax({
+            url: '{:U('CZXX/searchCZXX')}',
+            data: {
+                'supplier': $('.supplier').val(),
+                'loan_type': $('.loan_type').val(),
+                'loan_date': $('.loan_date').val(),
+                'loan_end_date': $('.loan_end_date').val(),
+                'currency': $('.currency').val(),
+                'end_flag': $('.end_flag').val()
+            },
+            success: function (data) {
+                console.log(data);
+                var table = $('.handsontable').data('handsontable');
+                table.loadData(data);
+            }
+        });
+    });
+
+    $('.add').on('click', function (event) {
+        event.preventDefault();
+        actionFlag = 0;
+    });
+
+    $('.edit').on('click', function (event) {
+        event.preventDefault();
+        actionFlag = 1;
+        var $radio = $('input[name=czxx-radio]:checked');
+        if ($radio.length > 0) {
+            var ht = $('#czxxtable').data('handsontable'),
+            row = $radio.attr('row'),
+            rowData = ht.getDataAtRow(row);
+            $('.loan_no_input').val(rowData['LOAN_NO']);
+            $('.supplier_input').val(rowData['SUPPLIER']);
+            $('.loan_amount_input').val(rowData['LOAN_AMOUNT']);
+            $('.loan_type_input').val(rowData['LOAN_TYPE']);
+            $('.init_security_amount_input').val(rowData['INIT_SECURITY_AMOUNT']);
+            $('.loan_date_input').val(rowData['LOAN_DATE']);
+            $('.loan_end_date_input').val(rowData['LOAN_END_DATE']);
+            $('.currency_input').val(rowData['CURRENCY']);
+            $('.end_flag_input').val(rowData['END_FLAG']);
+        } else {
+            alert('未选择');
+            return false;
+        }
+    });
+
+    $('.del').on('click', function (event) {
+        event.preventDefault();
+        var $radio = $('input[name=czxx-radio]:checked');
+        if ($radio.length > 0) {
+            var ht = $('#czxxtable').data('handsontable'),
+            row = $radio.attr('row'),
+            rowData = ht.getDataAtRow(row);
+            if (confirm('确认删除？')) {
+                delCZXX(rowData['LOAN_NO']);
+            }
+        } else {
+            alert('未选择');
+        }
+    });
+
+    $('.addbtn').on('click', function (event) {
+        event.preventDefault();
+        switch (actionFlag) {
+        case 0:
+            addCZXX();
+            break;
+        case 1:
+            editCZXX();
+            break;
+        }
+    });
+
+    function addCZXX() {
+        $.ajax({
+            url: '{:U('CZXX/addCZXX')}',
+            data: {
+                'loan_no': $('.loan_no_input').val(),
+                'supplier': $('.supplier_input').val(),
+                'loan_amount': $('.loan_amount_input').val(),
+                'loan_type': $('.loan_type_input').val(),
+                'init_security_amount': $('.init_security_amount_input').val(),
+                'loan_date': $('.loan_date_input').val(),
+                'loan_end_date': $('.loan_end_date_input').val(),
+                'currency': $('.currency_input').val(),
+                'end_flag': $('.end_flag_input').val()
+            },
+            success: function (data) {
+                if (data == '1') {
+                    alert('新增成功');
+                    $('.search-btn').click();
+                } else {
+                    alert('新增失败');
+                }
+            }
+        });
+    }
+
+    function editCZXX() {
+        $.ajax({
+            url: '{:U('CZXX/editCZXX')}',
+            data: {
+                'loan_no': $('.loan_no_input').val(),
+                'supplier': $('.supplier_input').val(),
+                'loan_amount': $('.loan_amount_input').val(),
+                'loan_type': $('.loan_type_input').val(),
+                'init_security_amount': $('.init_security_amount_input').val(),
+                'loan_date': $('.loan_date_input').val(),
+                'loan_end_date': $('.loan_end_date_input').val(),
+                'currency': $('.currency_input').val(),
+                'end_flag': $('.end_flag_input').val()
+            },
+            success: function (data) {
+                if (data == '1') {
+                    alert('修改成功');
+                    $('.search-btn').click();
+                } else {
+                    alert('修改失败');
+                }
+            }
+        });
+    }
+
+    function delCZXX(loanNo) {
+        $.ajax({
+            url: '{:U('CZXX/delCZXX')}',
+            data: {
+                'loan_no': loanNo
+            },
+            success: function (data) {
+                if (data == '1') {
+                    alert('删除成功');
+                    $('.search-btn').click();
+                } else {
+                    alert('删除失败');
+                }
+            }
+        });
+    }
+
+});
+</script>
