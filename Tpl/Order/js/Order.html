@@ -41,7 +41,7 @@ $(document).ready(function () {
         },
         columns: [{renderer: radioRenderer}, {data: 'BUYER_ID'}, {data: 'SELLER_NAME'},
                   {data: 'ORDER_NO'}, {data: 'ORDER_DATE'}, {data: 'ORDER_AMOUNT'},
-                  {data: 'ORDER_DESC'}, {data: 'INIT_SECURITY_AMOUNT'}, {data: 'LOAN_FLAG'},
+                  {data: 'ORDER_DESC'}, {data: 'INIT_SECURITY_AMOUNT'}, {data: 'LOAN_FLAG', renderer: loanFlagRenderer},
                   {data: ''}, {data: ''}, {data: ''},
                   {data: ''}, {data: 'STATUS'}],
         contextMenu: false
@@ -54,14 +54,13 @@ $(document).ready(function () {
     $('.search-btn').on('click', function (event) {
         event.preventDefault();
         $.ajax({
-            url: '{:U('CZXX/searchCZXX')}',
+            url: '{:U('Order/searchOrder')}',
             data: {
-                'supplier': $('.supplier').val(),
-                'loan_type': $('.loan_type').val(),
-                'loan_date': $('.loan_date').val(),
-                'loan_end_date': $('.loan_end_date').val(),
-                'currency': $('.currency').val(),
-                'end_flag': $('.end_flag').val()
+                'order_no': $('.order_no').val(),
+                'buyer_id': $('.buyer_id').val(),
+                'supplier_id': $('.supplier_id').val(),
+                'loan_flag': $('.loan_flag').val(),
+                'status': $('.status').val()
             },
             success: function (data) {
                 console.log(data);
@@ -118,7 +117,7 @@ $(document).ready(function () {
         event.preventDefault();
         switch (actionFlag) {
         case 0:
-            addCZXX();
+            addOrder();
             break;
         case 1:
             editCZXX();
@@ -126,19 +125,21 @@ $(document).ready(function () {
         }
     });
 
-    function addCZXX() {
+    function addOrder() {
         $.ajax({
-            url: '{:U('CZXX/addCZXX')}',
+            url: '{:U('Order/addOrder')}',
             data: {
+                'order_no': $('.order_no_input').val(),
+                'buyer_id': $('.buyer_id_input').val(),
+                'supplier_id': $('.supplier_id_input').val(),
+                'seller_name': $('.seller_name_input').val(),
+                'order_date': $('.order_date_input').val(),
+                'order_amount': $('.order_amount_input').val(),
+                'order_desc': $('.order_desc_input').val(),
+                'loan_flag': $('.loan_flag_input').val(),
                 'loan_no': $('.loan_no_input').val(),
-                'supplier': $('.supplier_input').val(),
-                'loan_amount': $('.loan_amount_input').val(),
-                'loan_type': $('.loan_type_input').val(),
                 'init_security_amount': $('.init_security_amount_input').val(),
-                'loan_date': $('.loan_date_input').val(),
-                'loan_end_date': $('.loan_end_date_input').val(),
-                'currency': $('.currency_input').val(),
-                'end_flag': $('.end_flag_input').val()
+                'status': $('.status_input').val()
             },
             success: function (data) {
                 if (data == '1') {
