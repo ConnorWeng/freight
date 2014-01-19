@@ -43,7 +43,7 @@ $(document).ready(function () {
                   {data: 'ORDER_NO'}, {data: 'ORDER_DATE'}, {data: 'ORDER_AMOUNT'},
                   {data: 'ORDER_DESC'}, {data: 'INIT_SECURITY_AMOUNT'}, {data: 'LOAN_FLAG', renderer: loanFlagRenderer},
                   {data: ''}, {data: ''}, {data: ''},
-                  {data: ''}, {data: 'STATUS'}],
+                  {data: ''}, {data: 'STATUS', renderer: orderStatusRenderer}],
         contextMenu: false
     });
 

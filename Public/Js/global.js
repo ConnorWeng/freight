@@ -53,6 +53,17 @@ function loanFlagRenderer(instance, td, row, col, prop, value, cellProperties) {
     }
 }
 
+function orderStatusRenderer(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.TextCell.renderer.apply(this, arguments);
+    var text = $(td).text(),
+        $td = $(td);
+    if (text == '0') {
+        $td.text('未执行');
+    } else {
+        $td.text('已执行');
+    }
+}
+
 function radioRenderer(instance, td, row, col, prop, value, cellProperties) {
     Handsontable.TextCell.renderer.apply(this, arguments);
     $(td).html('<input type="radio" name="czxx-radio" row="' + row + '" col="' + col + '" />');
