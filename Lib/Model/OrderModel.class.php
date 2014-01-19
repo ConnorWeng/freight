@@ -38,6 +38,21 @@ class OrderModel extends Model {
        return $this->add($data);
     }
 
+    public function editOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag,  $loanNo, $initSecurityAmount, $status) {
+       $where['order_no'] = $orderNo;
+       $data['buyer_id'] = $buyerId;
+       $data['supplier_id'] = $supplierId;
+       $data['seller_name'] = $sellerName;
+       $data['order_date'] = $orderDate;
+       $data['order_amount'] = $orderAmount;
+       $data['order_desc'] = $orderDesc;
+       $data['loan_flag'] = $loanFlag;
+       $data['loan_no'] = $loanNo;
+       $data['init_security_amount'] = $initSecurityAmount;
+       $data['status'] = $status;
+       return $this->where($where)->save($data);
+    }
+
 }
 
 ?>

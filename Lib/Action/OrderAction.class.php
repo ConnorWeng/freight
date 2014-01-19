@@ -43,6 +43,22 @@ class OrderAction extends CommonAction {
         $this->ajaxReturn($rs, 'JSON');
     }
 
+    public function editOrder() {
+        $orderNo = I('order_no');
+        $buyerId = I('buyer_id');
+        $supplierId = I('supplier_id');
+        $sellerName = I('seller_name');
+        $orderDate = I('order_date');
+        $orderAmount = I('order_amount');
+        $orderDesc = I('order_desc');
+        $loanFlag = I('loan_flag');
+        $loanNo = I('loan_no');
+        $initSecurityAmount = I('init_security_amount');
+        $status = I('status');
+        $rs = $this->orderModel->editOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag,  $loanNo, $initSecurityAmount, $status);
+        $this->ajaxReturn($rs, 'JSON');
+    }
+
 }
 
 ?>

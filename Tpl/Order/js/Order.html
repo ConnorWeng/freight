@@ -80,18 +80,20 @@ $(document).ready(function () {
         actionFlag = 1;
         var $radio = $('input[name=czxx-radio]:checked');
         if ($radio.length > 0) {
-            var ht = $('#czxxtable').data('handsontable'),
+            var ht = $('#ordertable').data('handsontable'),
             row = $radio.attr('row'),
             rowData = ht.getDataAtRow(row);
+            $('.order_no_input').val(rowData['ORDER_NO']);
+            $('.buyer_id_input').val(rowData['BUYER_ID']);
+            $('.supplier_id_input').val(rowData['SUPPLIER_ID']);
+            $('.seller_name_input').val(rowData['SELLER_NAME']);
+            $('.order_date_input').val(rowData['ORDER_DATE']);
+            $('.order_amount_input').val(rowData['ORDER_AMOUNT']);
+            $('.order_desc_input').val(rowData['ORDER_DESC']);
+            $('.loan_flag_input').val(rowData['LOAN_FLAG']);
             $('.loan_no_input').val(rowData['LOAN_NO']);
-            $('.supplier_input').val(rowData['SUPPLIER']);
-            $('.loan_amount_input').val(rowData['LOAN_AMOUNT']);
-            $('.loan_type_input').val(rowData['LOAN_TYPE']);
             $('.init_security_amount_input').val(rowData['INIT_SECURITY_AMOUNT']);
-            $('.loan_date_input').val(rowData['LOAN_DATE']);
-            $('.loan_end_date_input').val(rowData['LOAN_END_DATE']);
-            $('.currency_input').val(rowData['CURRENCY']);
-            $('.end_flag_input').val(rowData['END_FLAG']);
+            $('.status_input').val(rowData['STATUS']);
         } else {
             alert('未选择');
             return false;
@@ -120,7 +122,7 @@ $(document).ready(function () {
             addOrder();
             break;
         case 1:
-            editCZXX();
+            editOrder();
             break;
         }
     });
@@ -152,19 +154,21 @@ $(document).ready(function () {
         });
     }
 
-    function editCZXX() {
+    function editOrder() {
         $.ajax({
-            url: '{:U('CZXX/editCZXX')}',
+            url: '{:U('Order/editOrder')}',
             data: {
+                'order_no': $('.order_no_input').val(),
+                'buyer_id': $('.buyer_id_input').val(),
+                'supplier_id': $('.supplier_id_input').val(),
+                'seller_name': $('.seller_name_input').val(),
+                'order_date': $('.order_date_input').val(),
+                'order_amount': $('.order_amount_input').val(),
+                'order_desc': $('.order_desc_input').val(),
+                'loan_flag': $('.loan_flag_input').val(),
                 'loan_no': $('.loan_no_input').val(),
-                'supplier': $('.supplier_input').val(),
-                'loan_amount': $('.loan_amount_input').val(),
-                'loan_type': $('.loan_type_input').val(),
                 'init_security_amount': $('.init_security_amount_input').val(),
-                'loan_date': $('.loan_date_input').val(),
-                'loan_end_date': $('.loan_end_date_input').val(),
-                'currency': $('.currency_input').val(),
-                'end_flag': $('.end_flag_input').val()
+                'status': $('.status_input').val()
             },
             success: function (data) {
                 if (data == '1') {
