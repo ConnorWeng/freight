@@ -59,6 +59,12 @@ class OrderAction extends CommonAction {
         $this->ajaxReturn($rs, 'JSON');
     }
 
+    public function delOrder() {
+        $orderNo = I('order_no');
+        $rs = $this->orderModel->delOrder($orderNo);
+        $this->ajaxReturn($rs, 'JSON');
+    }
+
 }
 
 ?>

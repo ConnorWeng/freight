@@ -104,11 +104,11 @@ $(document).ready(function () {
         event.preventDefault();
         var $radio = $('input[name=czxx-radio]:checked');
         if ($radio.length > 0) {
-            var ht = $('#czxxtable').data('handsontable'),
+            var ht = $('#ordertable').data('handsontable'),
             row = $radio.attr('row'),
             rowData = ht.getDataAtRow(row);
             if (confirm('确认删除？')) {
-                delCZXX(rowData['LOAN_NO']);
+                delOrder(rowData['ORDER_NO']);
             }
         } else {
             alert('未选择');
@@ -181,11 +181,11 @@ $(document).ready(function () {
         });
     }
 
-    function delCZXX(loanNo) {
+    function delOrder(orderNo) {
         $.ajax({
-            url: '{:U('CZXX/delCZXX')}',
+            url: '{:U('Order/delOrder')}',
             data: {
-                'loan_no': loanNo
+                'order_no': orderNo
             },
             success: function (data) {
                 if (data == '1') {

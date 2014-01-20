@@ -53,6 +53,11 @@ class OrderModel extends Model {
        return $this->where($where)->save($data);
     }
 
+    public function delOrder($orderNo) {
+        $where['order_no'] = $orderNo;
+        return $this->where($where)->delete();
+    }
+
 }
 
 ?>
