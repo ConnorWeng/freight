@@ -51,6 +51,10 @@ $(document).ready(function () {
         format: 'mm/dd/yyyy'
     });
 
+    $('.order_no').autocomplete({
+        source: '{:U('Order/getOrderNos')}'
+    });
+
     $('.search-btn').on('click', function (event) {
         event.preventDefault();
         $.ajax({

@@ -58,6 +58,10 @@ class OrderModel extends Model {
         return $this->where($where)->delete();
     }
 
+    public function getOrderNos() {
+        return $this->getField('ORDER_NO', true);
+    }
+
 }
 
 ?>
