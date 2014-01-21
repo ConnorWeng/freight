@@ -53,6 +53,18 @@ $(document).ready(function () {
         actionFlag = 0;
     });
 
+    $('.order_no').autocomplete({
+        source: '{:U('Order/getOrderNos')}'
+    });
+
+    $('.in_order_no_input').autocomplete({
+        source: '{:U('Order/getOrderNos')}'
+    });
+
+    $('.out_order_no_input').autocomplete({
+        source: '{:U('Order/getOrderNos')}'
+    });
+
     $('.edit').on('click', function (event) {
         event.preventDefault();
         actionFlag = 1;

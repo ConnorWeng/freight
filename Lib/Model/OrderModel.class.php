@@ -58,8 +58,9 @@ class OrderModel extends Model {
         return $this->where($where)->delete();
     }
 
-    public function getOrderNos() {
-        return $this->getField('ORDER_NO', true);
+    public function getOrderNos($term) {
+        $sql = "select order_no from freight_order where order_no like '%$term%'";
+        return $this->db->query($sql);
     }
 
 }

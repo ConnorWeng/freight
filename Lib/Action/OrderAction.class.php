@@ -66,10 +66,11 @@ class OrderAction extends CommonAction {
     }
 
     public function getOrderNos() {
-        $rs = $this->orderModel->getOrderNos();
+        $term = I('term');
+        $rs = $this->orderModel->getOrderNos($term);
         $result = array();
-        foreach ($rs as $key) {
-            array_push($result, array('label' => $key, 'value' => $value));
+        foreach ($rs as $row) {
+            array_push($result, $row['ORDER_NO']);
         }
         $this->ajaxReturn($result, 'JSON');
     }

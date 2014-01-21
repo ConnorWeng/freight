@@ -55,6 +55,10 @@ $(document).ready(function () {
         source: '{:U('Order/getOrderNos')}'
     });
 
+    $('.order_no_input').autocomplete({
+        source: '{:U('Order/getOrderNos')}'
+    });
+
     $('.search-btn').on('click', function (event) {
         event.preventDefault();
         $.ajax({
