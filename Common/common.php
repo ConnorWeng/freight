@@ -146,6 +146,7 @@ function supplierToId($supplier) {
 function fillKCArrayFields($kcArray) {
     $fields = array(
         'SERIOUS_NO' => '',
+        'BUYER' => '',
         'OUT_DATE' => '',
         'OUT_AMOUNT' => '',
         'RECEIVE_AMOUNT' => '',

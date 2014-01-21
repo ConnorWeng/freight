@@ -33,7 +33,7 @@ $(document).ready(function () {
         },
         columns: [{renderer: radioRenderer}, {data: 'BUILD_DATE'}, {renderer: inOutTypeRenderer}, {data: 'IN_AMOUNT'},
                   {data: 'OUT_AMOUNT'}, {data: 'RECEIVE_AMOUNT'}, {data: ''},
-                  {data: ''}, {data: 'ORDER_NO'}, {data: ''}],
+                  {data: ''}, {data: 'ORDER_NO'}, {data: 'BUYER'}],
         contextMenu: false
     });
 
@@ -104,7 +104,7 @@ $(document).ready(function () {
             url: '{:U('KCXX/query')}',
             data: {
                 'in_out_type': $('.in_out_type').val(),
-                'order_no': $('order_no').val()
+                'order_no': $('.order_no').val()
             },
             success: function (data) {
                 var table = $('.handsontable').data('handsontable');
