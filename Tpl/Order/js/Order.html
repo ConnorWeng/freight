@@ -39,7 +39,7 @@ $(document).ready(function () {
                 return '订单状态';
             }
         },
-        columns: [{renderer: radioRenderer}, {data: 'BUYER_ID'}, {data: 'SELLER_NAME'},
+        columns: [{renderer: radioRenderer}, {data: 'BUYER'}, {data: 'SELLER_NAME'},
                   {data: 'ORDER_NO'}, {data: 'ORDER_DATE'}, {data: 'ORDER_AMOUNT'},
                   {data: 'ORDER_DESC'}, {data: 'INIT_SECURITY_AMOUNT'}, {data: 'LOAN_FLAG', renderer: loanFlagRenderer},
                   {data: ''}, {data: ''}, {data: ''},
@@ -65,8 +65,8 @@ $(document).ready(function () {
             url: '{:U('Order/searchOrder')}',
             data: {
                 'order_no': $('.order_no').val(),
-                'buyer_id': $('.buyer_id').val(),
-                'supplier_id': $('.supplier_id').val(),
+                'buyer': $('.buyer').val(),
+                'supplier': $('.supplier').val(),
                 'loan_flag': $('.loan_flag').val(),
                 'status': $('.status').val()
             },
@@ -92,8 +92,8 @@ $(document).ready(function () {
             row = $radio.attr('row'),
             rowData = ht.getDataAtRow(row);
             $('.order_no_input').val(rowData['ORDER_NO']);
-            $('.buyer_id_input').val(rowData['BUYER_ID']);
-            $('.supplier_id_input').val(rowData['SUPPLIER_ID']);
+            $('.buyer_input').val(rowData['BUYER']);
+            $('.supplier_input').val(rowData['SUPPLIER']);
             $('.seller_name_input').val(rowData['SELLER_NAME']);
             $('.order_date_input').val(rowData['ORDER_DATE']);
             $('.order_amount_input').val(rowData['ORDER_AMOUNT']);
@@ -140,8 +140,8 @@ $(document).ready(function () {
             url: '{:U('Order/addOrder')}',
             data: {
                 'order_no': $('.order_no_input').val(),
-                'buyer_id': $('.buyer_id_input').val(),
-                'supplier_id': $('.supplier_id_input').val(),
+                'buyer': $('.buyer_input').val(),
+                'supplier': $('.supplier_input').val(),
                 'seller_name': $('.seller_name_input').val(),
                 'order_date': $('.order_date_input').val(),
                 'order_amount': $('.order_amount_input').val(),
@@ -167,8 +167,8 @@ $(document).ready(function () {
             url: '{:U('Order/editOrder')}',
             data: {
                 'order_no': $('.order_no_input').val(),
-                'buyer_id': $('.buyer_id_input').val(),
-                'supplier_id': $('.supplier_id_input').val(),
+                'buyer': $('.buyer_input').val(),
+                'supplier': $('.supplier_input').val(),
                 'seller_name': $('.seller_name_input').val(),
                 'order_date': $('.order_date_input').val(),
                 'order_amount': $('.order_amount_input').val(),

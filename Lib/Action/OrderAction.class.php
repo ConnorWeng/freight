@@ -19,8 +19,8 @@ class OrderAction extends CommonAction {
 
     public function searchOrder() {
         $orderNo = I('order_no');
-        $buyerId = I('buyer_id');
-        $supplierId = I('supplier_id');
+        $buyerId = enterpriseNameToId(I('buyer'));
+        $supplierId = enterpriseNameToId(I('supplier'));
         $loanFlag = I('loan_flag');
         $status = I('status');
         $rs = $this->orderModel->searchOrder($orderNo, $buyerId, $supplierId, $loanFlag, $status);
@@ -29,8 +29,8 @@ class OrderAction extends CommonAction {
 
     public function addOrder() {
         $orderNo = I('order_no');
-        $buyerId = I('buyer_id');
-        $supplierId = I('supplier_id');
+        $buyerId = enterpriseNameToId(I('buyer'));
+        $supplierId = enterpriseNameToId(I('supplier'));
         $sellerName = I('seller_name');
         $orderDate = I('order_date');
         $orderAmount = I('order_amount');
@@ -45,8 +45,8 @@ class OrderAction extends CommonAction {
 
     public function editOrder() {
         $orderNo = I('order_no');
-        $buyerId = I('buyer_id');
-        $supplierId = I('supplier_id');
+        $buyerId = enterpriseNameToId(I('buyer'));
+        $supplierId = enterpriseNameToId(I('supplier'));
         $sellerName = I('seller_name');
         $orderDate = I('order_date');
         $orderAmount = I('order_amount');
