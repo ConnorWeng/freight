@@ -13,6 +13,10 @@ $(document).ready(function () {
         contextMenu: true
     });
 
+    $('.search-input').autocomplete({
+        source: '{:U('Common/queryEnterprises')}'
+    });
+
     function linkRenderer(instance, td, row, col, prop, value, cellProperties) {
         Handsontable.TextCell.renderer.apply(this, arguments);
         $(td).html('<a href="#">查看应收账款明细</a>');

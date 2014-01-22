@@ -12,6 +12,18 @@ class CommonAction extends Action {
         ));
     }
 
+    public function queryEnterprises() {
+        $type = I('type');
+        $term = I('term');
+        $userModel = D('User');
+        $rs = $userModel->queryEnterprises($type, $term);
+        $result = array();
+        foreach ($rs as $row) {
+            array_push($result, $row['ENTERPRISE_NAME']);
+        }
+        $this->ajaxReturn($result, 'JSON');
+    }
+
 }
 
 ?>

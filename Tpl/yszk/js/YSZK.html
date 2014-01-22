@@ -42,6 +42,10 @@ $(document).ready(function () {
   });
   /* end datepicker */
 
+  $('.l_f_supplier').autocomplete({
+      source: '{:U('Common/queryEnterprises')}'
+  });
+
   /* query */
   $('.search-btn').on('click', function (event) {
       event.preventDefault();

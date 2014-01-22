@@ -53,6 +53,14 @@ $(document).ready(function () {
       format: 'mm/dd/yyyy'
   });
 
+  $('.supplier').autocomplete({
+      source: '{:U('Common/queryEnterprises')}'
+  });
+
+  $('.supplier_input').autocomplete({
+      source: '{:U('Common/queryEnterprises')}'
+  });
+
   $('.search-btn').on('click', function (event) {
       event.preventDefault();
       $.ajax({

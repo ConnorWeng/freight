@@ -20,6 +20,11 @@ class UserModel extends Model {
         return $this->where($where)->find();
     }
 
+    public function queryEnterprises($type, $term) {
+        $sql = "select enterprise_name from freight_user where usertype like '%$type%' and enterprise_name like '%$term%'";
+        return $this->db->query($sql);
+    }
+
 }
 
 ?>
