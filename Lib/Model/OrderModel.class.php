@@ -9,7 +9,7 @@ class OrderModel extends Model {
         return $this->db->query($sql);
     }
 
-    public function addOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag,  $loanNo, $initSecurityAmount, $status) {
+    public function addOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag,  $loanNo, $initSecurityAmount, $status, $operUserId) {
        $data['order_no'] = $orderNo;
        $data['buyer_id'] = $buyerId;
        $data['supplier_id'] = $supplierId;
@@ -21,10 +21,12 @@ class OrderModel extends Model {
        $data['loan_no'] = $loanNo;
        $data['init_security_amount'] = $initSecurityAmount;
        $data['status'] = $status;
+       $data['build_date'] = date('m/d/Y');
+       $data['oper_user_id'] = $operUserId;
        return $this->add($data);
     }
 
-    public function editOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag,  $loanNo, $initSecurityAmount, $status) {
+    public function editOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag,  $loanNo, $initSecurityAmount, $status, $operUserId) {
        $where['order_no'] = $orderNo;
        $data['buyer_id'] = $buyerId;
        $data['supplier_id'] = $supplierId;
@@ -36,6 +38,8 @@ class OrderModel extends Model {
        $data['loan_no'] = $loanNo;
        $data['init_security_amount'] = $initSecurityAmount;
        $data['status'] = $status;
+       $data['modify_date'] = date('m/d/Y');
+       $data['oper_user_id'] = $operUserId;
        return $this->where($where)->save($data);
     }
 

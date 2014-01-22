@@ -39,7 +39,8 @@ class OrderAction extends CommonAction {
         $loanNo = I('loan_no');
         $initSecurityAmount = I('init_security_amount');
         $status = I('status');
-        $rs = $this->orderModel->addOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag,  $loanNo, $initSecurityAmount, $status);
+        $operUserId = session('user')['ID'];
+        $rs = $this->orderModel->addOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag,  $loanNo, $initSecurityAmount, $status, $operUserId);
         $this->ajaxReturn($rs, 'JSON');
     }
 
@@ -55,7 +56,8 @@ class OrderAction extends CommonAction {
         $loanNo = I('loan_no');
         $initSecurityAmount = I('init_security_amount');
         $status = I('status');
-        $rs = $this->orderModel->editOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag,  $loanNo, $initSecurityAmount, $status);
+        $operUserId = session('user')['ID'];
+        $rs = $this->orderModel->editOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag,  $loanNo, $initSecurityAmount, $status, $operUserId);
         $this->ajaxReturn($rs, 'JSON');
     }
 
