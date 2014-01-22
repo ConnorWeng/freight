@@ -31,7 +31,7 @@ class CZXXAction extends CommonAction {
 
     public function addCZXX() {
         $loanNo = I('loan_no');
-        $supplierId = supplierToId(I('supplier'));
+        $supplierId = enterpriseNameToId(I('supplier'));
         $loanAmount = I('loan_amount');
         $loanType = I('loan_type');
         $initSecurityAmount = I('init_security_amount');
@@ -48,7 +48,7 @@ class CZXXAction extends CommonAction {
 
     public function editCZXX() {
         $loanNo = I('loan_no');
-        $supplierId = supplierToId(I('supplier'));
+        $supplierId = enterpriseNameToId(I('supplier'));
         $loanAmount = I('loan_amount');
         $loanType = I('loan_type');
         $initSecurityAmount = I('init_security_amount');

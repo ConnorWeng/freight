@@ -138,9 +138,9 @@ function currency_val($currency) {
     }
 }
 
-function supplierToId($supplier) {
+function enterpriseNameToId($enterpriseName) {
     $userModel = D('User');
-    return $userModel->queryIdByName($supplier)['ID'];
+    return $userModel->queryIdByName($enterpriseName)['ID'];
 }
 
 function fillKCArrayFields($kcArray) {
