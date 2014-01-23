@@ -222,5 +222,13 @@ $(document).ready(function () {
         });
     }
 
+    $('.export').on('click', function (event) {
+        exportExcel();
+    })
+
+    function exportExcel() {
+        $('.mainform').submit();
+    }
+
 });
 </script>

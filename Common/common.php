@@ -54,9 +54,9 @@ function exportExcel($expTitle,$expCellName,$expTableData){
     $cellName = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ');
 
     $objPHPExcel->getActiveSheet(0)->mergeCells('A1:'.$cellName[$cellNum-1].'1');//合并单元格
-    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $expTitle.'  Export time:'.date('Y-m-d H:i:s'));
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', iconv('gbk', 'utf-8', $expTitle).'  Export time:'.date('Y-m-d H:i:s'));
     for($i=0;$i<$cellNum;$i++){
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i].'2', $expCellName[$i][1]);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i].'2', iconv('gbk', 'utf-8', $expCellName[$i][1]));
     }
     // Miscellaneous glyphs, UTF-8
     for($i=0;$i<$dataNum;$i++){

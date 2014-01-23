@@ -67,6 +67,29 @@ class OrderAction extends CommonAction {
         $this->ajaxReturn($rs, 'JSON');
     }
 
+    public function export() {
+        $orderNo = I('order_no');
+        $buyerId = enterpriseNameToId(I('buyer'));
+        $supplierId = enterpriseNameToId(I('supplier'));
+        $loanFlag = I('loan_flag');
+        $status = I('status');
+        $rs = $this->orderModel->searchOrder($orderNo, $buyerId, $supplierId, $loanFlag, $status);
+        exportExcel('订单信息', array(
+            array('BUYER','经销商'),
+            array('SELLER_NAME','核心厂商'),
+            array('ORDER_NO','订单编号'),
+            array('ORDER_DATE', '下单日期'),
+            array('ORDER_AMOUNT', '订单金额'),
+            array('ORDER_DESC', '订单描述'),
+            array('INIT_SECURITY_AMOUNT', '初始保证金'),
+            array('LOAN_FLAG', '融资标识'),
+            array('', '融资日期'),
+            array('', '融资金额'),
+            array('', '融资到期日'),
+            array('', '赎货到期日'),
+            array('STATUS', '订单状态')), $rs);
+    }
+
     public function getOrderNos() {
         $term = I('term');
         $rs = $this->orderModel->getOrderNos($term);
