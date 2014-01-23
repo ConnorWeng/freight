@@ -5,7 +5,7 @@ class OutModel extends Model {
     protected $fields = array('serious_no', 'out_date', 'out_amount', 'receive_amount', 'receive_type', 'rate', 'order_no', 'build_date', 'oper_user_id');
 
     public function query($orderNo) {
-        $sql = "select i.*, u.username buyer from freight_out i, freight_order o, freight_user u where i.order_no like '%$orderNo%' and i.order_no = o.order_no and o.buyer_id = u.id";
+        $sql = "select i.*, u.enterprise_name buyer from freight_out i, freight_order o, freight_user u where i.order_no like '%$orderNo%' and i.order_no = o.order_no and o.buyer_id = u.id";
         return fillKCArrayFields($this->db->query($sql));
     }
 
