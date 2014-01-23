@@ -266,6 +266,14 @@ $(document).ready(function () {
         });
     }
 
+    $('.export').on('click', function(event) {
+        exportExcel();
+    });
+
+    function exportExcel() {
+        $('.mainform').submit();
+    }
+
     function isIn(rowData) {
         if (rowData['IN_AMOUNT'] == '' || rowData['IN_AMOUNT'] == null) {
             return false;

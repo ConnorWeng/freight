@@ -83,6 +83,32 @@ class KCXXAction extends CommonAction {
         $this->ajaxReturn($rs, 'JSON');
     }
 
+    public function export() {
+        $inOutType = I('in_out_type');
+        $orderNo = I('order_no');
+        $inList = array();
+        $outList = array();
+        if ($inOutType == 'in') {
+            $inList = $this->inModel->query($orderNo);
+        } else if ($inOutType == 'out') {
+            $outList = $this->outModel->query($orderNo);
+        } else if ($inOutType == 'all') {
+            $inList = $this->inModel->query($orderNo);
+            $outList = $this->outModel->query($orderNo);
+        }
+        $rs = array_merge($inList, $outList);
+        exportExcel('库存信息', array(
+            array('BUILD_DATE','操作日期'),
+            array('','操作类型'),
+            array('IN_AMOUNT','入库货值'),
+            array('OUT_AMOUNT', '出货货值'),
+            array('RECEIVE_AMOUNT', '订单金额'),
+            array('', '应收款金额'),
+            array('', '收款／放贷比'),
+            array('ORDER_NO', '所属订单编号'),
+            array('BUYER', '经销商')), $rs);
+    }
+
     public function delOut() {
         $seriousNo = I('serious_no');
         $rs = $this->outModel->delOut($seriousNo);
