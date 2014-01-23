@@ -68,6 +68,26 @@ class CZXXAction extends CommonAction {
         $rs = $this->czxxModel->delCZXX($loanNo);
         $this->ajaxReturn($rs, 'JSON');
     }
+
+    public function export() {
+        $supplier = I('supplier');
+        $loanType = I('loan_type');
+        $loanDate = I('loan_date');
+        $loanEndDate = I('loan_end_date');
+        $currency = I('currency');
+        $endFlag = I('end_flag');
+        $rs = $this->czxxModel->queryCZXX($supplier, $loanType, $loanDate, $loanEndDate, $currency, $endFlag);
+        exportExcel('出账信息', array(
+            array('LOAN_NO','业务编号'),
+            array('SUPPLIER','物流金融服务商'),
+            array('LOAN_AMOUNT','出账金额'),
+            array('LOAN_TYPE', '出账方式'),
+            array('INIT_SECURITY_AMOUNT', '初始保证金'),
+            array('LOAN_DATE', '出账日期'),
+            array('LOAN_END_DATE', '到期日'),
+            array('CURRENCY', '币种'),
+            array('END_FLAG', '结清标识')), $rs);
+    }
 }
 
 ?>

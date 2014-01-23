@@ -19,7 +19,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal mainform" role="form" method="POST" action="{:U('CZXX/export')}">
           <div class="form-group">
             <label for="" class="col-sm-2 control-label">物流金融服务商名称:</label>
             <div class="col-sm-4">
@@ -84,9 +84,10 @@
       <div class="col-xs-4" style="text-align: right;">
       </div>
       <div class="col-xs-4" style="text-align: center;">
-        <button style="width:30%" class="btn btn-primary add" data-toggle="modal" data-target="#addModal">新增</button>
-        <button style="width:30%" class="btn btn-primary edit" data-toggle="modal" data-target="#addModal">修改</button>
-        <button style="width:30%" class="btn btn-primary del">删除</button>
+        <button style="width:23%" class="btn btn-primary add" data-toggle="modal" data-target="#addModal">新增</button>
+        <button style="width:23%" class="btn btn-primary edit" data-toggle="modal" data-target="#addModal">修改</button>
+        <button style="width:23%" class="btn btn-primary del">删除</button>
+        <button style="width:23%" class="btn btn-primary export">导出</button>
       </div>
     </div>
 

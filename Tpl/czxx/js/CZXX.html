@@ -203,5 +203,13 @@ $(document).ready(function () {
       });
   }
 
+  $('.export').on('click', function () {
+      exportExcel();
+  });
+
+  function exportExcel() {
+      $('.mainform').submit();
+  }
+
 });
 </script>
