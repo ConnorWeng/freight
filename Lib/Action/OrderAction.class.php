@@ -74,20 +74,20 @@ class OrderAction extends CommonAction {
         $loanFlag = I('loan_flag');
         $status = I('status');
         $rs = $this->orderModel->searchOrder($orderNo, $buyerId, $supplierId, $loanFlag, $status);
-        exportExcel('¶©µ¥ĞÅÏ¢', array(
-            array('BUYER','¾­ÏúÉÌ'),
-            array('SELLER_NAME','ºËĞÄ³§ÉÌ'),
-            array('ORDER_NO','¶©µ¥±àºÅ'),
-            array('ORDER_DATE', 'ÏÂµ¥ÈÕÆÚ'),
-            array('ORDER_AMOUNT', '¶©µ¥½ğ¶î'),
-            array('ORDER_DESC', '¶©µ¥ÃèÊö'),
-            array('INIT_SECURITY_AMOUNT', '³õÊ¼±£Ö¤½ğ'),
-            array('LOAN_FLAG', 'ÈÚ×Ê±êÊ¶'),
-            array('', 'ÈÚ×ÊÈÕÆÚ'),
-            array('', 'ÈÚ×Ê½ğ¶î'),
-            array('', 'ÈÚ×Êµ½ÆÚÈÕ'),
-            array('', 'Êê»õµ½ÆÚÈÕ'),
-            array('STATUS', '¶©µ¥×´Ì¬')), $rs);
+        exportExcel('è®¢å•ä¿¡æ¯', array(
+            array('BUYER','ç»é”€å•†'),
+            array('SELLER_NAME','æ ¸å¿ƒå‚å•†'),
+            array('ORDER_NO','è®¢å•ç¼–å·'),
+            array('ORDER_DATE', 'ä¸‹å•æ—¥æœŸ'),
+            array('ORDER_AMOUNT', 'è®¢å•é‡‘é¢'),
+            array('ORDER_DESC', 'è®¢å•æè¿°'),
+            array('INIT_SECURITY_AMOUNT', 'åˆå§‹ä¿è¯é‡‘'),
+            array('LOAN_FLAG', 'èèµ„æ ‡è¯†'),
+            array('', 'èèµ„æ—¥æœŸ'),
+            array('', 'èèµ„é‡‘é¢'),
+            array('', 'èèµ„åˆ°æœŸæ—¥'),
+            array('', 'èµè´§åˆ°æœŸæ—¥'),
+            array('STATUS', 'è®¢å•çŠ¶æ€')), $rs);
     }
 
     public function getOrderNos() {
