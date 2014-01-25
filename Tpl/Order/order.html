@@ -98,17 +98,17 @@
         <h4 class="modal-title" id="addModalLabel">新增</h4>
       </div>
       <div class="modal-body">
-        <form action="{:U('YSZK/importSrExcel')}" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
+        <form action="{:U('YSZK/importSrExcel')}" method="POST" enctype="multipart/form-data" class="form-horizontal add-form" role="form">
           <div class="form-group">
             <label for="" class="col-sm-4 control-label">订单编号:</label>
             <div class="col-sm-8">
-              <input name="order_no_input" type="text" class="form-control order_no_input" placeholder="订单编号"/>
+              <input name="order_no_input" data-validation="length" data-validation-length="1-50" data-validation-error-msg="请输入有效的订单编号" type="text" class="form-control order_no_input" placeholder="订单编号"/>
             </div>
           </div>
           <div class="form-group">
             <label for="" class="col-sm-4 control-label">经销商:</label>
             <div class="col-sm-8">
-              <input name="buyer_input" type="text" class="form-control buyer_input" placeholder="经销商"/>
+              <input name="buyer_input" data-validation="length" data-validation-length="1-50" data-validation-error-msg="请输入有效的经销商名" type="text" class="form-control buyer_input" placeholder="经销商"/>
             </div>
           </div>
           <div class="form-group">
@@ -120,25 +120,25 @@
           <div class="form-group">
             <label for="" class="col-sm-4 control-label">核心厂商:</label>
             <div class="col-sm-8">
-              <input name="seller_name_input" type="text" class="form-control seller_name_input" placeholder="核心厂商"/>
+              <input name="seller_name_input" data-validation="length" data-validation-length="1-50" data-validation-error-msg="请输入有效的核心厂商名" type="text" class="form-control seller_name_input" placeholder="核心厂商"/>
             </div>
           </div>
           <div class="form-group">
             <label for="" class="col-sm-4 control-label">下单日期:</label>
             <div class="col-sm-8">
-              <input name="order_date_input" type="text" class="form-control order_date_input" placeholder="下单日期"/>
+              <input name="order_date_input" data-validation="date" data-validation-format="mm/dd/yyyy" type="text" class="form-control order_date_input" placeholder="下单日期"/>
             </div>
           </div>
           <div class="form-group">
             <label for="" class="col-sm-4 control-label">订单金额:</label>
             <div class="col-sm-8">
-              <input name="order_amount_input" type="text" class="form-control order_amount_input" placeholder="订单金额"/>
+              <input name="order_amount_input" data-validation="number" data-validation-allowing="float" type="text" class="form-control order_amount_input" placeholder="订单金额"/>
             </div>
           </div>
           <div class="form-group">
             <label for="" class="col-sm-4 control-label">订单描述:</label>
             <div class="col-sm-8">
-              <textarea name="order_desc_input" class="form-control order_desc_input"></textarea>
+              <textarea name="order_desc_input" data-validation="length" data-validation-length="1-50" class="form-control order_desc_input"></textarea>
             </div>
           </div>
           <div class="form-group">
@@ -153,13 +153,13 @@
           <div class="form-group">
             <label for="" class="col-sm-4 control-label">融资业务编号:</label>
             <div class="col-sm-8">
-              <input name="loan_no_input" type="text" class="form-control loan_no_input" placeholder="融资业务编号"/>
+              <input name="loan_no_input" data-validation="length" data-validation-length="1-50" type="text" class="form-control loan_no_input" placeholder="融资业务编号"/>
             </div>
           </div>
           <div class="form-group">
             <label for="" class="col-sm-4 control-label">初始保证金:</label>
             <div class="col-sm-8">
-              <input name="init_security_amount_input" type="text" class="form-control init_security_amount_input" placeholder="初始保证金"/>
+              <input name="init_security_amount_input" data-validation="number" data-validation-allowing="float" type="text" class="form-control init_security_amount_input" placeholder="初始保证金"/>
             </div>
           </div>
           <div class="form-group">

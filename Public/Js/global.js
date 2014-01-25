@@ -89,3 +89,11 @@ function makePrecise(num, precise) {
         return text;
     }
 }
+
+function validateForm($form) {
+    return $form.triggerHandler('submit.validation');
+}
+
+var validatorMessage = {
+    lengthBadStart : '字段长度必须在 '
+};
