@@ -14,6 +14,9 @@ class OrderAction extends CommonAction {
     }
 
     public function order() {
+        $this->assign(array(
+            'supplier' => session('user')['ENTERPRISE_NAME']
+        ));
         $this->display();
     }
 
