@@ -55,9 +55,9 @@ $(document).ready(function () {
               'supplier': $('.supplier').val(),
               'buyer_name': $('.buyer_name').val(),
               'ys_no': $('.ys_no').val(),
-              'currency': $('.currency').val() == '人民币' ? '0' : '1',
-              'exp_flag': $('.exp_flag').val() == '是' ? 1 : 0,
-              'xz_flag': $('.xz_flag').val() == '是' ? 1: 0,
+              'currency': $('.currency').val(),
+              'exp_flag': $('.exp_flag').val(),
+              'xz_flag': $('.xz_flag').val(),
               'sr_op_date': $('#sr_op_date').val(),
               'xz_op_date': $('#xz_op_date').val()
           },
@@ -68,6 +68,14 @@ $(document).ready(function () {
       });
   });
   /* end query */
+
+  $('.export').on('click', function (event) {
+      exportExcel();
+  });
+
+  function exportExcel() {
+      $('.mainform').submit();
+  }
 
 });
 </script>

@@ -16,7 +16,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal mainform" role="form" method="POST" action="{:U('YSZK/exportYSZK')}">
           <div class="form-group">
             <label for="" class="col-sm-2 control-label">物流金融服务商名称:</label>
             <div class="col-sm-4">
@@ -35,8 +35,8 @@
             <label for="" class="col-sm-2 control-label">币种:</label>
             <div class="col-sm-4">
               <select name="currency" class="form-control currency">
-                <option>人民币</option>
-                <option>美币</option>
+                <option value="0">人民币</option>
+                <option value="1">美币</option>
               </select>
             </div>
           </div>
@@ -44,15 +44,15 @@
             <label for="" class="col-sm-2 control-label">是否逾期:</label>
             <div class="col-sm-4">
               <select name="exp_flag" class="form-control exp_flag">
-                <option>否</option>
-                <option>是</option>
+                <option value="0">否</option>
+                <option value="1">是</option>
               </select>
             </div>
             <label for="" class="col-sm-2 control-label">是否销账:</label>
             <div class="col-sm-4">
               <select name="xz_flag" class="form-control xz_flag">
-                <option>否</option>
-                <option>是</option>
+                <option value="0">否</option>
+                <option value="1">是</option>
               </select>
             </div>
           </div>
@@ -88,20 +88,21 @@
     </div>
 
     <div class="row" style="margin-top: 30px;">
-      <div class="col-xs-6" style="text-align: right;">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#srModal">受让清单导入</button>
-      </div>
-      <div class="col-xs-6" style="text-align: left;">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#xzModal">销账清单导入</button>
+      <div class="col-xs-3"></div>
+      <div class="col-xs-6">
+        <button style="width: 30%;" class="btn btn-primary" data-toggle="modal" data-target="#srModal">受让清单导入</button>
+        <button style="width: 30%;" class="btn btn-primary" data-toggle="modal" data-target="#xzModal">销账清单导入</button>
+        <button style="width: 30%;" class="btn btn-primary export">导出</button>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-xs-6" style="text-align: right; padding-right: 40px;">
-        <a href="Template/sr_template.xlsx">受让模版</a>
+      <div class="col-xs-3"></div>
+      <div class="col-xs-2">
+        <a style="" href="Template/sr_template.xlsx">受让模版</a>
       </div>
-      <div class="col-xs-6" style="text-align: left; padding-left: 40px;">
-        <a href="Template/xz_template.xlsx">销账模版</a>
+      <div class="col-xs-2">
+        <a style="" href="Template/xz_template.xlsx">销账模版</a>
       </div>
     </div>
 
