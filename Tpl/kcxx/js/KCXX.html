@@ -73,7 +73,7 @@ $(document).ready(function () {
             var ht = $('#kcxxtable').data('handsontable'),
                 row = $radio.attr('row'),
                 rowData = ht.getDataAtRow(row);
-            if (isIn(rowDataffff)) {
+            if (isIn(rowData)) {
                 $('.in_date_input').val(rowData['IN_DATE']);
                 $('.in_amount_input').val(rowData['IN_AMOUNT']);
                 $('.in_order_no_input').val(rowData['ORDER_NO']);
