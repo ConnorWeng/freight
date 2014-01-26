@@ -4,6 +4,10 @@
 $(document).ready(function () {
     var actionFlag = 0;
 
+    $.validate({
+        language: validatorMessage
+    });
+
     $('.handsontable').handsontable({
         startRows: 0,
         columnSorting: true,
@@ -115,10 +119,12 @@ $(document).ready(function () {
 
     $('.addInBtn').on('click', function (event) {
         event.preventDefault();
-        if (actionFlag == 0) {
-            addIn();
-        } else {
-            editIn();
+        if (validateForm($('.inForm'))) {
+            if (actionFlag == 0) {
+                addIn();
+            } else {
+                editIn();
+            }
         }
     });
 
@@ -163,10 +169,12 @@ $(document).ready(function () {
 
     $('.addOutBtn').on('click', function (event) {
         event.preventDefault();
-        if (actionFlag == 0) {
-            addOut();
-        } else {
-            editOut();
+        if (validateForm($('.outForm'))) {
+            if (actionFlag == 0) {
+                addOut();
+            } else {
+                editOut();
+            }
         }
     });
 
