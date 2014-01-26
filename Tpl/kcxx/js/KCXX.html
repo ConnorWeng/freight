@@ -16,7 +16,7 @@ $(document).ready(function () {
             case 0:
                 return '选择';
             case 1:
-                return '操作日期';
+                return '出入库日期';
             case 2:
                 return '操作类型';
             case 3:
@@ -33,11 +33,13 @@ $(document).ready(function () {
                 return '所属订单编号';
             case 9:
                 return '经销商';
+            case 10:
+                return '操作日期';
             }
         },
-        columns: [{renderer: radioRenderer}, {data: 'BUILD_DATE'}, {renderer: inOutTypeRenderer}, {data: 'IN_AMOUNT'},
+        columns: [{renderer: radioRenderer}, {renderer: inOutDateRenderer}, {renderer: inOutTypeRenderer}, {data: 'IN_AMOUNT'},
                   {data: 'OUT_AMOUNT'}, {renderer: receiveAmountRenderer}, {renderer: shouldReceiveAmountRenderer},
-                  {renderer: receiveRateRenderer}, {data: 'ORDER_NO'}, {data: 'BUYER'}],
+                  {renderer: receiveRateRenderer}, {data: 'ORDER_NO'}, {data: 'BUYER'}, {data: 'BUILD_DATE'}],
         contextMenu: false
     });
 

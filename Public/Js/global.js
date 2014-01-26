@@ -70,6 +70,16 @@ function radioRenderer(instance, td, row, col, prop, value, cellProperties) {
     return td;
 }
 
+function inOutDateRenderer(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.TextCell.renderer.apply(this, arguments);
+    var rowData = instance.getDataAtRow(row);
+    if (rowData['IN_AMOUNT'] == '' || rowData['IN_AMOUNT'] == null) {
+        $(td).text(rowData['OUT_DATE']);
+    } else {
+        $(td).text(rowData['IN_DATE']);
+    }
+}
+
 function inOutTypeRenderer(instance, td, row, col, prop, value, cellProperties) {
     Handsontable.TextCell.renderer.apply(this, arguments);
     var rowData = instance.getDataAtRow(row);
