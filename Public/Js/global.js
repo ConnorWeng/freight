@@ -80,6 +80,39 @@ function inOutTypeRenderer(instance, td, row, col, prop, value, cellProperties) 
     }
 }
 
+function receiveAmountRenderer(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.TextCell.renderer.apply(this, arguments);
+    var rowData = instance.getDataAtRow(row);
+    if (rowData['RECEIVE_TYPE'] == '0') {
+        $(td).text(rowData['RECEIVE_AMOUNT']);
+    } else {
+        $(td).text('');
+    }
+}
+
+function shouldReceiveAmountRenderer(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.TextCell.renderer.apply(this, arguments);
+    var rowData = instance.getDataAtRow(row);
+    if (rowData['RECEIVE_TYPE'] == '1') {
+        $(td).text(rowData['RECEIVE_AMOUNT']);
+    } else {
+        $(td).text('');
+    }
+}
+
+function receiveRateRenderer(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.TextCell.renderer.apply(this, arguments);
+    var rowData = instance.getDataAtRow(row);
+    if (rowData['OUT_AMOUNT'] != '') {
+        var num = (parseFloat(rowData['RECEIVE_AMOUNT']) / parseFloat(rowData['OUT_AMOUNT'])) * 100;
+        if (!isNaN(num)) {
+            $(td).text(makePrecise(num, 2) + '%');
+        } else {
+            $(td).text('0%');
+        }
+    }
+}
+
 function makePrecise(num, precise) {
     var text = num + '',
         dotIndex = text.indexOf('.');

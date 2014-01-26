@@ -36,8 +36,8 @@ $(document).ready(function () {
             }
         },
         columns: [{renderer: radioRenderer}, {data: 'BUILD_DATE'}, {renderer: inOutTypeRenderer}, {data: 'IN_AMOUNT'},
-                  {data: 'OUT_AMOUNT'}, {data: 'RECEIVE_AMOUNT'}, {data: ''},
-                  {data: ''}, {data: 'ORDER_NO'}, {data: 'BUYER'}],
+                  {data: 'OUT_AMOUNT'}, {renderer: receiveAmountRenderer}, {renderer: shouldReceiveAmountRenderer},
+                  {renderer: receiveRateRenderer}, {data: 'ORDER_NO'}, {data: 'BUYER'}],
         contextMenu: false
     });
 
