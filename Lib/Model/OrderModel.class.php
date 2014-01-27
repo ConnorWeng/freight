@@ -9,6 +9,16 @@ class OrderModel extends Model {
         return $this->db->query($sql);
     }
 
+    public function queryOrderByNo($orderNo) {
+        $sql = "select o.*, u1.enterprise_name buyer, u2.enterprise_name supplier from freight_order o, freight_user u1, freight_user u2 where o.buyer_id = u1.id(+) and o.supplier_id = u2.id(+) and o.order_no = '$orderNo'";
+        $rs = $this->db->query($sql);
+        if (count($rs) > 0) {
+            return $rs[0];
+        } else {
+            return null;
+        }
+    }
+
     public function addOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag,  $loanNo, $initSecurityAmount, $status, $operUserId) {
        $data['order_no'] = $orderNo;
        $data['buyer_id'] = $buyerId;

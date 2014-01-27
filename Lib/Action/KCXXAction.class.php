@@ -61,14 +61,31 @@ class KCXXAction extends CommonAction {
     }
 
     public function addOut() {
+        $orderNo = I('order_no');
         $outDate = I('out_date');
         $outAmount = I('out_amount');
         $receiveAmount = I('receive_amount');
         $receiveType = I('receive_type');
-        $orderNo = I('order_no');
         $operUserId = session('user')['ID'];
+
+        $orderModel = D('Order');
+        $order = $orderModel->queryOrderByNo($orderNo);
+        $this->validateOut($order, $outDate, $outAmount, $receiveAmount, $receiveType);
+
         $rs = $this->outModel->addOut($outDate, $outAmount, $receiveAmount, $receiveType, $orderNo, $operUserId);
         $this->ajaxReturn($rs, 'JSON');
+    }
+
+    public function validateOut($order, $outDate, $outAmount, $receiveAmount, $receiveType) {
+        if ($order == null) {
+            $this->ajaxReturn('订单不存在', 'JSON');
+        }
+
+        $orderDateTime = new DateTime($order['ORDER_DATE']);
+        $outDateTime = new DateTime($outDate);
+        if ($outDateTime < $orderDateTime) {
+            $this->ajaxReturn('出库日期不能早于订单日期', 'JSON');
+        }
     }
 
     public function editOut() {
