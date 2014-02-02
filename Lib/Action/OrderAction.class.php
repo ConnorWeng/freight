@@ -85,12 +85,12 @@ class OrderAction extends CommonAction {
             array('ORDER_AMOUNT', '订单金额'),
             array('ORDER_DESC', '订单描述'),
             array('INIT_SECURITY_AMOUNT', '初始保证金'),
-            array('LOAN_FLAG', '融资标识'),
+            array('LOAN_FLAG', '融资标识', array('0' => '未融资', '1' => '已融资')),
             array('', '融资日期'),
             array('', '融资金额'),
             array('', '融资到期日'),
             array('', '赎货到期日'),
-            array('STATUS', '订单状态')), $rs);
+            array('STATUS', '订单状态', array('0' => '未完成', '1' => '已完成'))), $rs);
     }
 
     public function getOrderNos() {

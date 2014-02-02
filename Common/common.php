@@ -61,7 +61,11 @@ function exportExcel($expTitle,$expCellName,$expTableData){
     // Miscellaneous glyphs, UTF-8
     for($i=0;$i<$dataNum;$i++){
         for($j=0;$j<$cellNum;$j++){
-            $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j].($i+3), $expTableData[$i][$expCellName[$j][0]]);
+            $value = $expTableData[$i][$expCellName[$j][0]];
+            if (count($expCellName[$j]) == 3) {
+                $value = $expCellName[$j][2][$value];
+            }
+            $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j].($i+3), $value);
         }
     }
 
