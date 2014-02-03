@@ -81,12 +81,12 @@ class CZXXAction extends CommonAction {
             array('LOAN_NO','业务编号'),
             array('SUPPLIER','物流金融服务商'),
             array('LOAN_AMOUNT','出账金额'),
-            array('LOAN_TYPE', '出账方式'),
+            array('LOAN_TYPE', '出账方式', array('0' => '贷款', '1' => '银承')),
             array('INIT_SECURITY_AMOUNT', '初始保证金'),
             array('LOAN_DATE', '出账日期'),
             array('LOAN_END_DATE', '到期日'),
-            array('CURRENCY', '币种'),
-            array('END_FLAG', '结清标识')), $rs);
+            array('CURRENCY', '币种', array('0' => '人名币', '1' => '美元')),
+            array('END_FLAG', '结清标识', array('0' => '否', '1' => '是'))), $rs);
     }
 }
 

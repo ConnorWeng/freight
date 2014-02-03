@@ -297,15 +297,15 @@ class YSZKAction extends CommonAction {
             array('YS_NO','应收账款编号'),
             array('KP_DATE', '开票日'),
             array('AMOUNT', '金额'),
-            array('CURRENCY', '币种'),
+            array('CURRENCY', '币种', array('0' => '人民币', '1' => '美元')),
             array('RMB_AMOUNT', '金额'),
             array('SR_AMOUNT', '受让金额'),
             array('HX_AMOUNT', '核销金额'),
             array('BUYER_RATE', '买方比例'),
             array('SR_OP_DATE', '受让操作日期'),
             array('ZX_END_DATE', '债项到期日'),
-            array('EXP_FLAG', '是否已到期'),
-            array('XZ_FLAG', '是否销账'),
+            array('EXP_FLAG', '是否已到期', array('0' => '否', '1' => '是')),
+            array('XZ_FLAG', '是否销账', array('0' => '否', '1' => '是')),
             array('XZ_DATE', '销账日期'),
             array('XZ_OP_DATE', '销账操作日期')), $rs);
     }
