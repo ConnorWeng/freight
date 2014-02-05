@@ -27,4 +27,9 @@ class IndexAction extends Action {
         }
     }
 
+    public function logout() {
+        session(null);
+        U('Index/index', '', false, true);
+    }
+
 }
