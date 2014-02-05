@@ -93,7 +93,7 @@ class YSZKAction extends CommonAction {
 
             if ($errorCode == 0) {
                 $todoModel = D('Todo');
-                $todoModel->addTodo(C('TODO_SR_NAME'), U('YSZK/srConfirm', array('batchId' => $batchId)), C('BANK_USER_ID'), null, null, 0, null);
+                $todoModel->addTodo(C('TODO_SR_NAME'), U('YSZK/srConfirm', array('batchId' => $batchId)), C('BANK_USER_ROLE'), null, null, 0, null);
                 $this->success('上传成功');
             } else {
                 $srTempModel->deleteBatch($batchId);
@@ -156,7 +156,7 @@ class YSZKAction extends CommonAction {
 
             if ($errorCode == 0) {
                 $todoModel = D('Todo');
-                $todoModel->addTodo(C('TODO_HX_NAME'), U('YSZK/hxConfirm', array('batchId' => $batchId)), C('BANK_USER_ID'), null, null, 0, null);
+                $todoModel->addTodo(C('TODO_HX_NAME'), U('YSZK/hxConfirm', array('batchId' => $batchId)), C('BANK_USER_ROLE'), null, null, 0, null);
                 $this->success('上传成功');
             } else {
                 $hxTempModel->deleteBatch($batchId);

@@ -4,20 +4,20 @@ class TodoModel extends Model {
 
     protected $fields = array('id', 'name', 'content', 'user_id', 'end_date', 'priority', 'status', 'sort');
 
-    public function addTodo($name, $content, $userId, $endDate, $priority, $status, $sort) {
-        $maxId = intval($this->max('id'));
-        $id = $maxId + 1;
+    public function addTodo($name, $content, $roleId, $endDate, $priority, $status, $sort) {
+        $sql = "insert into freight_todo " .
+               "  select freight_todo_seq.nextval, " .
+               "         '$name', " .
+               "         '$content', " .
+               "         user_id, " .
+               "         null, " .
+               "         null, " .
+               "         $status, " .
+               "         null " .
+               "    from freight_role_user " .
+               "   where role_id = $roleId";
 
-        $data['id'] = $id;
-        $data['name'] = $name;
-        $data['content'] = $content;
-        $data['user_id'] = $userId;
-        $data['end_date'] = $endDate;
-        $data['priority'] = $priority;
-        $data['status'] = $status;
-        $data['sort'] = $sort;
-
-        return $this->add($data);
+        return $this->db->query($sql);
     }
 
     public function queryUncompletedTodo($userId) {
