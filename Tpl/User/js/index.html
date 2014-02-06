@@ -1,71 +1,188 @@
-<script type="text/javascript">
-	function add() {
-		$("#form_data :input[type='hidden']").val("");
-		$("#form_data :text").val("");
-		$("#form_data select ").each(function() {
-			$(this).find('option:first').attr('selected', 'selected');
-		});
-		$(".sub_left_menu tbody tr.active").removeClass("active");
-		$("#opmode").val("add");
-	}
+<script type="text/javascript" src="__PUBLIC__/datepicker/js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/datepicker/css/datepicker.css" type="text/css" media="screen" />
+<script>
+$(document).ready(function () {
+    var actionFlag = 0;
 
-	function reset_pwd() {
-		if ($("#id").val().length < 1) {
-			alert("请选择用户");
-			return false;
-		}
-		winopen("{:U('password')}?id=" + $("#id").val(), 730, 300);
-	}
+    $.validate({
+        language: validatorMessage
+    });
 
-	function select_dept() {
-		winopen("{:U('dept/winpop2')}", 730, 500);
-	}
+    $('.handsontable').handsontable({
+        startRows: 0,
+        columnSorting: true,
+        colHeaders: function (col) {
+            switch (col) {
+            case 0:
+                return '选择';
+            case 1:
+                return '用户名';
+            case 2:
+                return '创建日期';
+            case 3:
+                return '企业名';
+            case 4:
+                return '组织机构代码';
+            case 5:
+                return '联系人姓名';
+            case 6:
+                return '联系人电话';
+            case 7:
+                return '行业';
+            }
+        },
+        columns: [{renderer: radioRenderer}, {data: 'USERNAME'}, {data: 'CREATE_DATE'},
+                  {data: 'ENTERPRISE_NAME'}, {data: 'ORGANIZATION_CODE'}, {data: 'CONTACT_NAME'},
+                  {data: 'CONTACT_TEL'}, {data: 'INDUSTRY'}],
+        contextMenu: false
+    });
 
-	function select_avatar() {
-		winopen("{:U('popup/avatar')}?id=" + $("#id").val(), 730, 500);
-	}
+    $('.enterprise_name').autocomplete({
+        source: '{:U('Common/queryEnterprises')}'
+    });
 
-	function btn_search() {
-		sendForm("form_search", "__SELF__");
-		$("#form_search").submit();
-	}
+    $('.search-btn').on('click', function (event) {
+        event.preventDefault();
+        $.ajax({
+            url: '{:U('User/searchUser')}',
+            data: {
+                'username': $('.username').val(),
+                'enterprise_name': $('.enterprise_name').val()
+            },
+            success: function (data) {
+                var table = $('.handsontable').data('handsontable');
+                table.loadData(data);
+            }
+        });
+    });
 
-	function key_search() {
-		if (event.keyCode == 13) {
-			sendForm("form_search", "__SELF__");
-			return false;
-		}
-	}
+    $('.add').on('click', function (event) {
+        event.preventDefault();
+        actionFlag = 0;
+    });
 
-	function save() {
-		if (check_form("form_data")) {
-			sendForm("form_data", "{:U('save')}", "__URL__");
-		}
-	}
+    $('.edit').on('click', function (event) {
+        event.preventDefault();
+        actionFlag = 1;
+        var $radio = $('input[name=czxx-radio]:checked');
+        if ($radio.length > 0) {
+            var ht = $('#ordertable').data('handsontable'),
+            row = $radio.attr('row'),
+            rowData = ht.getDataAtRow(row);
+            $('.username_input').val(rowData['USERNAME']);
+            $('.password_input').val(rowData['PASSWORD']);
+            $('.enterprise_name_input').val(rowData['ENTERPRISE_NAME']);
+            $('.organization_code_input').val(rowData['ORGANIZATION_CODE']);
+            $('.contact_name_input').val(rowData['CONTACT_NAME']);
+            $('.contact_tel_input').val(rowData['CONTACT_TEL']);
+            $('.industry_input').val(rowData['INDUSTRY']);
+            $('.id_input').val(rowData['ID']);
+        } else {
+            alert('未选择');
+            return false;
+        }
+    });
 
-	function showdata(result) {
-		for (var s in result.data) {
-			set_val(s, result.data[s]);
-		}
-		$("#dept_name").val($("#dept_list option[value='" + $("#dept_id").val() + "']").text());
-		img_url = "/{:C('SAVE_PATH')}" + $("#pic").val();
-		$("#emp_pic").attr("src", img_url);
-		$("#save_name").val("");
-		$("#opmode").val("edit");
-	}
+    $('.del').on('click', function (event) {
+        event.preventDefault();
+        var $radio = $('input[name=czxx-radio]:checked');
+        if ($radio.length > 0) {
+            var ht = $('#ordertable').data('handsontable'),
+            row = $radio.attr('row'),
+            rowData = ht.getDataAtRow(row);
+            if (confirm('确认删除？')) {
+                delUser(rowData['ID']);
+            }
+        } else {
+            alert('未选择');
+        }
+    });
 
+    $('.addbtn').on('click', function (event) {
+        event.preventDefault();
+        if (validateForm($('.add-form'))) {
+            switch (actionFlag) {
+            case 0:
+                addUser();
+                break;
+            case 1:
+                editUser();
+                break;
+            }
+        }
+    });
 
-	$(document).ready(function() {
-		set_return_url();
-		set_val('eq_is_del', "{$eq_is_del}");
-		$(".sub_left_menu tbody tr").click(function() {
-			$(".sub_left_menu tbody tr.active").removeClass("active");
-			$(this).attr("class", "active");
-			sendAjax("{:U('read')}", "id=" + $(this).attr("id"), function(data) {
-				showdata(data);
-			});
-			return false;
-		})
-	});
+    function addUser() {
+        $.ajax({
+            url: '{:U('User/addUser')}',
+            data: {
+                'username': $('.username_input').val(),
+                'password': $('.password_input').val(),
+                'enterprise_name': $('.enterprise_name_input').val(),
+                'organization_code': $('.organization_code_input').val(),
+                'contact_name': $('.contact_name_input').val(),
+                'contact_tel': $('.contact_tel_input').val(),
+                'industry': $('.industry_input').val()
+            },
+            success: function (data) {
+                if (data != 'false') {
+                    alert('新增成功');
+                    $('.search-btn').click();
+                } else {
+                    alert('新增失败');
+                }
+            }
+        });
+    }
 
+    function editUser() {
+        $.ajax({
+            url: '{:U('User/editUser')}',
+            data: {
+                'username': $('.username_input').val(),
+                'password': $('.password_input').val(),
+                'enterprise_name': $('.enterprise_name_input').val(),
+                'organization_code': $('.organization_code_input').val(),
+                'contact_name': $('.contact_name_input').val(),
+                'contact_tel': $('.contact_tel_input').val(),
+                'industry': $('.industry_input').val(),
+                'id': $('.id_input').val()
+            },
+            success: function (data) {
+                if (data == '1') {
+                    alert('修改成功');
+                    $('.search-btn').click();
+                } else {
+                    alert('修改失败');
+                }
+            }
+        });
+    }
+
+    function delUser(userId) {
+        $.ajax({
+            url: '{:U('User/delUser')}',
+            data: {
+                'id': userId
+            },
+            success: function (data) {
+                if (data == '1') {
+                    alert('删除成功');
+                    $('.search-btn').click();
+                } else {
+                    alert('删除失败');
+                }
+            }
+        });
+    }
+
+    $('.export').on('click', function (event) {
+        exportExcel();
+    })
+
+    function exportExcel() {
+        $('.mainform').submit();
+    }
+
+});
 </script>

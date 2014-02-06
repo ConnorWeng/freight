@@ -25,6 +25,34 @@ class UserModel extends Model {
         return $this->db->query($sql);
     }
 
+    public function searchUser($username, $enterpriseName) {
+        $sql = "select * from freight_user where username like '%$username%' and enterprise_name like '%$enterpriseName%'";
+        return $this->db->query($sql);
+    }
+
+    public function addUser($username, $password, $enterpriseName, $organizationCode, $contactName, $contactTel, $industry) {
+        $now = date('m/d/Y');
+        $sql = "insert into freight_user(id, username, password, create_date, enterprise_name, organization_code, contact_name, contact_tel, industry) values (freight_user_seq.nextval, '$username', '$password', '$now', '$enterpriseName', '$organizationCode', '$contactName', '$contactTel', '$industry')";
+        return $this->db->query($sql);
+    }
+
+    public function editUser($id, $username, $password, $enterpriseName, $organizationCode, $contactName, $contactTel, $industry) {
+        $where['id'] = $id;
+        $data['username'] = $username;
+        $data['password'] = $password;
+        $data['enterprise_name'] = $enterpriseName;
+        $data['organization_code'] = $organizationCode;
+        $data['contact_name'] = $contactName;
+        $data['contact_tel'] = $contactTel;
+        $data['industry'] = $industry;
+        return $this->where($where)->save($data);
+    }
+
+    public function delUser($id) {
+        $where['id'] = $id;
+        return $this->where($where)->delete();
+    }
+
 }
 
 ?>

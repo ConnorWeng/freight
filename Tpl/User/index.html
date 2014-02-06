@@ -1,156 +1,130 @@
 <layout name='Layout/ace_layout' />
-<input type="hidden" name="ajax" id="ajax" value="1">
-<select name="dept_list" id="dept_list" class="display-none">
-	{:fill_option($dept_list)}
-</select>
-{:W('PageHeader',array('name'=>'用户管理','search'=>'S'))}
-<form method="post" id="form_adv_search" name="form_adv_search" method="post">
-	<div class="operate panel panel-default">
-		<div class="panel-body">
-			<div class="pull-left">
-				<label  for="eq_is_del"><b>状态:</b></label>
-				<select id="eq_is_del" name="eq_is_del" class="col-10" onchange="submit_adv_search();">
-					<option value="0">启用</option>
-					<option value="1">禁用</option>
-				</select>
-			</div>
-			<div class="pull-right">
-				<a onclick="reset_pwd()" class="btn btn-sm btn-primary">设置密码</a>
-				<a onclick="add()"  class="btn btn-sm btn-primary">新增</a>
-				<a onclick="save()"  class="btn btn-sm btn-primary">保存</a>
-			</div>
-		</div>
-	</div>
-</form>
+<style>
+.form-horizontal .control-label {
+  text-align: center;
+}
+.dropdown-menu {
+  z-index: 9999;
+}
+</style>
 <div class="row">
-	<div class="col-sm-4 sub_left_menu ">
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>员工编号</th>
-					<th>姓名</th>
-					<th>状态</th>
-				</tr>
-			</thead>
-			<tbody>
-				<volist name="list" id="data">
-					<tr id="{$data.id}">
-						<td>{$data.emp_no}</td>
-						<td>{$data.emp_name}</td>
-						<td>{$data.is_del|status}</td>
-					</tr>
-				</volist>
-			</tbody>
-		</table>
-	</div>
-	<div class="col-sm-8">
-		<form id="form_data" name="form_data" method="post" class="form-horizontal">
-			<input type="hidden" id="save_name" name="save_name">
-			<input type="hidden" name="id" id="id">
-			<input type="hidden" name="pic" id="pic" >
-			<input type="hidden" name="opmode" id="opmode" value="edit">
-			<table class="table table-bordered" >
-				<tr>
-					<th>
-					<nobr>
-						员工编号*
-					</nobr></th>
-					<td colspan="2">
-					<input class="form-control" type="text" id="emp_no" name="emp_no"  check="require" msg="请输入员工编号">
-					</td>
-					<td rowspan="4"><img class="img-thumbnail col-12" id="emp_pic" ></td>
-				</tr>
-				<tr>
-					<th>姓名*</th>
-					<td colspan="2">
-					<input  class="form-control" type="text" id="emp_name" name="emp_name" class="input-sm" check="require" msg="请输入姓名">
-					</td>
-				</tr>
-				<tr>
-					<th>性别</th>
-					<td colspan="2">
-					<select name="sex" id="sex" class="form-control col-10">
-						<option  value="male">男</option>
-						<option value="female">女</option>
-					</select></td>
-				</tr>
-				<tr>
-					<th>生日</th>
-					<td colspan="2">
-					<input data-date-format="yyyy-mm-dd" type="text" id="birthday" name="birthday" readonly="readonly" class="input-date form-control">
-					</td>
-				</tr>
-				<tr>
-					<th>部门*</th>
-					<td colspan="2">
-					<div class="input-group ">
-						<input class="form-control" name="dept_name"  id="dept_name" type="text" msg="请选择部门" check="require" readonly="readonly" />
-						<input name="dept_id" id="dept_id" type="hidden" msg="请选择部门" check="require" />
-						<div class="input-group-btn">
-							<a class="btn btn-sm btn-primary" onclick="select_dept();" > <i class="icon-search" ></i> </a>
-						</div>
-					</div></td>
-					<td colspan="2"><a onclick="select_avatar();" class="btn btn-sm btn-primary">上传头像</a></td>
-				</tr>
-				<tr>
-					<th>职级*</th>
-					<td>
-					<select name="rank_id" id="rank_id" class="form-control" msg="请选择职级" check="require">
-						<option value="">选择职级</option>
-						{:fill_option($rank_list)}
-					</select></td>
-					<th>职位*</th>
-					<td>
-					<select name="position_id" id="position_id" class="form-control" msg="请选择职位" check="require">
-						<option value="">选择职位</option>
-						{:fill_option($position_list)}
-					</select></td>
-				</tr>
-				<tr>
-					<th>
-					<nobr>
-						办公室电话
-					</nobr></th>
-					<td>
-					<input type="text" id="office_tel" name="office_tel" class="form-control">
-					</td>
-					<th>
-					<nobr>
-						移动电话
-					</nobr></th>
-					<td>
-					<input type="text" id="mobile_tel" name="mobile_tel" class="form-control">
-					</td>
-				</tr>
-				<tr>
-				<tr>
-					<th>电子邮箱</th>
-					<td colspan="3">
-					<input type="text" id="email" name="email" class="form-control">
-					</td>
-				</tr>
-				<tr>
-					<th>
-					<nobr>
-						负责业务
-					</nobr></th>
-					<td colspan="3">
-					<input type="text" id="duty" name="duty" class="form-control">
-					</td>
-				</tr>
-				<tr>
-					<th>状态</th>
-					<td colspan="3">
-					<select class="form-control col-10"  name="is_del" id="is_del">
-						<option  value="0">启用</option>
-						<option value="1">禁用</option>
-					</select></td>
-				</tr>
-			</table>
-		</form>
+  <div class="col-xs-12">
+    <!-- PAGE CONTENT BEGINS -->
 
-	</div>
-	<div class="pagination">
-		{$page}
-	</div>
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>查询条件:<h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <form class="form-horizontal mainform" role="form" method="POST" action="{:U('Order/export')}">
+          <div class="form-group">
+            <label for="" class="col-sm-2 control-label">用户名:</label>
+            <div class="col-sm-4">
+              <input name="username" type="text" class="form-control username" placeholder="用户名"/>
+            </div>
+            <label for="" class="col-sm-2 control-label">企业名:</label>
+            <div class="col-sm-4">
+              <input name="enterprise_name" type="text" class="form-control enterprise_name" placeholder="企业名"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button class="btn btn-primary search-btn">搜索</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>查询结果:</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="ordertable" class="handsontable"></div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 30px;">
+      <div class="col-xs-4" style="text-align: right;">
+      </div>
+      <div class="col-xs-4" style="text-align: center;">
+        <button style="width:22%" class="btn btn-primary add" data-toggle="modal" data-target="#addModal">新增</button>
+        <button style="width:22%" class="btn btn-primary edit" data-toggle="modal" data-target="#addModal">修改</button>
+        <button style="width:22%" class="btn btn-primary del">删除</button>
+      </div>
+    </div>
+
+  </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="addModalLabel">新增</h4>
+      </div>
+      <div class="modal-body">
+        <form action="{:U('YSZK/importSrExcel')}" method="POST" enctype="multipart/form-data" class="form-horizontal add-form" role="form">
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">用户名:</label>
+            <div class="col-sm-8">
+              <input name="username_input" data-validation="length" data-validation-length="1-20" data-validation-error-msg="请输入有效的用户名" type="text" class="form-control username_input" placeholder="用户名"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">密码:</label>
+            <div class="col-sm-8">
+              <input name="password_input" type="password" class="form-control password_input" placeholder="密码"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">企业名:</label>
+            <div class="col-sm-8">
+              <input name="enterprise_name_input" data-validation="length" data-validation-length="1-50" data-validation-error-msg="请输入有效的企业名" type="text" class="form-control enterprise_name_input" placeholder="企业名"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">组织机构代码:</label>
+            <div class="col-sm-8">
+              <input name="organization_code_input" data-validation="length" data-validation-length="1-50" data-validation-error-msg="请输入有效的组织机构代码" type="text" class="form-control organization_code_input" placeholder="组织机构代码"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">联系人姓名:</label>
+            <div class="col-sm-8">
+              <input name="contact_name_input" data-validation="length" data-validation-length="1-50" data-validation-error-msg="请输入有效的联系人姓名" type="text" class="form-control contact_name_input" placeholder="联系人姓名"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">联系人电话:</label>
+            <div class="col-sm-8">
+              <input name="contact_tel_input" data-validation="number" type="text" class="form-control contact_tel_input" placeholder="联系人电话"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">行业:</label>
+            <div class="col-sm-8">
+              <input name="industry_input" data-validation="length" data-validation-length="1-50" data-validation-error-msg="请输入有效的行业" type="text" class="form-control industry_input" placeholder="行业"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+              <button class="btn btn-primary addbtn" style="width: 100%" type="submit">提交</button>
+            </div>
+          </div>
+          <input type="hidden" name="id_input" class="id_input" />
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

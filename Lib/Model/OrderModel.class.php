@@ -36,7 +36,7 @@ class OrderModel extends Model {
        return $this->add($data);
     }
 
-    public function editOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag,  $loanNo, $initSecurityAmount, $status, $operUserId) {
+    public function editOrder($orderNo, $buyerId, $supplierId, $sellerName, $orderDate, $orderAmount, $orderDesc, $loanFlag, $loanNo, $initSecurityAmount, $status, $operUserId) {
        $where['order_no'] = $orderNo;
        $data['buyer_id'] = $buyerId;
        $data['supplier_id'] = $supplierId;
