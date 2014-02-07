@@ -16,38 +16,49 @@ $(document).ready(function () {
             case 0:
                 return '选择';
             case 1:
-                return '用户名';
-            case 2:
-                return '创建日期';
-            case 3:
                 return '企业名';
+            case 2:
+                return '授信额度';
+            case 3:
+                return '敞口额度';
             case 4:
-                return '组织机构代码';
+                return '债项管理期';
             case 5:
-                return '联系人姓名';
+                return '核定融资抵押率';
             case 6:
-                return '联系人电话';
+                return '额度起始日期';
             case 7:
-                return '行业';
+                return '额度到期日期';
             }
         },
-        columns: [{renderer: radioRenderer}, {data: 'USERNAME'}, {data: 'CREATE_DATE'},
-                  {data: 'ENTERPRISE_NAME'}, {data: 'ORGANIZATION_CODE'}, {data: 'CONTACT_NAME'},
-                  {data: 'CONTACT_TEL'}, {data: 'INDUSTRY'}],
+        columns: [{renderer: radioRenderer}, {data: 'SUPPLIER_NAME'}, {data: 'AMOUNT'},
+                  {data: 'RISK_AMOUNT'}, {data: 'ZX_TIME'}, {data: 'DIYA_RATE'},
+                  {data: 'START_DATE'}, {data: 'END_DATE'}],
         contextMenu: false
     });
 
-    $('.enterprise_name').autocomplete({
+    $('.start_date_input').datepicker({
+        format: 'mm/dd/yyyy'
+    });
+
+    $('.end_date_input').datepicker({
+        format: 'mm/dd/yyyy'
+    });
+
+    $('.supplier_name').autocomplete({
+        source: '{:U('Common/queryEnterprises')}'
+    });
+
+    $('.supplier_name_input').autocomplete({
         source: '{:U('Common/queryEnterprises')}'
     });
 
     $('.search-btn').on('click', function (event) {
         event.preventDefault();
         $.ajax({
-            url: '{:U('User/searchUser')}',
+            url: '{:U('Limit/searchLimit')}',
             data: {
-                'username': $('.username').val(),
-                'enterprise_name': $('.enterprise_name').val()
+                'supplier_name': $('.supplier_name').val()
             },
             success: function (data) {
                 var table = $('.handsontable').data('handsontable');
@@ -69,14 +80,14 @@ $(document).ready(function () {
             var ht = $('#ordertable').data('handsontable'),
             row = $radio.attr('row'),
             rowData = ht.getDataAtRow(row);
-            $('.username_input').val(rowData['USERNAME']);
-            $('.password_input').val(rowData['PASSWORD']);
-            $('.enterprise_name_input').val(rowData['ENTERPRISE_NAME']);
-            $('.organization_code_input').val(rowData['ORGANIZATION_CODE']);
-            $('.contact_name_input').val(rowData['CONTACT_NAME']);
-            $('.contact_tel_input').val(rowData['CONTACT_TEL']);
-            $('.industry_input').val(rowData['INDUSTRY']);
-            $('.id_input').val(rowData['ID']);
+            $('.supplier_id_input').val(rowData['SUPPLIER_ID']);
+            $('.supplier_name_input').val(rowData['SUPPLIER_NAME']);
+            $('.amount_input').val(rowData['AMOUNT']);
+            $('.risk_amount_input').val(rowData['RISK_AMOUNT']);
+            $('.zx_time_input').val(rowData['ZX_TIME']);
+            $('.diya_rate_input').val(rowData['DIYA_RATE']);
+            $('.start_date_input').val(rowData['START_DATE']);
+            $('.end_date_input').val(rowData['END_DATE']);
         } else {
             alert('未选择');
             return false;
@@ -91,7 +102,7 @@ $(document).ready(function () {
             row = $radio.attr('row'),
             rowData = ht.getDataAtRow(row);
             if (confirm('确认删除？')) {
-                delUser(rowData['ID']);
+                delLimit(rowData['SUPPLIER_ID']);
             }
         } else {
             alert('未选择');
@@ -103,29 +114,29 @@ $(document).ready(function () {
         if (validateForm($('.add-form'))) {
             switch (actionFlag) {
             case 0:
-                addUser();
+                addLimit();
                 break;
             case 1:
-                editUser();
+                editLimit();
                 break;
             }
         }
     });
 
-    function addUser() {
+    function addLimit() {
         $.ajax({
-            url: '{:U('User/addUser')}',
+            url: '{:U('Limit/addLimit')}',
             data: {
-                'username': $('.username_input').val(),
-                'password': $('.password_input').val(),
-                'enterprise_name': $('.enterprise_name_input').val(),
-                'organization_code': $('.organization_code_input').val(),
-                'contact_name': $('.contact_name_input').val(),
-                'contact_tel': $('.contact_tel_input').val(),
-                'industry': $('.industry_input').val()
+                'supplier_name': $('.supplier_name_input').val(),
+                'amount': $('.amount_input').val(),
+                'risk_amount': $('.risk_amount_input').val(),
+                'zx_time': $('.zx_time_input').val(),
+                'diya_rate': $('.diya_rate_input').val(),
+                'start_date': $('.start_date_input').val(),
+                'end_date': $('.end_date_input').val()
             },
             success: function (data) {
-                if (data) {
+                if (data == '1') {
                     alert('新增成功');
                     $('.search-btn').click();
                 } else {
@@ -135,18 +146,17 @@ $(document).ready(function () {
         });
     }
 
-    function editUser() {
+    function editLimit() {
         $.ajax({
-            url: '{:U('User/editUser')}',
+            url: '{:U('Limit/editLimit')}',
             data: {
-                'username': $('.username_input').val(),
-                'password': $('.password_input').val(),
-                'enterprise_name': $('.enterprise_name_input').val(),
-                'organization_code': $('.organization_code_input').val(),
-                'contact_name': $('.contact_name_input').val(),
-                'contact_tel': $('.contact_tel_input').val(),
-                'industry': $('.industry_input').val(),
-                'id': $('.id_input').val()
+                'supplier_id': $('.supplier_id_input').val(),
+                'amount': $('.amount_input').val(),
+                'risk_amount': $('.risk_amount_input').val(),
+                'zx_time': $('.zx_time_input').val(),
+                'diya_rate': $('.diya_rate_input').val(),
+                'start_date': $('.start_date_input').val(),
+                'end_date': $('.end_date_input').val()
             },
             success: function (data) {
                 if (data == '1') {
@@ -159,11 +169,11 @@ $(document).ready(function () {
         });
     }
 
-    function delUser(userId) {
+    function delLimit(supplierId) {
         $.ajax({
-            url: '{:U('User/delUser')}',
+            url: '{:U('Limit/delLimit')}',
             data: {
-                'id': userId
+                'supplier_id': supplierId
             },
             success: function (data) {
                 if (data == '1') {
@@ -174,14 +184,6 @@ $(document).ready(function () {
                 }
             }
         });
-    }
-
-    $('.export').on('click', function (event) {
-        exportExcel();
-    })
-
-    function exportExcel() {
-        $('.mainform').submit();
     }
 
 });

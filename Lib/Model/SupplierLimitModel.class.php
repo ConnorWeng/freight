@@ -33,6 +33,38 @@ class SupplierLimitModel extends Model {
         }
     }
 
+    public function searchLimit($supplierId) {
+        $sql = "select l.*, u.enterprise_name supplier_name from freight_supplier_limit l, freight_user u where l.supplier_id = u.id and l.supplier_id like '%$supplierId%'";
+        return $this->db->query($sql);
+    }
+
+    public function addLimit($supplierId, $amount, $riskAmount, $zxTime, $diyaRate, $startDate, $endDate) {
+        $data['supplier_id'] = $supplierId;
+        $data['amount'] = $amount;
+        $data['risk_amount'] = $riskAmount;
+        $data['zx_time'] = $zxTime;
+        $data['diya_rate'] = $diyaRate;
+        $data['start_date'] = $startDate;
+        $data['end_date'] = $endDate;
+        return $this->add($data);
+    }
+
+    public function editLimit($supplierId, $amount, $riskAmount, $zxTime, $diyaRate, $startDate, $endDate) {
+        $where['supplier_id'] = $supplierId;
+        $data['amount'] = $amount;
+        $data['risk_amount'] = $riskAmount;
+        $data['zx_time'] = $zxTime;
+        $data['diya_rate'] = $diyaRate;
+        $data['start_date'] = $startDate;
+        $data['end_date'] = $endDate;
+        return $this->where($where)->save($data);
+    }
+
+    public function delLimit($supplierId) {
+        $where['supplier_id'] = $supplierId;
+        return $this->where($where)->delete();
+    }
+
 }
 
 ?>

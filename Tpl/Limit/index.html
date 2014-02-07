@@ -1,0 +1,126 @@
+<layout name='Layout/ace_layout' />
+<style>
+.form-horizontal .control-label {
+  text-align: center;
+}
+.dropdown-menu {
+  z-index: 9999;
+}
+</style>
+<div class="row">
+  <div class="col-xs-12">
+    <!-- PAGE CONTENT BEGINS -->
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>查询条件:<h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <form class="form-horizontal mainform" role="form" method="POST" action="{:U('Order/export')}">
+          <div class="form-group">
+            <label for="" class="col-sm-2 control-label">企业名:</label>
+            <div class="col-sm-4">
+              <input name="supplier_name" type="text" class="form-control supplier_name" placeholder="企业名"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button class="btn btn-primary search-btn">搜索</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>查询结果:</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="ordertable" class="handsontable"></div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 30px;">
+      <div class="col-xs-4" style="text-align: right;">
+      </div>
+      <div class="col-xs-4" style="text-align: center;">
+        <button style="width:22%" class="btn btn-primary add" data-toggle="modal" data-target="#addModal">新增</button>
+        <button style="width:22%" class="btn btn-primary edit" data-toggle="modal" data-target="#addModal">修改</button>
+        <button style="width:22%" class="btn btn-primary del">删除</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="addModalLabel">新增</h4>
+      </div>
+      <div class="modal-body">
+        <form action="{:U('YSZK/importSrExcel')}" method="POST" enctype="multipart/form-data" class="form-horizontal add-form" role="form">
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">企业名:</label>
+            <div class="col-sm-8">
+              <input name="supplier_name_input" data-validation="length" data-validation-length="1-50" data-validation-error-msg="请输入有效的企业名" type="text" class="form-control supplier_name_input" placeholder="企业名"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">授信额度:</label>
+            <div class="col-sm-8">
+              <input name="amount_input" data-validation="number" data-validation-allowing="float" type="text" class="form-control amount_input" placeholder="组织机构代码"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">敞口额度:</label>
+            <div class="col-sm-8">
+              <input name="risk_amount_input" data-validation="number" data-validation-allowing="float" type="text" class="form-control risk_amount_input" placeholder="联系人姓名"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">债项管理期:</label>
+ <div class="col-sm-8">
+              <input name="zx_time_input" data-validation="number" type="text" class="form-control zx_time_input" placeholder="联系人电话"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">核定融资抵押率:</label>
+            <div class="col-sm-8">
+              <input name="diya_rate_input" data-validation="number" data-validation-allowing="float" type="text" class="form-control diya_rate_input" placeholder="行业"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">额度起始日期:</label>
+            <div class="col-sm-8">
+              <input name="start_date_input" data-validation="date" data-validation-format="mm/dd/yyyy" type="text" class="form-control start_date_input" placeholder="行业"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-4 control-label">额度到期日期:</label>
+            <div class="col-sm-8">
+              <input name="end_date_input" data-validation="date" data-validation-format="mm/dd/yyyy" type="text" class="form-control end_date_input" placeholder="行业"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+              <button class="btn btn-primary addbtn" style="width: 100%" type="submit">提交</button>
+            </div>
+          </div>
+          <input type="hidden" name="supplier_id_input" class="supplier_id_input" />
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
