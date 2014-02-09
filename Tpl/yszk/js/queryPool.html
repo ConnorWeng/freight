@@ -10,7 +10,28 @@ $(document).ready(function () {
         columns: [{data: 'SUPPLIER'}, {data: 'WHX_AMOUNT'}, {data: 'YQ_AMOUNT'}, {data: 'EFFECT_AMOUNT'},
                   {data: 'ZH_RISK_AMOUNT'}, {data: 'USED_RISK_AMOUNT'}, {data: 'UNUSE_RISK_AMOUNT'}, {data: 'CURRENT_DIYA_RATE', renderer: percentRenderer}, {data: 'YQ_RATE', renderer:percentRenderer},
                   {data: 'ABOVE_3_MONTH_WHX_RATE', renderer:percentRenderer}, {data: '', renderer: linkRenderer}],
-        contextMenu: true
+        contextMenu: true,
+        cells: function (row, col, prop) {
+            var pooltable = $('#pooltable').data('handsontable'),
+                cellProperties = {},
+                rowData = pooltable.getDataAtRow(row);
+            if (rowData) {
+                if (col === 7 && rowData['CURRENT_DIYA_RATE'] > 0.7) {
+                    cellProperties.renderer = yellowPercentRenderer;
+                }
+                if (col === 8) {
+                    if (rowData['YQ_RATE'] == null || parseFloat(rowData['YQ_RATE']) < 0.2) {
+                        cellProperties.renderer = bluePercentRenderer;
+                    } else {
+                        cellProperties.renderer = yellowPercentRenderer;
+                    }
+                }
+                if (col === 9 && parseFloat(rowData['ABOVE_3_MONTH_WHX_RATE']) > 0.05) {
+                    cellProperties.renderer = redPercentRenderer;
+                }
+            }
+            return cellProperties;
+        }
     });
 
     $('.search-input').autocomplete({

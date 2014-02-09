@@ -20,6 +20,21 @@ function percentRenderer(instance, td, row, col, prop, value, cellProperties) {
     }
 }
 
+function yellowPercentRenderer(instance, td, row, col, prop, value, cellProperties) {
+    percentRenderer(instance, td, row, col, prop, value, cellProperties);
+    $(td).css('background', 'yellow');
+}
+
+function redPercentRenderer(instance, td, row, col, prop, value, cellProperties) {
+    percentRenderer(instance, td, row, col, prop, value, cellProperties);
+    $(td).css({'background': 'red', 'color': 'white'});
+}
+
+function bluePercentRenderer(instance, td, row, col, prop, value, cellProperties) {
+    percentRenderer(instance, td, row, col, prop, value, cellProperties);
+    $(td).css({'background': 'blue', 'color': 'white'});
+}
+
 function currencyRenderer(instance, td, row, col, prop, value, cellProperties) {
     Handsontable.TextCell.renderer.apply(this, arguments);
     var text = $(td).text(),
