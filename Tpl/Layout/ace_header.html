@@ -16,16 +16,16 @@
                                         <a  href="{:U('Todo/index')}" onclick="del_current_node()"><i class="icon-tasks"></i> <span class="badge badge-grey">{$new_todo}</span> </a>
                                 </li>
 
-                                <li class="purple">
+                                <!--li class="purple">
                                         <a  href="{:U('Notice/index')}" onclick="del_current_node()"> <i class="icon-bell-alt icon-animated-bell"></i> <span class="badge badge-important">{$new_notice}</span> </a>
                                 </li>
 
                                 <li class="green">
                                         <a  href="{:U('Mail/index')}" onclick="del_current_node()"><i class="icon-envelope icon-animated-vertical"></i> <span class="badge badge-success">{$new_mail}</span> </a>
-                                </li>
+                                </li-->
 
                                 <li class="light-blue">
-                                        <a data-toggle="dropdown" href="#" class="dropdown-toggle"> <img class="nav-user-photo" src="/{:C('SAVE_PATH')}{$Think.session.user_pic}"> <span class="user-info"> {$Think.session.user_name} </span> <i class="icon-caret-down"></i> </a>
+                                        <a data-toggle="dropdown" href="#" class="dropdown-toggle"> <img class="nav-user-photo" src="/{:C('SAVE_PATH')}{$Think.session.user_pic}"> <span class="user-info"> {$user_name} </span> <i class="icon-caret-down"></i> </a>
                                         <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                                                 <li>
                                                         <a href="{:U('Profile/index')}"> <i class="icon-user"></i> 用户资料 </a>

@@ -9,6 +9,8 @@ class CommonAction extends Action {
             'basepath' => str_replace('index.php', 'Public', __APP__),
             'tree' => $tree,
             'js_file' => './Tpl/'.MODULE_NAME.'/js/'.ACTION_NAME.'.html',
+            'user_name' => session('user')['USERNAME'],
+            'system_name' => '宁波通商银行'
         ));
     }
 
