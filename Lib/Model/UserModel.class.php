@@ -53,6 +53,13 @@ class UserModel extends Model {
         return $this->where($where)->delete();
     }
 
+    public function changePassword($id, $oldPassword, $password) {
+        $where['id'] = $id;
+        $where['password'] = $oldPassword;
+        $data['password'] = $password;
+        return $this->where($where)->save($data);
+    }
+
 }
 
 ?>

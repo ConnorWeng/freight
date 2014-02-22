@@ -55,6 +55,18 @@ class UserAction extends CommonAction {
         $this->ajaxReturn($rs, 'JSON');
     }
 
+    public function password() {
+        $this->display();
+    }
+
+    public function changePassword() {
+        $oldPassword = I('oldPassword');
+        $password = I('password');
+        $userId = session('user')['ID'];
+        $rs = $this->userModel->changePassword($userId, $oldPassword, $password);
+        $this->ajaxReturn($rs, 'JSON');
+    }
+
 }
 
 ?>
