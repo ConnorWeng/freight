@@ -20,7 +20,8 @@ class UserAction extends CommonAction {
     public function searchUser() {
         $username = I('username');
         $enterpriseName = I('enterprise_name');
-        $rs = $this->userModel->searchUser($username, $enterpriseName);
+        $role = I('role');
+        $rs = $this->userModel->searchUser($username, $enterpriseName, $role);
         $this->ajaxReturn($rs, 'JSON');
     }
 
@@ -32,7 +33,8 @@ class UserAction extends CommonAction {
         $contactName = I('contact_name');
         $contactTel = I('contact_tel');
         $industry = I('industry');
-        $rs = $this->userModel->addUser($username, $password, $enterpriseName, $organizationCode, $contactName, $contactTel, $industry);
+        $role = I('role');
+        $rs = $this->userModel->addUser($username, $password, $enterpriseName, $organizationCode, $contactName, $contactTel, $industry, $role);
         $this->ajaxReturn($rs, 'JSON');
     }
 
@@ -44,8 +46,9 @@ class UserAction extends CommonAction {
         $contactName = I('contact_name');
         $contactTel = I('contact_tel');
         $industry = I('industry');
+        $role = I('role');
         $id = I('id');
-        $rs = $this->userModel->editUser($id, $username, $password, $enterpriseName, $organizationCode, $contactName, $contactTel, $industry);
+        $rs = $this->userModel->editUser($id, $username, $password, $enterpriseName, $organizationCode, $contactName, $contactTel, $industry, $role);
         $this->ajaxReturn($rs, 'JSON');
     }
 

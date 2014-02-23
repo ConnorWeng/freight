@@ -25,18 +25,18 @@ class UserModel extends Model {
         return $this->db->query($sql);
     }
 
-    public function searchUser($username, $enterpriseName) {
-        $sql = "select * from freight_user where username like '%$username%' and enterprise_name like '%$enterpriseName%'";
+    public function searchUser($username, $enterpriseName, $role) {
+        $sql = "select u.*, ru.role_id role from freight_user u, freight_role_user ru where u.id = ru.user_id and u.username like '%$username%' and u.enterprise_name like '%$enterpriseName%' and ru.role_id like '%$role%'";
         return $this->db->query($sql);
     }
 
-    public function addUser($username, $password, $enterpriseName, $organizationCode, $contactName, $contactTel, $industry) {
+    public function addUser($username, $password, $enterpriseName, $organizationCode, $contactName, $contactTel, $industry, $role) {
         $now = date('m/d/Y');
-        $sql = "insert into freight_user(id, username, password, create_date, enterprise_name, organization_code, contact_name, contact_tel, industry) values (freight_user_seq.nextval, '$username', '$password', '$now', '$enterpriseName', '$organizationCode', '$contactName', '$contactTel', '$industry')";
+        $sql = "declare retcode varchar2(10); msg varchar2(100); begin pckg_freight_user.add_user('$username', '$password', '$now', '$enterpriseName', '$organizationCode', '$contactName', '$contactTel', '$industry', '$role', retcode, msg); end;";
         return $this->db->query($sql);
     }
 
-    public function editUser($id, $username, $password, $enterpriseName, $organizationCode, $contactName, $contactTel, $industry) {
+    public function editUser($id, $username, $password, $enterpriseName, $organizationCode, $contactName, $contactTel, $industry, $role) {
         $where['id'] = $id;
         $data['username'] = $username;
         $data['password'] = $password;
