@@ -37,15 +37,8 @@ class UserModel extends Model {
     }
 
     public function editUser($id, $username, $password, $enterpriseName, $organizationCode, $contactName, $contactTel, $industry, $role) {
-        $where['id'] = $id;
-        $data['username'] = $username;
-        $data['password'] = $password;
-        $data['enterprise_name'] = $enterpriseName;
-        $data['organization_code'] = $organizationCode;
-        $data['contact_name'] = $contactName;
-        $data['contact_tel'] = $contactTel;
-        $data['industry'] = $industry;
-        return $this->where($where)->save($data);
+        $sql = "declare retcode varchar2(10); msg varchar2(100); begin pckg_freight_user.edit_user('$id', '$username', '$password', '$now', '$enterpriseName', '$organizationCode', '$contactName', '$contactTel', '$industry', '$role', retcode, msg); end;";
+        return $this->db->query($sql);
     }
 
     public function delUser($id) {
