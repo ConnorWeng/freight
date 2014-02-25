@@ -43,7 +43,15 @@ create or replace package body pckg_freight_user is
                      o_ret_code out varchar2,
                      o_msg out varchar2) is
     user_id varchar2(100);
+    user_count int;
+    user_exist exception;
   begin
+
+    select count(1) into user_count from freight_user where username = i_username;
+
+    if user_count > 0 then
+       raise user_exist;
+    end if;
 
     user_id := freight_user_seq.nextval;
 
@@ -56,6 +64,10 @@ create or replace package body pckg_freight_user is
     o_ret_code := '0';
 
   exception
+    when user_exist then
+      o_ret_code := '-2';
+      o_msg := 'user exists';
+      raise;
     when others then
     begin
       rollback;
