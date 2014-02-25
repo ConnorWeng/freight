@@ -26,7 +26,7 @@ class UserModel extends Model {
     }
 
     public function searchUser($username, $enterpriseName, $role) {
-        $sql = "select u.*, ru.role_id role from freight_user u, freight_role_user ru where u.id = ru.user_id and u.username like '%$username%' and u.enterprise_name like '%$enterpriseName%' and ru.role_id like '%$role%'";
+        $sql = "select u.*, ru.role_id role from freight_user u, freight_role_user ru where u.id = ru.user_id and u.username like '%$username%' and u.enterprise_name like '%$enterpriseName%' and ru.role_id like '%$role%' and u.username != 'admin'";
         return $this->db->query($sql);
     }
 
