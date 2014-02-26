@@ -40,6 +40,10 @@ $(document).ready(function () {
             case 12:
                 return '赎货到期日';
             case 13:
+                return '入库货值';
+            case 14:
+                return '已赎货货值';
+            case 15:
                 return '订单状态';
             }
         },
@@ -47,7 +51,8 @@ $(document).ready(function () {
                   {data: 'ORDER_NO'}, {data: 'ORDER_DATE'}, {data: 'ORDER_AMOUNT'},
                   {data: 'ORDER_DESC'}, {data: 'INIT_SECURITY_AMOUNT'}, {data: 'LOAN_FLAG', renderer: loanFlagRenderer},
                   {data: ''}, {data: ''}, {data: ''},
-                  {data: ''}, {data: 'STATUS', renderer: orderStatusRenderer}],
+                  {data: ''}, {data: 'TOTAL_IN'}, {data: 'TOTAL_OUT'},
+                  {data: 'STATUS', renderer: orderStatusRenderer}],
         contextMenu: false
     });
 

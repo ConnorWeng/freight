@@ -5,7 +5,7 @@ class OrderModel extends Model {
     protected $fields = array('order_no', 'buyer_id', 'supplier_id', 'seller_name', 'order_date', 'order_amount', 'order_desc', 'loan_flag', 'loan_no', 'init_security_amount', 'status', 'build_date', 'modify_date', 'oper_user_id');
 
     public function searchOrder($orderNo, $buyerId, $supplierId, $loanFlag, $status) {
-        $sql = "select o.*, u1.enterprise_name buyer, u2.enterprise_name supplier from freight_order o, freight_user u1, freight_user u2 where o.buyer_id = u1.id(+) and o.supplier_id = u2.id(+) and o.order_no like '%$orderNo%' and o.buyer_id like '%$buyerId%' and o.supplier_id like '%$supplierId%' and o.loan_flag like '%$loanFlag%' and o.status like '%$status%'";
+        $sql = "select o.*, u1.enterprise_name buyer, u2.enterprise_name supplier, (select sum(i.in_amount) from freight_in i where i.order_no = o.order_no) total_in, (select sum(ot.out_amount) from freight_out ot where ot.order_no = o.order_no) total_out from freight_order o, freight_user u1, freight_user u2 where o.buyer_id = u1.id(+) and o.supplier_id = u2.id(+) and o.order_no like '%$orderNo%' and o.buyer_id like '%$buyerId%' and o.supplier_id like '%$supplierId%' and o.loan_flag like '%$loanFlag%' and o.status like '%$status%'";
         return $this->db->query($sql);
     }
 
